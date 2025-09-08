@@ -1,19 +1,31 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useState, useEffect, Suspense } from "react";
+import { createBrowserClient } from "@supabase/ssr";
 import { Provider } from "@supabase/supabase-js";
 import toast from "react-hot-toast";
 import config from "@/config";
+import { useSearchParams } from "next/navigation";
 
-// This a login/singup page for Supabase Auth.
-// Successfull login redirects to /api/auth/callback where the Code Exchange is processed (see app/api/auth/callback/route.js).
-export default function Login() {
-  const supabase = createClientComponentClient();
+// Login component that handles authentication
+function LoginForm() {
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
   const [email, setEmail] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
+  const searchParams = useSearchParams();
+
+  // Show any error from URL params (e.g., from auth callback)
+  useEffect(() => {
+    const error = searchParams.get('error');
+    if (error) {
+      toast.error(decodeURIComponent(error));
+    }
+  }, [searchParams]);
 
   const handleSignup = async (
     e: any,
@@ -31,23 +43,40 @@ export default function Login() {
       const redirectURL = window.location.origin + "/api/auth/callback";
 
       if (type === "oauth") {
-        await supabase.auth.signInWithOAuth({
+        const { data, error } = await supabase.auth.signInWithOAuth({
           provider,
           options: {
             redirectTo: redirectURL,
           },
         });
+
+        if (error) {
+          console.error("OAuth error:", error);
+          toast.error(`OAuth Error: ${error.message}`);
+        } else {
+          console.log("OAuth redirect initiated:", data);
+        }
       } else if (type === "magic_link") {
-        await supabase.auth.signInWithOtp({
+        const { data, error } = await supabase.auth.signInWithOtp({
           email,
           options: {
             emailRedirectTo: redirectURL,
           },
         });
 
-        toast.success("Check your emails!");
-
-        setIsDisabled(true);
+        if (error) {
+          console.error("Magic link error details:", {
+            message: error.message,
+            status: error.status,
+            code: error.code,
+            details: error
+          });
+          toast.error(`Magic Link Error: ${error.message}`);
+        } else {
+          console.log("Magic link sent successfully:", data);
+          toast.success("Check your emails!");
+          setIsDisabled(true);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -147,5 +176,15 @@ export default function Login() {
         </form>
       </div>
     </main>
+  );
+}
+
+// This a login/singup page for Supabase Auth.
+// Successfull login redirects to /api/auth/callback where the Code Exchange is processed (see app/api/auth/callback/route.js).
+export default function Login() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginForm />
+    </Suspense>
   );
 }
