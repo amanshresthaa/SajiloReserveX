@@ -2,20 +2,20 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "ToGo Terms of Service",
-  description: "Terms of service for guests using ToGo to reserve a table.",
+  title: "SajiloReserveX Terms of Service",
+  description: "Terms of service for guests using SajiloReserveX to reserve a table.",
 };
 
 const lastUpdated = "February 05, 2025";
 
-export default function TogoTermsPage() {
+export default function SajiloReserveXTermsPage() {
   return (
     <main className="mx-auto max-w-3xl px-6 py-12 space-y-10">
       <header className="space-y-3">
         <p className="text-sm uppercase tracking-wide text-slate-500">Last updated {lastUpdated}</p>
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900">ToGo Terms of Service</h1>
+        <h1 className="text-3xl font-bold tracking-tight text-slate-900">SajiloReserveX Terms of Service</h1>
         <p className="text-slate-600">
-          These terms explain how ToGo provides reservation services to diners. By submitting a booking
+          These terms explain how SajiloReserveX provides reservation services to diners. By submitting a booking
           request you confirm that you have read, understood, and agree to the conditions below.
         </p>
       </header>
@@ -23,7 +23,7 @@ export default function TogoTermsPage() {
       <section className="space-y-4">
         <h2 className="text-2xl font-semibold text-slate-900">1. Who we are</h2>
         <p className="text-slate-700">
-          ToGo is a reservation platform operated by SajiloReserveX Ltd. We partner with restaurants to
+          SajiloReserveX is a reservation platform operated by SajiloReserveX Ltd. We partner with restaurants to
           capture booking requests, share confirmations, and send service messages such as amendments or
           cancellations. The dining experience itself is delivered by the venue you select.
         </p>
@@ -42,7 +42,7 @@ export default function TogoTermsPage() {
       <section className="space-y-4">
         <h2 className="text-2xl font-semibold text-slate-900">3. Changes and cancellations</h2>
         <p className="text-slate-700">
-          Each venue sets its own cancellation window. ToGo gives you links to manage your booking online;
+          Each venue sets its own cancellation window. SajiloReserveX gives you links to manage your booking online;
           if you are inside the cutoff please contact the venue directly using the details provided in the
           confirmation email. No-shows or late cancellations may result in fees or impact future booking
           privileges.
@@ -61,7 +61,7 @@ export default function TogoTermsPage() {
       <section className="space-y-4">
         <h2 className="text-2xl font-semibold text-slate-900">5. Marketing preferences</h2>
         <p className="text-slate-700">
-          If you opt in to marketing, ToGo will send occasional news and offers on behalf of participating
+          If you opt in to marketing, SajiloReserveX will send occasional news and offers on behalf of participating
           venues. You can update your preferences at any time via the My Bookings area or the unsubscribe
           link in every email.
         </p>
@@ -79,7 +79,7 @@ export default function TogoTermsPage() {
       <section className="space-y-4">
         <h2 className="text-2xl font-semibold text-slate-900">7. Contact</h2>
         <p className="text-slate-700">
-          Need help with a reservation? Email <a className="underline" href="mailto:reservations@togo.co.uk">reservations@togo.co.uk</a>
+          Need help with a reservation? Email <a className="underline" href="mailto:reservations@SajiloReserveX.co.uk">reservations@SajiloReserveX.co.uk</a>
           or speak with the venue using the contact details in your confirmation email.
         </p>
       </section>

@@ -13,10 +13,10 @@ export const DEFAULT_RESTAURANT_ID =
 
 export const DEFAULT_VENUE: VenueDetails = {
   id: DEFAULT_RESTAURANT_ID,
-  name: "ToGo Test Kitchen",
+  name: "SajiloReserveX Test Kitchen",
   address: "12 Market Row, London SE1 0AA",
   phone: "+44 20 1234 5678",
-  email: "reservations@togo.co.uk",
+  email: "reservations@SajiloReserveX.co.uk",
   policy:
     "You can cancel or amend up to 24 hours before your reservation. After that window please call the venue and we’ll do our best to help.",
   timezone: "Europe/London",

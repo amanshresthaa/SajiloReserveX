@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: secret-scan
+        name: Secret scanning (gitleaks + trufflehog)
+        entry: scripts/pre-commit/secret-scan.sh
+        language: script
+        pass_filenames: false
+        stages: [commit, push]

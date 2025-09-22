@@ -14,7 +14,7 @@ export default function VenueTermsPage() {
         <p className="text-sm uppercase tracking-wide text-slate-500">Last updated {lastUpdated}</p>
         <h1 className="text-3xl font-bold tracking-tight text-slate-900">Venue Booking Policy</h1>
         <p className="text-slate-600">
-          These house rules apply specifically to reservations at ToGo Test Kitchen. They sit alongside the
+          These house rules apply specifically to reservations at SajiloReserveX Test Kitchen. They sit alongside the
           platform terms and help us deliver a great service for all guests.
         </p>
       </header>
@@ -55,10 +55,10 @@ export default function VenueTermsPage() {
       <section className="space-y-4">
         <h2 className="text-2xl font-semibold text-slate-900">Contact details</h2>
         <p className="text-slate-700">
-          Venue: ToGo Test Kitchen<br />
+          Venue: SajiloReserveX Test Kitchen<br />
           Address: 12 Market Row, London SE1 0AA<br />
           Phone: +44&nbsp;20&nbsp;1234&nbsp;5678<br />
-          Email: <a className="underline" href="mailto:reservations@togo.co.uk">reservations@togo.co.uk</a>
+          Email: <a className="underline" href="mailto:reservations@SajiloReserveX.co.uk">reservations@SajiloReserveX.co.uk</a>
         </p>
       </section>
     </main>

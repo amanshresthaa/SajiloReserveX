@@ -1,8 +1,9 @@
 import { NextResponse, NextRequest } from "next/server";
-import { sendEmail } from "@/libs/mailgun";
+import { sendEmail } from "@/libs/resend";
 import config from "@/config";
 
 // This route is used to receive emails from Mailgun and forward them to our customer support email.
+// Updated to use Resend instead of Mailgun for sending forwarded emails
 // See more: https://shipfa.st/docs/features/emails
 export async function POST(req: NextRequest) {
   try {
@@ -12,7 +13,7 @@ export async function POST(req: NextRequest) {
     const subject = formData.get("Subject");
     const html = formData.get("body-html");
 
-    // send email to the admin if forwardRepliesTo is et & emailData exists
+    // send email to the admin if forwardRepliesTo is set & emailData exists
     if (config.mailgun.forwardRepliesTo && html && subject && sender) {
       await sendEmail({
         to: config.mailgun.forwardRepliesTo,

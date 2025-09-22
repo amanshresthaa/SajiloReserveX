@@ -1,66 +1,112 @@
 import { NextResponse, NextRequest } from "next/server";
 import { headers } from "next/headers";
 import Stripe from "stripe";
-import { createClient } from "@supabase/supabase-js";
+
 import configFile from "@/config";
-import { findCheckoutSession } from "@/libs/stripe";
+import { findCheckoutSession, getStripeClient } from "@/libs/stripe";
+import { getServiceSupabaseClient } from "@/server/supabase";
+import { recordObservabilityEvent } from "@/server/observability";
 
-// Mark this route as dynamic to prevent static analysis issues
-export const dynamic = 'force-dynamic';
-
-const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: "2025-08-27.basil",
-  typescript: true,
-}) : null;
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
-// This is where we receive Stripe webhook events
-// It used to update the user data, send emails, etc...
-// By default, it'll store the user in the database
-// See more: https://shipfa.st/docs/features/payments
 export async function POST(req: NextRequest) {
-  if (!stripe || !webhookSecret) {
-    return NextResponse.json({ error: 'Missing Stripe configuration' }, { status: 500 });
+  if (!webhookSecret) {
+    return NextResponse.json({ error: "Missing Stripe webhook secret" }, { status: 500 });
   }
 
-  const body = await req.text();
-
-  const headersList = await headers();
-  const signature = headersList.get("stripe-signature");
-
-  let eventType;
-  let event;
-
-  // verify Stripe event is legit
+  let stripe: Stripe;
   try {
-    event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
+    stripe = getStripeClient();
+  } catch (error) {
+    console.error("[stripe][webhook] Stripe client initialisation failed", error);
+    return NextResponse.json({ error: "Missing Stripe configuration" }, { status: 500 });
+  }
+
+  const rawBody = await req.text();
+  const signature = (await headers()).get("stripe-signature");
+
+  if (!signature) {
+    return NextResponse.json({ error: "Missing stripe-signature header" }, { status: 400 });
+  }
+
+  let event: Stripe.Event;
+  try {
+    event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
   } catch (err) {
-    console.error(`Webhook signature verification failed. ${err.message}`);
-    return NextResponse.json({ error: err.message }, { status: 400 });
+    console.error("[stripe][webhook] signature verification failed", err);
+    return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 
-  eventType = event.type;
+  let supabase: ReturnType<typeof getServiceSupabaseClient>;
+  try {
+    supabase = getServiceSupabaseClient();
+  } catch (error) {
+    console.error("[stripe][webhook] Supabase client initialisation failed", error);
+    return NextResponse.json({ error: "Missing Supabase configuration" }, { status: 500 });
+  }
+
+  const eventId = event.id;
+  const serializedEvent = JSON.parse(JSON.stringify(event));
+
+  const { data: existingEvent, error: lookupError } = await supabase
+    .from("stripe_events")
+    .select("id,status")
+    .eq("event_id", eventId)
+    .maybeSingle();
+
+  if (lookupError && lookupError.code !== "PGRST116") {
+    console.error("[stripe][webhook] Failed to lookup existing event", lookupError);
+    return NextResponse.json({ error: "Event lookup failed" }, { status: 500 });
+  }
+
+  if (existingEvent) {
+    void recordObservabilityEvent({
+      source: "api.stripe-webhook",
+      eventType: "stripe.event.duplicate",
+      severity: "warning",
+      context: { eventId, eventType: event.type },
+    });
+    return NextResponse.json({ received: true, duplicate: true });
+  }
+
+  const insertResult = await supabase
+    .from("stripe_events")
+    .insert({
+      event_id: eventId,
+      event_type: event.type,
+      payload: serializedEvent,
+    })
+    .select("id")
+    .single();
+
+  if (insertResult.error) {
+    void recordObservabilityEvent({
+      source: "api.stripe-webhook",
+      eventType: "stripe.event.persistence_failed",
+      severity: "error",
+      context: {
+        eventId,
+        eventType: event.type,
+        message: insertResult.error.message,
+      },
+    });
+    if ((insertResult.error as any)?.code === "23505") {
+      return NextResponse.json({ received: true, duplicate: true });
+    }
+    console.error("[stripe][webhook] Failed to persist Stripe event", insertResult.error);
+    return NextResponse.json({ error: "Event persistence failed" }, { status: 500 });
+  }
+
+  const eventRowId = insertResult.data?.id ?? null;
+  let processingStatus: "processed" | "ignored" | "failed" = "ignored";
 
   try {
-    // Only initialize Supabase client if we have the required environment variables
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-      throw new Error('Missing Supabase environment variables');
-    }
-
-    // Create a private supabase client using the secret service_role API key
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL,
-      process.env.SUPABASE_SERVICE_ROLE_KEY
-    );
-
-    switch (eventType) {
+    switch (event.type) {
       case "checkout.session.completed": {
-        // First payment is successful and a subscription is created (if mode was set to "subscription" in ButtonCheckout)
-        // ✅ Grant access to the product
-        const stripeObject: Stripe.Checkout.Session = event.data
-          .object as Stripe.Checkout.Session;
-
+        const stripeObject: Stripe.Checkout.Session = event.data.object as Stripe.Checkout.Session;
         const session = await findCheckoutSession(stripeObject.id);
 
         const customerId = session?.customer;
@@ -68,103 +114,98 @@ export async function POST(req: NextRequest) {
         const userId = stripeObject.client_reference_id;
         const plan = configFile.stripe.plans.find((p) => p.priceId === priceId);
 
-        if (!plan) break;
+        if (plan && customerId && userId) {
+          await supabase
+            .from("profiles")
+            .update({
+              customer_id: customerId,
+              price_id: priceId,
+              has_access: true,
+            })
+            .eq("id", userId);
+        }
 
-        // Update the profile where id equals the userId (in table called 'profiles') and update the customer_id, price_id, and has_access (provisioning)
-        await supabase
-          .from("profiles")
-          .update({
-            customer_id: customerId,
-            price_id: priceId,
-            has_access: true,
-          })
-          .eq("id", userId);
-
-        // Extra: send email with user link, product page, etc...
-        // try {
-        //   await sendEmail(...);
-        // } catch (e) {
-        //   console.error("Email issue:" + e?.message);
-        // }
-
-        break;
-      }
-
-      case "checkout.session.expired": {
-        // User didn't complete the transaction
-        // You don't need to do anything here, by you can send an email to the user to remind him to complete the transaction, for instance
-        break;
-      }
-
-      case "customer.subscription.updated": {
-        // The customer might have changed the plan (higher or lower plan, cancel soon etc...)
-        // You don't need to do anything here, because Stripe will let us know when the subscription is canceled for good (at the end of the billing cycle) in the "customer.subscription.deleted" event
-        // You can update the user data to show a "Cancel soon" badge for instance
+        processingStatus = "processed";
         break;
       }
 
       case "customer.subscription.deleted": {
-        // The customer subscription stopped
-        // ❌ Revoke access to the product
-        const stripeObject: Stripe.Subscription = event.data
-          .object as Stripe.Subscription;
-        const subscription = await stripe.subscriptions.retrieve(
-          stripeObject.id
-        );
+        const stripeObject: Stripe.Subscription = event.data.object as Stripe.Subscription;
+        const subscription = await stripe.subscriptions.retrieve(stripeObject.id);
 
         await supabase
           .from("profiles")
           .update({ has_access: false })
           .eq("customer_id", subscription.customer);
+
+        processingStatus = "processed";
         break;
       }
 
       case "invoice.paid": {
-        // Customer just paid an invoice (for instance, a recurring payment for a subscription)
-        // ✅ Grant access to the product
-        const stripeObject: Stripe.Invoice = event.data
-          .object as Stripe.Invoice;
+        const stripeObject: Stripe.Invoice = event.data.object as Stripe.Invoice;
         const lineItem = stripeObject.lines.data[0];
-        // Get price ID from the line item - try different properties based on Stripe API
-        const priceId = (lineItem as any).price_id || 
-                       (lineItem as any).price?.id || 
-                       lineItem.metadata?.price_id;
+        const priceId = (lineItem as any).price_id || (lineItem as any).price?.id || lineItem.metadata?.price_id;
         const customerId = stripeObject.customer;
 
-        // Find profile where customer_id equals the customerId (in table called 'profiles')
         const { data: profile } = await supabase
           .from("profiles")
           .select("*")
           .eq("customer_id", customerId)
-          .single();
+          .maybeSingle();
 
-        // Make sure the invoice is for the same plan (priceId) the user subscribed to
-        if (profile.price_id !== priceId) break;
+        if (profile && profile.price_id === priceId) {
+          await supabase
+            .from("profiles")
+            .update({ has_access: true })
+            .eq("customer_id", customerId);
+        }
 
-        // Grant the profile access to your product. It's a boolean in the database, but could be a number of credits, etc...
-        await supabase
-          .from("profiles")
-          .update({ has_access: true })
-          .eq("customer_id", customerId);
-
+        processingStatus = "processed";
         break;
       }
 
-      case "invoice.payment_failed":
-        // A payment failed (for instance the customer does not have a valid payment method)
-        // ❌ Revoke access to the product
-        // ⏳ OR wait for the customer to pay (more friendly):
-        //      - Stripe will automatically email the customer (Smart Retries)
-        //      - We will receive a "customer.subscription.deleted" when all retries were made and the subscription has expired
-
+      case "checkout.session.expired":
+      case "customer.subscription.updated":
+      case "invoice.payment_failed": {
+        processingStatus = "ignored";
         break;
+      }
 
-      default:
-      // Unhandled event type
+      default: {
+        processingStatus = "ignored";
+        break;
+      }
     }
-  } catch (e) {
-    console.error("stripe error: ", e.message);
+  } catch (error) {
+    processingStatus = "failed";
+    console.error("[stripe][webhook] Processing error", error);
+    void recordObservabilityEvent({
+      source: "api.stripe-webhook",
+      eventType: "stripe.event.processing_failed",
+      severity: "critical",
+      context: {
+        eventId,
+        eventType: event.type,
+        message: error instanceof Error ? error.message : String(error),
+      },
+    });
+    return NextResponse.json({ error: "Webhook processing failed" }, { status: 500 });
+  } finally {
+    if (eventRowId) {
+      const { error: updateError } = await supabase
+        .from("stripe_events")
+        .update({
+          processed_at: new Date().toISOString(),
+          status: processingStatus,
+        })
+        .eq("id", eventRowId);
+
+      if (updateError) {
+        console.error("[stripe][webhook] Failed to update stripe_events", updateError);
+      }
+    }
   }
 
-  return NextResponse.json({});
+  return NextResponse.json({ received: true });
 }

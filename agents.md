@@ -474,8 +474,10 @@ stripe listen --forward-to localhost:3000/api/stripe/webhook
 ## Security Considerations
 
 * **Secrets**: Keep Stripe and Supabase service keys on the server only. Never log them.
+* **Secret scanning**: Run `pnpm secret:scan` (gitleaks + trufflehog) locally before pushing; CI enforces the same.
 * **RLS**: Every table must have Row Level Security. Write explicit policies.
 * **Authz**: Protect server routes that mutate data; always derive `user_id` from the verified session/JWT, never from client input.
+* **Email test endpoint**: `/api/test-email` locked behind `TEST_EMAIL_ACCESS_TOKEN`, origin allowlist, and prod rate limits (10/min/IP).
 * **Email**: Use verified sender with SPF/DKIM to avoid spam. Include `List-Unsubscribe` for bulk-like sends.
 * **Webhooks**: Verify Stripe signatures with the raw request body (don’t JSON.parse first).
 * **Input**: Validate and sanitize user input (length, type, allowed chars) before hitting the DB.

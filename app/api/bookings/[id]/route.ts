@@ -4,6 +4,7 @@ import { z } from "zod";
 import type { BookingRecord } from "@/server/bookings";
 import {
   BOOKING_TYPES,
+  SEATING_OPTIONS,
   buildBookingAuditSnapshot,
   deriveEndTime,
   fetchBookingsForContact,
@@ -25,7 +26,7 @@ const updateSchema = z.object({
   time: z.string().regex(/^\d{2}:\d{2}$/),
   party: z.number().int().min(1).max(20),
   bookingType: bookingTypeEnum,
-  seating: z.enum(["any", "indoor", "outdoor"]),
+  seating: z.enum(SEATING_OPTIONS),
   notes: z.string().max(500).optional().nullable(),
   name: z.string().min(2).max(120),
   email: z.string().email(),
@@ -281,15 +282,15 @@ export async function DELETE(req: NextRequest, context: any) {
       return NextResponse.json({ error: "You can only cancel your own reservation" }, { status: 403 });
     }
 
-    const canceledRecord = await softCancelBooking(supabase, bookingId);
+    const cancelledRecord = await softCancelBooking(supabase, bookingId);
 
     await logAuditEvent(supabase, {
-      action: "booking.canceled",
+      action: "booking.cancelled",
       entity: "booking",
       entityId: bookingId,
       metadata: {
         restaurant_id: existing.restaurant_id,
-        ...buildBookingAuditSnapshot(existing as BookingRecord, canceledRecord),
+        ...buildBookingAuditSnapshot(existing as BookingRecord, cancelledRecord),
       },
     });
 
@@ -297,7 +298,7 @@ export async function DELETE(req: NextRequest, context: any) {
     const bookings = await fetchBookingsForContact(supabase, targetRestaurantId, email, phone);
 
     try {
-      await sendBookingCancellationEmail(canceledRecord);
+      await sendBookingCancellationEmail(cancelledRecord);
     } catch (error) {
       console.error("[bookings][DELETE][email]", error);
     }

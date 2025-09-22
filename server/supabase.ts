@@ -1,5 +1,7 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
+export { BOOKING_BLOCKING_STATUSES } from "@/lib/enums";
+
 type Database = any;
 
 let serviceClient: SupabaseClient<Database> | null = null;
@@ -26,11 +28,3 @@ export function getServiceSupabaseClient(): SupabaseClient<Database> {
 export function getDefaultRestaurantId(): string {
   return process.env.BOOKING_DEFAULT_RESTAURANT_ID ?? process.env.NEXT_PUBLIC_DEFAULT_RESTAURANT_ID ?? "f6c2f62d-0b6c-4dfd-b0ec-2d1c7a509a68";
 }
-
-export const BOOKING_BLOCKING_STATUSES = [
-  "pending",
-  "confirmed",
-  "seated",
-  "completed",
-];
-

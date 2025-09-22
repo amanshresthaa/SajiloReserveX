@@ -1,7 +1,17 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { randomUUID } from "crypto";
 
-import { BOOKING_BLOCKING_STATUSES } from "@/server/supabase";
+import {
+  BOOKING_BLOCKING_STATUSES,
+  BOOKING_TYPES_UI,
+  SEATING_PREFERENCES_UI,
+  ensureBookingStatus,
+  ensureBookingType,
+  ensureSeatingPreference,
+  type BookingStatus,
+  type BookingType,
+  type SeatingPreference,
+} from "@/lib/enums";
 import { generateBookingReference, generateUniqueBookingReference } from "./booking-reference";
 
 export { generateBookingReference, generateUniqueBookingReference } from "./booking-reference";
@@ -10,7 +20,7 @@ export type TableRecord = {
   id: string;
   label: string;
   capacity: number;
-  seating_type: string;
+  seating_type: SeatingPreference;
   features: string[] | null;
 };
 
@@ -23,9 +33,9 @@ export type BookingRecord = {
   end_time: string;
   reference: string;
   party_size: number;
-  booking_type: string;
-  seating_preference: string;
-  status: string;
+  booking_type: BookingType;
+  seating_preference: SeatingPreference;
+  status: BookingStatus;
   customer_name: string;
   customer_email: string;
   customer_phone: string;
@@ -39,8 +49,8 @@ export type BookingRecord = {
 const TABLE_SELECT = "id,label,capacity,seating_type,features";
 const BOOKING_SELECT = "id,restaurant_id,table_id,booking_date,start_time,end_time,reference,party_size,booking_type,seating_preference,status,customer_name,customer_email,customer_phone,notes,marketing_opt_in,loyalty_points_awarded,created_at,updated_at";
 
-export const BOOKING_TYPES = ["lunch", "dinner", "drinks"] as const;
-export const SEATING_OPTIONS = ["any", "indoor", "outdoor"] as const;
+export const BOOKING_TYPES = BOOKING_TYPES_UI;
+export const SEATING_OPTIONS = SEATING_PREFERENCES_UI;
 
 const AUDIT_BOOKING_FIELDS: Array<keyof BookingRecord> = [
   "restaurant_id",
@@ -109,9 +119,11 @@ export function minutesToTime(totalMinutes: number): string {
   return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
 }
 
-export function calculateDurationMinutes(bookingType: string): number {
+export function calculateDurationMinutes(bookingType: BookingType): number {
   switch (bookingType) {
     case "drinks":
+      return 75;
+    case "breakfast":
       return 75;
     case "lunch":
       return 90;
@@ -120,13 +132,13 @@ export function calculateDurationMinutes(bookingType: string): number {
   }
 }
 
-export function inferMealTypeFromTime(time: string): (typeof BOOKING_TYPES)[number] {
+export function inferMealTypeFromTime(time: string): BookingType {
   const totalMinutes = minutesFromTime(time);
   // Lunch service up to 16:59, dinner afterwards.
   return totalMinutes >= 17 * 60 ? "dinner" : "lunch";
 }
 
-export function deriveEndTime(startTime: string, bookingType: string): string {
+export function deriveEndTime(startTime: string, bookingType: BookingType): string {
   const startMinutes = minutesFromTime(startTime);
   const endMinutes = startMinutes + calculateDurationMinutes(bookingType);
   return minutesToTime(endMinutes);
@@ -168,7 +180,7 @@ export async function fetchTablesForPreference(
   client: SupabaseClient,
   restaurantId: string,
   partySize: number,
-  seatingPreference: string,
+  seatingPreference: SeatingPreference,
 ): Promise<TableRecord[]> {
   let query = client
     .from("restaurant_tables")
@@ -178,7 +190,10 @@ export async function fetchTablesForPreference(
     .order("capacity", { ascending: true });
 
   if (seatingPreference !== "any") {
-    query = query.eq("seating_type", seatingPreference);
+    const seatingMatches = seatingPreference === "indoor"
+      ? ["indoor", "any"]
+      : [seatingPreference];
+    query = query.in("seating_type", seatingMatches);
   }
 
   const { data, error } = await query;
@@ -197,7 +212,7 @@ export async function findAvailableTable(
   startTime: string,
   endTime: string,
   partySize: number,
-  seatingPreference: string,
+  seatingPreference: SeatingPreference,
   ignoreBookingId?: string,
 ): Promise<TableRecord | null> {
   const candidateTables = await fetchTablesForPreference(client, restaurantId, partySize, seatingPreference);
@@ -225,17 +240,15 @@ export async function findAvailableTable(
     }
   }
 
-  // UNLIMITED SEATING: If no tables are available, create a virtual table to avoid waitlist
-  // This ensures all bookings are accepted without capacity restrictions
-  const virtualTable: TableRecord = {
-    id: randomUUID(), // Generate a proper UUID for the virtual table
+  const fallbackSeating: SeatingPreference = seatingPreference === "any" ? "indoor" : seatingPreference;
+
+  return {
+    id: randomUUID(),
     label: "General Seating",
-    capacity: Math.max(partySize, 100), // Ensure capacity is sufficient
-    seating_type: seatingPreference === "any" ? "indoor" : seatingPreference,
+    capacity: Math.max(partySize, 100),
+    seating_type: fallbackSeating,
     features: null,
   };
-
-  return virtualTable;
 }
 
 export async function logAuditEvent(
@@ -296,19 +309,56 @@ export async function addToWaitingList(
     booking_date: string;
     desired_time: string;
     party_size: number;
-    seating_preference: string;
+    seating_preference: SeatingPreference;
     customer_name: string;
     customer_email: string;
     customer_phone: string;
     notes?: string | null;
   }
-): Promise<void> {
+): Promise<boolean> {
+  const seatingPreference = ensureSeatingPreference(payload.seating_preference);
+
+  const {
+    data: existing,
+    error: lookupError,
+  } = await client
+    .from("waiting_list")
+    .select("id")
+    .eq("restaurant_id", payload.restaurant_id)
+    .eq("booking_date", payload.booking_date)
+    .eq("desired_time", payload.desired_time)
+    .eq("customer_email", payload.customer_email)
+    .eq("customer_phone", payload.customer_phone)
+    .limit(1)
+    .maybeSingle();
+
+  if (lookupError) {
+    throw lookupError;
+  }
+
+  if (existing?.id) {
+    const { error: updateError } = await client
+      .from("waiting_list")
+      .update({
+        party_size: payload.party_size,
+        seating_preference: seatingPreference,
+        notes: payload.notes ?? null,
+      })
+      .eq("id", existing.id);
+
+    if (updateError) {
+      throw updateError;
+    }
+
+    return true;
+  }
+
   const { error } = await client.from("waiting_list").insert({
     restaurant_id: payload.restaurant_id,
     booking_date: payload.booking_date,
     desired_time: payload.desired_time,
     party_size: payload.party_size,
-    seating_preference: payload.seating_preference,
+    seating_preference: seatingPreference,
     customer_name: payload.customer_name,
     customer_email: payload.customer_email,
     customer_phone: payload.customer_phone,
@@ -318,12 +368,14 @@ export async function addToWaitingList(
   if (error) {
     throw error;
   }
+
+  return true;
 }
 
 export async function softCancelBooking(client: SupabaseClient, bookingId: string): Promise<BookingRecord> {
   const { data, error } = await client
     .from("bookings")
-    .update({ status: "canceled" })
+    .update({ status: "cancelled" })
     .eq("id", bookingId)
     .select(BOOKING_SELECT)
     .single();
@@ -342,9 +394,21 @@ export async function updateBookingRecord(
     restaurant_id?: string;
   }
 ): Promise<BookingRecord> {
+  const nextPayload = { ...payload };
+
+  if (nextPayload.booking_type) {
+    nextPayload.booking_type = ensureBookingType(nextPayload.booking_type);
+  }
+  if (nextPayload.seating_preference) {
+    nextPayload.seating_preference = ensureSeatingPreference(nextPayload.seating_preference);
+  }
+  if (nextPayload.status) {
+    nextPayload.status = ensureBookingStatus(nextPayload.status);
+  }
+
   const { data, error } = await client
     .from("bookings")
-    .update(payload)
+    .update(nextPayload)
     .eq("id", bookingId)
     .select(BOOKING_SELECT)
     .single();
@@ -360,10 +424,14 @@ export async function insertBookingRecord(
   client: SupabaseClient,
   payload: Omit<BookingRecord, "id" | "created_at" | "updated_at" | "status" | "table_id" | "loyalty_points_awarded"> & {
     table_id: string | null;
-    status?: string;
+    status?: BookingStatus;
     loyalty_points_awarded?: number;
   }
 ): Promise<BookingRecord> {
+  const bookingType = ensureBookingType(payload.booking_type);
+  const seatingPreference = ensureSeatingPreference(payload.seating_preference);
+  const status = ensureBookingStatus(payload.status ?? "confirmed");
+
   const { data, error } = await client
     .from("bookings")
     .insert({
@@ -374,9 +442,9 @@ export async function insertBookingRecord(
       end_time: payload.end_time,
       reference: payload.reference,
       party_size: payload.party_size,
-      booking_type: payload.booking_type,
-      seating_preference: payload.seating_preference,
-      status: payload.status ?? "confirmed",
+      booking_type: bookingType,
+      seating_preference: seatingPreference,
+      status,
       customer_name: payload.customer_name,
       customer_email: payload.customer_email,
       customer_phone: payload.customer_phone,

@@ -5,6 +5,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 import { track } from "@/lib/analytics";
+import {
+  BOOKING_TYPES_UI,
+  SEATING_PREFERENCES_UI,
+  type BookingType,
+  type SeatingPreference,
+} from "@/lib/enums";
 import { DEFAULT_RESTAURANT_ID, DEFAULT_VENUE } from "@/lib/venue";
 
 // =============================================================================================
@@ -265,9 +271,9 @@ const storageKeys = {
   contacts: "bookingflow-contacts",
 };
 
-type BookingType = "lunch" | "dinner" | "drinks";
+type BookingOption = (typeof BOOKING_TYPES_UI)[number];
 
-const BOOKING_TYPE_LABELS: Record<BookingType, string> = {
+const BOOKING_TYPE_LABELS: Record<BookingOption, string> = {
   lunch: "Lunch",
   dinner: "Dinner",
   drinks: "Drinks & cocktails",
@@ -364,9 +370,9 @@ const U = {
       lunch: U.slotsForRange(windows.lunch.start, windows.lunch.end),
       dinner: U.slotsForRange(windows.dinner.start, windows.dinner.end),
       drinks: U.slotsForRange(windows.drinks.start, windows.drinks.end),
-    } satisfies Record<BookingType, string[]>;
+    } satisfies Record<BookingOption, string[]>;
   },
-  bookingTypeFromTime(time: string, dateStr: string): BookingType {
+  bookingTypeFromTime(time: string, dateStr: string): BookingOption {
     const windows = U.serviceWindows(dateStr);
     const minutes = U.timeToMinutes(time);
     const inRange = (window: { start: string; end: string }) => {
@@ -387,7 +393,7 @@ const U = {
     const day = String(value.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   },
-  formatBookingLabel(type: BookingType) {
+  formatBookingLabel(type: BookingOption) {
     return BOOKING_TYPE_LABELS[type] ?? type.replace(/_/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
   },
 };
@@ -559,7 +565,7 @@ const AlertDialog: React.FC<{
 // =============================================================================================
 // STATE TYPES & HELPERS
 // =============================================================================================
-type SeatingOption = "any" | "indoor" | "outdoor";
+type SeatingOption = (typeof SEATING_PREFERENCES_UI)[number];
 
 type ApiBooking = {
   id: string;
@@ -571,7 +577,7 @@ type ApiBooking = {
   reference: string;
   party_size: number;
   booking_type: BookingType;
-  seating_preference: SeatingOption;
+  seating_preference: SeatingPreference;
   status: string;
   customer_name: string;
   customer_email: string;
@@ -594,7 +600,7 @@ type BookingDetails = {
   date: string;
   time: string;
   party: number;
-  bookingType: BookingType;
+  bookingType: BookingOption;
   seating: SeatingOption;
   notes: string;
   name: string;
@@ -615,6 +621,7 @@ type State = {
   editingId: string | null;
   lastAction: LastAction;
   waitlisted: boolean;
+  allocationPending: boolean;
   bookings: ApiBooking[];
   details: BookingDetails;
   lastConfirmed: ApiBooking | null;
@@ -634,6 +641,7 @@ type Action =
         booking: ApiBooking | null;
         lastAction: Exclude<LastAction, null>;
         waitlisted: boolean;
+        allocationPending: boolean;
       };
     }
   | { type: "START_EDIT"; bookingId: string }
@@ -643,14 +651,31 @@ type Action =
       payload: Pick<BookingDetails, "name" | "email" | "phone"> & { rememberDetails?: boolean };
     };
 
+const BOOKING_OPTIONS_SET = new Set<BookingOption>(BOOKING_TYPES_UI);
+const SEATING_OPTIONS_SET = new Set<SeatingOption>(SEATING_PREFERENCES_UI);
+
+function toBookingOption(value: BookingType): BookingOption {
+  return BOOKING_OPTIONS_SET.has(value as BookingOption) ? (value as BookingOption) : BOOKING_TYPES_UI[0];
+}
+
+function toSeatingOption(value: SeatingPreference): SeatingOption {
+  if (SEATING_OPTIONS_SET.has(value as SeatingOption)) {
+    return value as SeatingOption;
+  }
+  if (value === "window" || value === "booth" || value === "bar") {
+    return "indoor";
+  }
+  return SEATING_PREFERENCES_UI[0];
+}
+
 const getInitialDetails = (): BookingDetails => ({
   bookingId: null,
   restaurantId: DEFAULT_RESTAURANT_ID,
   date: U.formatForDateInput(new Date()),
   time: "",
   party: 2,
-  bookingType: "lunch",
-  seating: "any",
+  bookingType: BOOKING_TYPES_UI[0],
+  seating: SEATING_PREFERENCES_UI[0],
   notes: "",
   name: "",
   email: "",
@@ -668,6 +693,7 @@ const getInitialState = (): State => ({
   editingId: null,
   lastAction: null,
   waitlisted: false,
+  allocationPending: false,
   bookings: [],
   details: getInitialDetails(),
   lastConfirmed: null,
@@ -695,7 +721,7 @@ const reducer = (state: State, action: Action): State => {
     case "SET_BOOKINGS":
       return { ...state, bookings: action.bookings };
     case "SET_CONFIRMATION": {
-      const { bookings, booking, lastAction, waitlisted } = action.payload;
+      const { bookings, booking, lastAction, waitlisted, allocationPending } = action.payload;
       const updatedDetails = {
         ...state.details,
         bookingId: booking ? booking.id : null,
@@ -703,8 +729,8 @@ const reducer = (state: State, action: Action): State => {
         date: booking ? booking.booking_date : state.details.date,
         time: booking ? U.normalizeTime(booking.start_time) : state.details.time,
         party: booking ? booking.party_size : state.details.party,
-        bookingType: booking ? (booking.booking_type as BookingType) : state.details.bookingType,
-        seating: booking ? booking.seating_preference : state.details.seating,
+        bookingType: booking ? toBookingOption(booking.booking_type) : state.details.bookingType,
+        seating: booking ? toSeatingOption(booking.seating_preference) : state.details.seating,
         notes: booking?.notes ?? state.details.notes,
         marketingOptIn: booking ? booking.marketing_opt_in : state.details.marketingOptIn,
       };
@@ -718,6 +744,7 @@ const reducer = (state: State, action: Action): State => {
         bookings,
         lastAction,
         waitlisted,
+        allocationPending,
         lastConfirmed: booking ?? state.lastConfirmed,
         details: updatedDetails,
         error: null,
@@ -741,8 +768,8 @@ const reducer = (state: State, action: Action): State => {
           date: booking.booking_date,
           time: U.normalizeTime(booking.start_time),
           party: booking.party_size,
-          bookingType: booking.booking_type,
-          seating: booking.seating_preference,
+          bookingType: toBookingOption(booking.booking_type),
+          seating: toSeatingOption(booking.seating_preference),
           notes: booking.notes ?? "",
           name: booking.customer_name,
           email: booking.customer_email,
@@ -762,6 +789,7 @@ const reducer = (state: State, action: Action): State => {
         editingId: null,
         lastAction: null,
         waitlisted: false,
+        allocationPending: false,
         error: null,
         details: {
           ...base,
@@ -828,7 +856,7 @@ const Step1: React.FC<{ state: State; dispatch: React.Dispatch<Action> }> = ({ s
   );
 
   const slotTypeMap = useMemo(() => {
-    const map = new Map<string, BookingType>();
+    const map = new Map<string, BookingOption>();
     serviceSlots.lunch.forEach((slot) => map.set(slot, "lunch"));
     serviceSlots.dinner.forEach((slot) => map.set(slot, "dinner"));
     serviceSlots.drinks.forEach((slot) => {
@@ -996,7 +1024,7 @@ const Step1: React.FC<{ state: State; dispatch: React.Dispatch<Action> }> = ({ s
             </Field>
             <Field id="seating" label="Seating preference">
               <div className="flex flex-wrap gap-2">
-                {["any", "indoor", "outdoor"].map((option) => (
+                {SEATING_PREFERENCES_UI.map((option) => (
                   <Button
                     key={option}
                     variant={seating === option ? "default" : "outline"}
@@ -1115,8 +1143,8 @@ const Step2: React.FC<{ state: State; dispatch: React.Dispatch<Action> }> = ({ s
           <div className="space-y-1">
             <Label htmlFor="agree" className="text-sm font-normal">
               I agree to the {" "}
-              <Link href="/terms/togo" target="_blank" rel="noopener noreferrer" className="underline">
-                ToGo Terms
+              <Link href="/terms/SajiloReserveX" target="_blank" rel="noopener noreferrer" className="underline">
+                SajiloReserveX Terms
               </Link>{" "}
               and {" "}
               <Link href="/terms/venue" target="_blank" rel="noopener noreferrer" className="underline">
@@ -1142,7 +1170,7 @@ const Step2: React.FC<{ state: State; dispatch: React.Dispatch<Action> }> = ({ s
           />
           <div className="space-y-1">
             <Label htmlFor="marketing" className="text-sm font-normal">
-              Send me ToGo news and offers (optional)
+              Send me SajiloReserveX news and offers (optional)
             </Label>
             <p className="text-xs text-slate-500">We only share occasional updates and you can opt out anytime.</p>
           </div>
@@ -1182,28 +1210,35 @@ const ConfirmationSummaryView: React.FC<{
   booking: ApiBooking | null;
   details: BookingDetails;
   waitlisted: boolean;
+  allocationPending: boolean;
   lastAction: LastAction;
   onCancelAmend: () => void;
   onViewUpdate: () => void;
   onClose: () => void;
-}> = ({ booking, details, waitlisted, lastAction, onCancelAmend, onViewUpdate, onClose }) => {
+}> = ({ booking, details, waitlisted, allocationPending, lastAction, onCancelAmend, onViewUpdate, onClose }) => {
   const summaryDate = details.date ? U.formatSummaryDate(details.date) : "TBC";
   const summaryTime = details.time ? U.formatTime(details.time) : "TBC";
   const partyText = `${details.party} ${details.party === 1 ? "guest" : "guests"}`;
   const reference = booking?.reference ?? (waitlisted ? "WAITLIST" : "Pending");
   const guestName = booking?.customer_name ?? details.name;
-  const heading = waitlisted
+  const isWaitlisted = waitlisted;
+  const isAllocationPending = allocationPending && !isWaitlisted;
+  const heading = isWaitlisted
     ? "You're on the waiting list"
-    : lastAction === "update"
-      ? "Booking updated"
-      : "Booking confirmed";
+    : isAllocationPending
+      ? "Manual allocation pending"
+      : lastAction === "update"
+        ? "Booking updated"
+        : "Booking confirmed";
 
-  const description = waitlisted
+  const description = isWaitlisted
     ? `We’ll notify ${details.email} if a table opens near ${summaryTime} on ${summaryDate}.`
-    : `A confirmation email has been sent to ${details.email}.`;
+    : isAllocationPending
+      ? `Our host team will assign the best available table and follow up at ${details.email}.`
+      : `A confirmation email has been sent to ${details.email}.`;
 
-  const iconClassName = waitlisted ? "text-amber-500" : "text-green-500";
-  const HeadingIcon = waitlisted ? Icon.Info : Icon.CheckCircle;
+  const iconClassName = isWaitlisted ? "text-amber-500" : isAllocationPending ? "text-sky-500" : "text-green-500";
+  const HeadingIcon = isWaitlisted ? Icon.Info : isAllocationPending ? Icon.Clock : Icon.CheckCircle;
 
   const handleClose = () => {
     onClose();
@@ -1335,6 +1370,7 @@ const ConfirmationStep: React.FC<{
           booking={state.lastConfirmed}
           details={state.details}
           waitlisted={state.waitlisted}
+          allocationPending={state.allocationPending}
           lastAction={state.lastAction}
           onCancelAmend={handleCancelAmend}
           onViewUpdate={handleViewUpdate}
@@ -1450,22 +1486,28 @@ function ManageBookings({
   onNewBooking: () => void;
   onBack?: () => void;
 }) {
-  const { bookings, lastConfirmed, lastAction, waitlisted, details, error, loading } = state;
+  const { bookings, lastConfirmed, lastAction, waitlisted, allocationPending, details, error, loading } = state;
   const [bookingToCancel, setBookingToCancel] = useState<ApiBooking | null>(null);
 
-  const heading = lastAction === "update"
+  const isWaitlisted = waitlisted;
+  const isAllocationPending = allocationPending && !isWaitlisted;
+  const heading = lastAction === "update" && !isWaitlisted && !isAllocationPending
     ? "Booking updated"
-    : lastAction === "waitlist"
-    ? "You're on the waiting list"
-    : "Reservation confirmed";
+    : isWaitlisted
+      ? "You're on the waiting list"
+      : isAllocationPending
+        ? "Manual allocation pending"
+        : "Reservation confirmed";
 
-  const HeadingIcon = waitlisted ? Icon.Info : Icon.CheckCircle;
-  const iconClassName = waitlisted ? "text-amber-500" : "text-green-500";
+  const HeadingIcon = isWaitlisted ? Icon.Info : isAllocationPending ? Icon.Clock : Icon.CheckCircle;
+  const iconClassName = isWaitlisted ? "text-amber-500" : isAllocationPending ? "text-sky-500" : "text-green-500";
   const confirmationEmail = lastConfirmed?.customer_email ?? details.email;
 
-  const description = waitlisted
+  const description = isWaitlisted
     ? `We'll notify ${confirmationEmail} if a table opens near ${U.formatTime(details.time)} on ${U.formatDate(details.date)}.`
-    : `A confirmation has been sent to ${confirmationEmail}.`;
+    : isAllocationPending
+      ? `Our host team will assign the best available table and follow up at ${confirmationEmail}.`
+      : `A confirmation has been sent to ${confirmationEmail}.`;
 
   const emailValue = details.email?.trim() ?? "";
   const phoneValue = details.phone?.trim() ?? "";
@@ -1554,7 +1596,7 @@ function ManageBookings({
                       {U.formatDate(booking.booking_date)} at {U.formatTime(booking.start_time)}
                     </p>
                     <p className="text-sm text-slate-500">
-                      {booking.party_size} {booking.party_size === 1 ? "guest" : "guests"} · {U.formatBookingLabel(booking.booking_type)} · {booking.customer_name}
+                      {booking.party_size} {booking.party_size === 1 ? "guest" : "guests"} · {U.formatBookingLabel(toBookingOption(booking.booking_type))} · {booking.customer_name}
                     </p>
                     <p className="text-xs uppercase tracking-wide text-slate-400">Ref: {booking.reference}</p>
                   </div>
@@ -1769,6 +1811,7 @@ function BookingFlowContent() {
       if (response.status === 202) {
         track("booking_created", {
           waitlisted: 1,
+          allocation_pending: data.allocationPending ? 1 : 0,
           party: state.details.party,
           start_time: normalizedTime,
         });
@@ -1779,6 +1822,7 @@ function BookingFlowContent() {
             booking: null,
             lastAction: "waitlist",
             waitlisted: true,
+            allocationPending: Boolean(data.allocationPending),
           },
         });
         return;
@@ -1796,14 +1840,21 @@ function BookingFlowContent() {
         payload: {
           bookings: data.bookings ?? [],
           booking: data.booking ?? null,
-          lastAction: isUpdate ? "update" : "create",
+          lastAction:
+            data.waitlisted || data.allocationPending
+              ? "waitlist"
+              : isUpdate
+                ? "update"
+                : "create",
           waitlisted: Boolean(data.waitlisted),
+          allocationPending: Boolean(data.allocationPending),
         },
       });
 
       if (data?.booking) {
         track("booking_created", {
           waitlisted: data.waitlisted ? 1 : 0,
+          allocation_pending: data.allocationPending ? 1 : 0,
           party: data.booking.party_size,
           start_time: data.booking.start_time,
           reference: data.booking.reference,

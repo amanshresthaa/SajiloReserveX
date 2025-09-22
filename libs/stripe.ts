@@ -1,5 +1,25 @@
 import Stripe from "stripe";
 
+const STRIPE_API_VERSION = "2023-10-16";
+const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY ?? "";
+
+let stripeClient: Stripe | null = null;
+
+export function getStripeClient(): Stripe {
+  if (!STRIPE_SECRET_KEY) {
+    throw new Error("STRIPE_SECRET_KEY is not configured.");
+  }
+
+  if (!stripeClient) {
+    stripeClient = new Stripe(STRIPE_SECRET_KEY, {
+      apiVersion: STRIPE_API_VERSION as unknown as Stripe.StripeConfig["apiVersion"],
+      typescript: true,
+    });
+  }
+
+  return stripeClient;
+}
+
 interface CreateCheckoutParams {
   priceId: string;
   mode: "payment" | "subscription";
@@ -29,10 +49,7 @@ export const createCheckout = async ({
   couponId,
 }: CreateCheckoutParams): Promise<string> => {
   try {
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-      apiVersion: "2025-08-27.basil", // Updated to latest API version
-      typescript: true,
-    });
+    const stripe = getStripeClient();
 
     const extraParams: {
       customer?: string;
@@ -92,10 +109,7 @@ export const createCustomerPortal = async ({
   customerId,
   returnUrl,
 }: CreateCustomerPortalParams): Promise<string> => {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-    apiVersion: "2025-08-27.basil", // Updated to latest API version
-    typescript: true,
-  });
+  const stripe = getStripeClient();
 
   const portalSession = await stripe.billingPortal.sessions.create({
     customer: customerId,
@@ -108,10 +122,7 @@ export const createCustomerPortal = async ({
 // This is used to get the uesr checkout session and populate the data so we get the planId the user subscribed to
 export const findCheckoutSession = async (sessionId: string) => {
   try {
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-      apiVersion: "2025-08-27.basil", // Updated to latest API version
-      typescript: true,
-    });
+    const stripe = getStripeClient();
 
     const session = await stripe.checkout.sessions.retrieve(sessionId, {
       expand: ["line_items"],
