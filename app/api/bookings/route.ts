@@ -3,7 +3,6 @@ import { z } from "zod";
 
 import {
   BOOKING_TYPES,
-  addToWaitingList,
   deriveEndTime,
   fetchBookingsForContact,
   findAvailableTable,
@@ -13,8 +12,11 @@ import {
   inferMealTypeFromTime,
   logAuditEvent,
   upsertLoyaltyPoints,
+  generateUniqueBookingReference,
 } from "@/server/bookings";
+import type { BookingRecord } from "@/server/bookings";
 import { getDefaultRestaurantId, getServiceSupabaseClient } from "@/server/supabase";
+import { sendBookingConfirmationEmail } from "@/server/emails/bookings";
 
 const querySchema = z.object({
   email: z.string().email(),
@@ -35,6 +37,7 @@ const bookingSchema = z.object({
   name: z.string().min(2).max(120),
   email: z.string().email(),
   phone: z.string().min(7).max(50),
+  marketingOptIn: z.coerce.boolean().optional().default(false),
 });
 
 const LOYALTY_POINTS_PER_GUEST = 5;
@@ -116,59 +119,51 @@ export async function POST(req: NextRequest) {
       data.seating,
     );
 
+    // With unlimited seating enabled, table should never be null
+    // but adding safety check just in case
     if (!table) {
-      await addToWaitingList(supabase, {
-        restaurant_id: restaurantId,
-        booking_date: data.date,
-        desired_time: startTime,
-        party_size: data.party,
-        seating_preference: data.seating,
-        customer_name: data.name,
-        customer_email: data.email,
-        customer_phone: data.phone,
-        notes: data.notes ?? null,
-      });
-
-      await logAuditEvent(supabase, {
-        action: "booking.waitlisted",
-        entity: "booking",
-        metadata: {
-          restaurant_id: restaurantId,
-          booking_date: data.date,
-          desired_time: startTime,
-          party_size: data.party,
-          seating_preference: data.seating,
-          requested_service: normalizedBookingType,
-          customer_email: data.email,
-        },
-      });
-
-      const existing = await fetchBookingsForContact(supabase, restaurantId, data.email, data.phone);
-
+      console.error("[bookings][POST] No table found even with unlimited seating - this should not happen");
       return NextResponse.json(
-        {
-          waitlisted: true,
-          booking: null,
-          bookings: existing,
-        },
-        { status: 202 },
+        { error: "Unable to process booking - please try again" },
+        { status: 500 }
       );
     }
 
-    const booking = await insertBookingRecord(supabase, {
-      restaurant_id: restaurantId,
-      table_id: table.id,
-      booking_date: data.date,
-      start_time: startTime,
-      end_time: endTime,
-      party_size: data.party,
-      booking_type: normalizedBookingType,
-      seating_preference: data.seating,
-      customer_name: data.name,
-      customer_email: data.email,
-      customer_phone: data.phone,
-      notes: data.notes ?? null,
-    });
+    let booking: BookingRecord | null = null;
+    let reference = "";
+
+    for (let attempt = 0; attempt < 5 && !booking; attempt += 1) {
+      reference = await generateUniqueBookingReference(supabase);
+
+      try {
+        booking = await insertBookingRecord(supabase, {
+          restaurant_id: restaurantId,
+          table_id: table.id,
+          booking_date: data.date,
+          start_time: startTime,
+          end_time: endTime,
+          reference,
+          party_size: data.party,
+          booking_type: normalizedBookingType,
+          seating_preference: data.seating,
+          customer_name: data.name,
+          customer_email: data.email,
+          customer_phone: data.phone,
+          notes: data.notes ?? null,
+          marketing_opt_in: data.marketingOptIn ?? false,
+        });
+      } catch (error: any) {
+        const duplicateReference = error?.code === "23505" || /duplicate key value/.test(error?.message ?? "");
+        if (!duplicateReference) {
+          throw error;
+        }
+        booking = null;
+      }
+    }
+
+    if (!booking) {
+      throw new Error("Unable to allocate a booking reference. Please try again.");
+    }
 
     const loyaltyAward = Math.max(10, data.party * LOYALTY_POINTS_PER_GUEST);
     await upsertLoyaltyPoints(supabase, data.email, loyaltyAward);
@@ -184,11 +179,26 @@ export async function POST(req: NextRequest) {
       metadata: {
         restaurant_id: restaurantId,
         table_id: table.id,
+        reference: finalBooking.reference,
         ...buildBookingAuditSnapshot(null, finalBooking),
       },
     });
 
     const bookings = await fetchBookingsForContact(supabase, restaurantId, data.email, data.phone);
+
+    try {
+      console.log(`[bookings][POST][email] Sending confirmation email to: ${finalBooking.customer_email} for booking: ${finalBooking.reference}`);
+      await sendBookingConfirmationEmail(finalBooking);
+      console.log(`[bookings][POST][email] Successfully sent confirmation email for booking: ${finalBooking.reference}`);
+    } catch (error) {
+      console.error("[bookings][POST][email] Failed to send confirmation email:", {
+        bookingId: finalBooking.id,
+        reference: finalBooking.reference,
+        customerEmail: finalBooking.customer_email,
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
+      });
+    }
 
     return NextResponse.json(
       {

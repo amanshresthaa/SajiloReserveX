@@ -2,6 +2,10 @@
 
 import React, { Suspense, useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
+
+import { track } from "@/lib/analytics";
+import { DEFAULT_RESTAURANT_ID, DEFAULT_VENUE } from "@/lib/venue";
 
 // =============================================================================================
 // ICONS (using lucide-react conventions for consistency with shadcn/ui)
@@ -302,6 +306,19 @@ const U = {
       timeZone: "Europe/London",
     });
   },
+  formatSummaryDate(date: string) {
+    if (!date) return "";
+    const parts = new Intl.DateTimeFormat("en-GB", {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+      timeZone: "Europe/London",
+    }).formatToParts(new Date(`${date}T00:00:00Z`));
+    const month = parts.find((part) => part.type === "month")?.value ?? "";
+    const day = parts.find((part) => part.type === "day")?.value ?? "";
+    const year = parts.find((part) => part.type === "year")?.value ?? "";
+    return [month, day, year].filter(Boolean).join(" ").trim();
+  },
   timeToMinutes(time: string) {
     const normalized = U.normalizeTime(time);
     if (!normalized) return 0;
@@ -542,8 +559,6 @@ const AlertDialog: React.FC<{
 // =============================================================================================
 // STATE TYPES & HELPERS
 // =============================================================================================
-const DEFAULT_RESTAURANT_ID = process.env.NEXT_PUBLIC_DEFAULT_RESTAURANT_ID ?? "f6c2f62d-0b6c-4dfd-b0ec-2d1c7a509a68";
-
 type SeatingOption = "any" | "indoor" | "outdoor";
 
 type ApiBooking = {
@@ -553,6 +568,7 @@ type ApiBooking = {
   booking_date: string;
   start_time: string;
   end_time: string;
+  reference: string;
   party_size: number;
   booking_type: BookingType;
   seating_preference: SeatingOption;
@@ -561,10 +577,16 @@ type ApiBooking = {
   customer_email: string;
   customer_phone: string;
   notes: string | null;
+  marketing_opt_in: boolean;
   loyalty_points_awarded: number;
   created_at: string;
   updated_at: string;
 };
+
+/* eslint-disable no-unused-vars */
+type BookingEditHandler = (booking: ApiBooking) => void;
+type BookingMutationHandler = (booking: ApiBooking) => Promise<void> | void;
+/* eslint-enable no-unused-vars */
 
 type BookingDetails = {
   bookingId: string | null;
@@ -580,6 +602,7 @@ type BookingDetails = {
   phone: string;
   rememberDetails: boolean;
   agree: boolean;
+  marketingOptIn: boolean;
 };
 
 type LastAction = "create" | "update" | "waitlist" | null;
@@ -633,7 +656,8 @@ const getInitialDetails = (): BookingDetails => ({
   email: "",
   phone: "",
   rememberDetails: false,
-  agree: true,
+  agree: false,
+  marketingOptIn: false,
 });
 
 const getInitialState = (): State => ({
@@ -682,6 +706,7 @@ const reducer = (state: State, action: Action): State => {
         bookingType: booking ? (booking.booking_type as BookingType) : state.details.bookingType,
         seating: booking ? booking.seating_preference : state.details.seating,
         notes: booking?.notes ?? state.details.notes,
+        marketingOptIn: booking ? booking.marketing_opt_in : state.details.marketingOptIn,
       };
 
       return {
@@ -722,6 +747,7 @@ const reducer = (state: State, action: Action): State => {
           name: booking.customer_name,
           email: booking.customer_email,
           phone: booking.customer_phone,
+          marketingOptIn: booking.marketing_opt_in,
         },
       };
     }
@@ -851,7 +877,22 @@ const Step1: React.FC<{ state: State; dispatch: React.Dispatch<Action> }> = ({ s
     }
     if (slot !== time) {
       dispatch({ type: "SET_FIELD", key: "time", value: slot });
+      track("select_time", { time: slot });
     }
+  };
+
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const nextDate = event.target.value;
+    dispatch({ type: "SET_FIELD", key: "date", value: nextDate });
+    if (nextDate) {
+      track("select_date", { date: nextDate });
+    }
+  };
+
+  const handlePartyChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const nextParty = Number(event.target.value);
+    dispatch({ type: "SET_FIELD", key: "party", value: nextParty });
+    track("select_party", { party: nextParty });
   };
 
   const handleToggleDrinks = (checked: boolean) => {
@@ -864,6 +905,7 @@ const Step1: React.FC<{ state: State; dispatch: React.Dispatch<Action> }> = ({ s
         const preferred = drinkSlots.includes(time) ? time : drinkSlots[0];
         if (preferred && time !== preferred) {
           dispatch({ type: "SET_FIELD", key: "time", value: preferred });
+          track("select_time", { time: preferred });
         }
       }
       return;
@@ -878,6 +920,7 @@ const Step1: React.FC<{ state: State; dispatch: React.Dispatch<Action> }> = ({ s
       }
       if (time !== fallbackSlot) {
         dispatch({ type: "SET_FIELD", key: "time", value: fallbackSlot });
+        track("select_time", { time: fallbackSlot });
       }
     } else if (bookingType !== "lunch") {
       dispatch({ type: "SET_FIELD", key: "bookingType", value: "lunch" });
@@ -900,14 +943,14 @@ const Step1: React.FC<{ state: State; dispatch: React.Dispatch<Action> }> = ({ s
               id="date"
               value={date}
               min={U.formatForDateInput(new Date())}
-              onChange={(event) => dispatch({ type: "SET_FIELD", key: "date", value: event.target.value })}
+              onChange={handleDateChange}
             />
           </Field>
           <Field id="party" label="Guests" required>
             <Select
               id="party"
               value={party}
-              onChange={(event) => dispatch({ type: "SET_FIELD", key: "party", value: Number(event.target.value) })}
+              onChange={handlePartyChange}
             >
               {Array.from({ length: 12 }, (_, index) => (
                 <option key={index + 1} value={index + 1}>
@@ -986,11 +1029,23 @@ const Step1: React.FC<{ state: State; dispatch: React.Dispatch<Action> }> = ({ s
 };
 
 const Step2: React.FC<{ state: State; dispatch: React.Dispatch<Action> }> = ({ state, dispatch }) => {
-  const { name, email, phone, agree, rememberDetails } = state.details;
+  const { name, email, phone, agree, rememberDetails, marketingOptIn } = state.details;
+  const [attemptedSubmit, setAttemptedSubmit] = useState(false);
   const nameOk = name.trim().length >= 2;
   const emailOk = U.isEmail(email);
   const phoneOk = U.isUKPhone(phone);
   const canContinue = nameOk && emailOk && phoneOk && agree;
+  const showAgreementError = attemptedSubmit && !agree;
+
+  const handleContinue = () => {
+    setAttemptedSubmit(true);
+    if (!canContinue) return;
+    track("details_submit", {
+      marketing_opt_in: marketingOptIn ? 1 : 0,
+      terms_checked: agree ? 1 : 0,
+    });
+    dispatch({ type: "SET_STEP", step: 3 });
+  };
 
   return (
     <Card className="mx-auto w-full max-w-2xl">
@@ -1051,22 +1106,53 @@ const Step2: React.FC<{ state: State; dispatch: React.Dispatch<Action> }> = ({ s
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-start gap-2">
           <Checkbox
             id="agree"
             checked={agree}
             onChange={(event) => dispatch({ type: "SET_FIELD", key: "agree", value: event.target.checked })}
           />
-          <Label htmlFor="agree" className="text-sm font-normal">
-            I agree to the terms of service and privacy policy.
-          </Label>
+          <div className="space-y-1">
+            <Label htmlFor="agree" className="text-sm font-normal">
+              I agree to the {" "}
+              <Link href="/terms/togo" target="_blank" rel="noopener noreferrer" className="underline">
+                ToGo Terms
+              </Link>{" "}
+              and {" "}
+              <Link href="/terms/venue" target="_blank" rel="noopener noreferrer" className="underline">
+                Venue Terms
+              </Link>
+              .
+            </Label>
+            <p className="text-xs text-slate-500">
+              Both documents open in a new tab so you do not lose progress.
+            </p>
+            {showAgreementError && (
+              <p className="text-xs text-red-600">Please accept the terms to continue.</p>
+            )}
+          </div>
+        </div>
+        <div className="flex items-start gap-2">
+          <Checkbox
+            id="marketing"
+            checked={marketingOptIn}
+            onChange={(event) =>
+              dispatch({ type: "SET_FIELD", key: "marketingOptIn", value: event.target.checked })
+            }
+          />
+          <div className="space-y-1">
+            <Label htmlFor="marketing" className="text-sm font-normal">
+              Send me ToGo news and offers (optional)
+            </Label>
+            <p className="text-xs text-slate-500">We only share occasional updates and you can opt out anytime.</p>
+          </div>
         </div>
       </CardContent>
       <CardFooter className="justify-between">
         <Button variant="outline" onClick={() => dispatch({ type: "SET_STEP", step: 1 })}>
           Back
         </Button>
-        <Button onClick={() => dispatch({ type: "SET_STEP", step: 3 })} disabled={!canContinue}>
+        <Button onClick={handleContinue} disabled={!canContinue}>
           Review booking
         </Button>
       </CardFooter>
@@ -1092,24 +1178,218 @@ const ReviewRow: React.FC<{
   </div>
 );
 
+const ConfirmationSummaryView: React.FC<{
+  booking: ApiBooking | null;
+  details: BookingDetails;
+  waitlisted: boolean;
+  lastAction: LastAction;
+  onCancelAmend: () => void;
+  onViewUpdate: () => void;
+  onClose: () => void;
+}> = ({ booking, details, waitlisted, lastAction, onCancelAmend, onViewUpdate, onClose }) => {
+  const summaryDate = details.date ? U.formatSummaryDate(details.date) : "TBC";
+  const summaryTime = details.time ? U.formatTime(details.time) : "TBC";
+  const partyText = `${details.party} ${details.party === 1 ? "guest" : "guests"}`;
+  const reference = booking?.reference ?? (waitlisted ? "WAITLIST" : "Pending");
+  const guestName = booking?.customer_name ?? details.name;
+  const heading = waitlisted
+    ? "You're on the waiting list"
+    : lastAction === "update"
+      ? "Booking updated"
+      : "Booking confirmed";
+
+  const description = waitlisted
+    ? `We’ll notify ${details.email} if a table opens near ${summaryTime} on ${summaryDate}.`
+    : `A confirmation email has been sent to ${details.email}.`;
+
+  const iconClassName = waitlisted ? "text-amber-500" : "text-green-500";
+  const HeadingIcon = waitlisted ? Icon.Info : Icon.CheckCircle;
+
+  const handleClose = () => {
+    onClose();
+  };
+
+  const venue = DEFAULT_VENUE;
+
+  return (
+    <div className="space-y-6">
+      <Card>
+        <CardHeader className="text-center">
+          <HeadingIcon className={`mx-auto h-12 w-12 ${iconClassName}`} />
+          <CardTitle className="mt-3 text-3xl font-bold">{heading}</CardTitle>
+          <CardDescription className="mt-1 text-base text-slate-600">{description}</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <dl className="grid gap-4 text-sm">
+            <div>
+              <dt className="text-slate-600">Booking reference</dt>
+              <dd className="text-base font-semibold text-slate-900">{reference}</dd>
+            </div>
+            <div>
+              <dt className="text-slate-600">Guest</dt>
+              <dd className="text-base font-medium text-slate-900">{guestName || "Guest"}</dd>
+            </div>
+            <div className="grid gap-2 sm:grid-cols-2">
+              <div>
+                <dt className="text-slate-600">Date</dt>
+                <dd className="text-base font-medium text-slate-900">{summaryDate}</dd>
+              </div>
+              <div>
+                <dt className="text-slate-600">Time</dt>
+                <dd className="text-base font-medium text-slate-900">{summaryTime}</dd>
+              </div>
+            </div>
+            <div>
+              <dt className="text-slate-600">Party</dt>
+              <dd className="text-base font-medium text-slate-900">{partyText}</dd>
+            </div>
+            <div>
+              <dt className="text-slate-600">Venue</dt>
+              <dd className="text-base font-medium text-slate-900">
+                <p>{venue.name}</p>
+                <p className="text-sm text-slate-600">{venue.address}</p>
+              </dd>
+            </div>
+            {details.marketingOptIn && (
+              <div>
+                <dt className="text-slate-600">Marketing updates</dt>
+                <dd className="text-base text-slate-900">Opted in</dd>
+              </div>
+            )}
+            {details.notes && (
+              <div>
+                <dt className="text-slate-600">Notes</dt>
+                <dd className="text-base text-slate-900">{details.notes}</dd>
+              </div>
+            )}
+          </dl>
+          <div className="flex flex-wrap gap-3">
+            <Button onClick={onCancelAmend} variant="default">
+              Cancel / Amend
+            </Button>
+            <Button variant="outline" onClick={onViewUpdate}>
+              View / Update (login)
+            </Button>
+            <Button variant="ghost" onClick={handleClose}>
+              Close
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Venue policy</CardTitle>
+          <CardDescription>{venue.name} · {venue.phone} · {venue.email}</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-sm text-slate-700">{venue.policy}</p>
+          <div className="text-sm text-slate-600">
+            <p>Need help? Call us on {venue.phone} or email {venue.email}.</p>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+const ConfirmationStep: React.FC<{
+  state: State;
+  dispatch: React.Dispatch<Action>;
+  onEdit: BookingEditHandler;
+  onCancel: BookingMutationHandler;
+  onLookup: () => Promise<void> | void;
+  onNewBooking: () => void;
+  forceManageView?: boolean;
+}> = ({ state, dispatch, onEdit, onCancel, onLookup, onNewBooking, forceManageView = false }) => {
+  const router = useRouter();
+  const hasSummary = Boolean(state.lastConfirmed || state.lastAction);
+  const initialMode = forceManageView || !hasSummary ? "manage" : "summary";
+  const [mode, setMode] = useState<"summary" | "manage">(initialMode);
+
+  useEffect(() => {
+    if (forceManageView || !hasSummary) {
+      setMode("manage");
+    }
+  }, [forceManageView, hasSummary]);
+
+  const handleCancelAmend = async () => {
+    setMode("manage");
+    if (!state.bookings.length) {
+      await onLookup();
+    }
+  };
+
+  const handleViewUpdate = () => {
+    router.push("/signin?redirect=/my-bookings");
+  };
+
+  const handleClose = () => {
+    router.push("/thank-you");
+  };
+
+  return (
+    <div className="mx-auto w-full max-w-3xl space-y-8">
+      {mode === "summary" ? (
+        <ConfirmationSummaryView
+          booking={state.lastConfirmed}
+          details={state.details}
+          waitlisted={state.waitlisted}
+          lastAction={state.lastAction}
+          onCancelAmend={handleCancelAmend}
+          onViewUpdate={handleViewUpdate}
+          onClose={handleClose}
+        />
+      ) : (
+        <ManageBookings
+          state={state}
+          dispatch={dispatch}
+          onEdit={onEdit}
+          onCancel={onCancel}
+          onLookup={onLookup}
+          onNewBooking={onNewBooking}
+          onBack={hasSummary ? () => setMode("summary") : undefined}
+        />
+      )}
+    </div>
+  );
+};
+
 const Step3: React.FC<{ state: State; dispatch: React.Dispatch<Action>; onConfirm: () => void | Promise<void> }> = ({ state, dispatch, onConfirm }) => {
   const details = state.details;
+
+  useEffect(() => {
+    if (details.date && details.time) {
+      track("confirm_open", {
+        date: details.date,
+        time: details.time,
+        party: details.party,
+      });
+    } else {
+      track("confirm_open");
+    }
+  }, [details.date, details.time, details.party]);
+
+  const summaryValue = details.date && details.time
+    ? `${details.party} at ${U.formatTime(details.time)} on ${U.formatSummaryDate(details.date)}`
+    : `${details.party} guest${details.party === 1 ? "" : "s"}`;
+
   return (
-  <Card className="mx-auto w-full max-w-2xl">
-    <CardHeader>
-      <CardTitle className="text-2xl">Confirm your reservation</CardTitle>
-      <CardDescription>Please review your booking before confirming.</CardDescription>
-    </CardHeader>
-    <CardContent>
-      {state.error && (
-        <p className="mb-4 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
-          {state.error}
-        </p>
-      )}
-      <div className="divide-y divide-slate-200 rounded-lg border border-slate-200 px-4">
-        <ReviewRow
-          label="Date & time"
-          value={`${U.formatDate(details.date)} at ${U.formatTime(details.time)}`}
+    <Card className="mx-auto w-full max-w-2xl">
+      <CardHeader>
+        <CardTitle className="text-2xl">Confirm your reservation</CardTitle>
+        <CardDescription>Please review your booking before confirming.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        {state.error && (
+          <p className="mb-4 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+            {state.error}
+          </p>
+        )}
+        <div className="divide-y divide-slate-200 rounded-lg border border-slate-200 px-4">
+          <ReviewRow
+            label="Summary"
+            value={summaryValue}
             onEdit={() => dispatch({ type: "SET_STEP", step: 1 })}
           />
           <ReviewRow
@@ -1125,7 +1405,14 @@ const Step3: React.FC<{ state: State; dispatch: React.Dispatch<Action>; onConfir
             value={U.formatBookingLabel(details.bookingType)}
             onEdit={() => dispatch({ type: "SET_STEP", step: 1 })}
           />
-          {details.notes && <ReviewRow label="Notes" value={details.notes} onEdit={() => dispatch({ type: "SET_STEP", step: 1 })} />}
+          <ReviewRow
+            label="Marketing updates"
+            value={details.marketingOptIn ? "Subscribed" : "Not subscribed"}
+            onEdit={() => dispatch({ type: "SET_STEP", step: 2 })}
+          />
+          {details.notes && (
+            <ReviewRow label="Notes" value={details.notes} onEdit={() => dispatch({ type: "SET_STEP", step: 1 })} />
+          )}
         </div>
       </CardContent>
       <CardFooter className="justify-between">
@@ -1153,17 +1440,16 @@ function ManageBookings({
   onCancel,
   onLookup,
   onNewBooking,
+  onBack,
 }: {
   state: State;
   dispatch: React.Dispatch<Action>;
-  // eslint-disable-next-line no-unused-vars
-  onEdit: (booking: ApiBooking) => void;
-  // eslint-disable-next-line no-unused-vars
-  onCancel: (booking: ApiBooking) => Promise<void> | void;
+  onEdit: BookingEditHandler;
+  onCancel: BookingMutationHandler;
   onLookup: () => Promise<void> | void;
   onNewBooking: () => void;
+  onBack?: () => void;
 }) {
-  const router = useRouter();
   const { bookings, lastConfirmed, lastAction, waitlisted, details, error, loading } = state;
   const [bookingToCancel, setBookingToCancel] = useState<ApiBooking | null>(null);
 
@@ -1183,31 +1469,11 @@ function ManageBookings({
 
   const emailValue = details.email?.trim() ?? "";
   const phoneValue = details.phone?.trim() ?? "";
-  const restaurantValue = details.restaurantId ?? DEFAULT_RESTAURANT_ID;
   const canLookup = Boolean(emailValue && phoneValue);
 
   const handleLookupSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     await onLookup();
-  };
-
-  const handleManageRedirect = () => {
-    if (!canLookup) {
-      dispatch({ type: "SET_ERROR", message: "Enter your email and phone number to manage bookings." });
-      return;
-    }
-
-    const params = new URLSearchParams({
-      view: "manage",
-      email: emailValue,
-      phone: phoneValue,
-    });
-
-    if (restaurantValue) {
-      params.set("restaurantId", restaurantValue);
-    }
-
-    router.push(`/reserve?${params.toString()}`);
   };
 
   const handleConfirmCancel = async () => {
@@ -1224,11 +1490,13 @@ function ManageBookings({
         {confirmationEmail && (
           <p className="mt-2 text-slate-600">{description}</p>
         )}
-        <div className="mt-4 flex justify-center">
-          <Button variant="outline" onClick={handleManageRedirect} disabled={!canLookup || loading}>
-            Manage my booking
-          </Button>
-        </div>
+        {onBack && (
+          <div className="mt-4 flex justify-center">
+            <Button variant="outline" onClick={onBack} disabled={loading}>
+              Back to confirmation
+            </Button>
+          </div>
+        )}
         {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
       </div>
 
@@ -1288,6 +1556,7 @@ function ManageBookings({
                     <p className="text-sm text-slate-500">
                       {booking.party_size} {booking.party_size === 1 ? "guest" : "guests"} · {U.formatBookingLabel(booking.booking_type)} · {booking.customer_name}
                     </p>
+                    <p className="text-xs uppercase tracking-wide text-slate-400">Ref: {booking.reference}</p>
                   </div>
                   <div className="flex gap-2 self-end sm:self-center">
                     <Button
@@ -1481,6 +1750,7 @@ function BookingFlowContent() {
       name: state.details.name.trim(),
       email: state.details.email.trim(),
       phone: state.details.phone.trim(),
+      marketingOptIn: state.details.marketingOptIn,
     };
 
     const isUpdate = Boolean(state.editingId);
@@ -1497,6 +1767,11 @@ function BookingFlowContent() {
       const data = await response.json().catch(() => ({}));
 
       if (response.status === 202) {
+        track("booking_created", {
+          waitlisted: 1,
+          party: state.details.party,
+          start_time: normalizedTime,
+        });
         dispatch({
           type: "SET_CONFIRMATION",
           payload: {
@@ -1525,6 +1800,15 @@ function BookingFlowContent() {
           waitlisted: Boolean(data.waitlisted),
         },
       });
+
+      if (data?.booking) {
+        track("booking_created", {
+          waitlisted: data.waitlisted ? 1 : 0,
+          party: data.booking.party_size,
+          start_time: data.booking.start_time,
+          reference: data.booking.reference,
+        });
+      }
     } catch (error: any) {
       dispatch({
         type: "SET_ERROR",
@@ -1590,13 +1874,14 @@ function BookingFlowContent() {
         return <Step3 state={state} dispatch={dispatch} onConfirm={handleConfirm} />;
       case 4:
         return (
-          <ManageBookings
+          <ConfirmationStep
             state={state}
             dispatch={dispatch}
             onEdit={handleEditBooking}
             onCancel={handleCancelBooking}
             onLookup={handleLookupBookings}
             onNewBooking={handleNewBooking}
+            forceManageView={searchParams.get("view") === "manage"}
           />
         );
       default:

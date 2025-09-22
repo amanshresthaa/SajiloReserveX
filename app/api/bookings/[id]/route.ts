@@ -15,6 +15,7 @@ import {
   updateBookingRecord,
 } from "@/server/bookings";
 import { BOOKING_BLOCKING_STATUSES, getDefaultRestaurantId, getServiceSupabaseClient } from "@/server/supabase";
+import { sendBookingCancellationEmail, sendBookingUpdateEmail } from "@/server/emails/bookings";
 
 const bookingTypeEnum = z.enum(BOOKING_TYPES);
 
@@ -29,6 +30,7 @@ const updateSchema = z.object({
   name: z.string().min(2).max(120),
   email: z.string().email(),
   phone: z.string().min(7).max(50),
+  marketingOptIn: z.coerce.boolean().optional().default(false),
 });
 
 const contactQuerySchema = z.object({
@@ -60,7 +62,7 @@ export async function GET(req: NextRequest, context: any) {
   try {
     const { data, error } = await supabase
       .from("bookings")
-      .select("id,restaurant_id,table_id,booking_date,start_time,end_time,party_size,booking_type,seating_preference,status,customer_name,customer_email,customer_phone,notes,loyalty_points_awarded,created_at,updated_at")
+      .select("id,restaurant_id,table_id,booking_date,start_time,end_time,reference,party_size,booking_type,seating_preference,status,customer_name,customer_email,customer_phone,notes,marketing_opt_in,loyalty_points_awarded,created_at,updated_at")
       .eq("id", bookingId)
       .maybeSingle();
 
@@ -112,7 +114,7 @@ export async function PUT(req: NextRequest, context: any) {
   try {
     const { data: existing, error } = await supabase
       .from("bookings")
-      .select("id,restaurant_id,table_id,booking_date,start_time,end_time,party_size,booking_type,seating_preference,status,customer_name,customer_email,customer_phone,notes,loyalty_points_awarded")
+      .select("id,restaurant_id,table_id,booking_date,start_time,end_time,reference,party_size,booking_type,seating_preference,status,customer_name,customer_email,customer_phone,notes,marketing_opt_in,loyalty_points_awarded")
       .eq("id", bookingId)
       .maybeSingle();
 
@@ -211,6 +213,7 @@ export async function PUT(req: NextRequest, context: any) {
       customer_email: data.email,
       customer_phone: data.phone,
       notes: data.notes ?? null,
+      marketing_opt_in: data.marketingOptIn ?? existing.marketing_opt_in,
     });
 
     await logAuditEvent(supabase, {
@@ -224,6 +227,12 @@ export async function PUT(req: NextRequest, context: any) {
     });
 
     const bookings = await fetchBookingsForContact(supabase, restaurantId, data.email, data.phone);
+
+    try {
+      await sendBookingUpdateEmail(updated);
+    } catch (error) {
+      console.error("[bookings][PUT][email]", error);
+    }
 
     return NextResponse.json({ booking: updated, bookings });
   } catch (error: any) {
@@ -256,7 +265,7 @@ export async function DELETE(req: NextRequest, context: any) {
   try {
     const { data: existing, error } = await supabase
       .from("bookings")
-      .select("id,restaurant_id,table_id,booking_date,start_time,end_time,party_size,booking_type,seating_preference,status,customer_name,customer_email,customer_phone,notes,loyalty_points_awarded,created_at,updated_at")
+      .select("id,restaurant_id,table_id,booking_date,start_time,end_time,reference,party_size,booking_type,seating_preference,status,customer_name,customer_email,customer_phone,notes,marketing_opt_in,loyalty_points_awarded,created_at,updated_at")
       .eq("id", bookingId)
       .maybeSingle();
 
@@ -286,6 +295,12 @@ export async function DELETE(req: NextRequest, context: any) {
 
     const targetRestaurantId = restaurantId ?? existing.restaurant_id ?? getDefaultRestaurantId();
     const bookings = await fetchBookingsForContact(supabase, targetRestaurantId, email, phone);
+
+    try {
+      await sendBookingCancellationEmail(canceledRecord);
+    } catch (error) {
+      console.error("[bookings][DELETE][email]", error);
+    }
 
     return NextResponse.json({ success: true, bookings });
   } catch (error: any) {
