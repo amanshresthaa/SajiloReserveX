@@ -1,5 +1,4 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { randomUUID } from "crypto";
 
 import {
   BOOKING_BLOCKING_STATUSES,
@@ -240,15 +239,7 @@ export async function findAvailableTable(
     }
   }
 
-  const fallbackSeating: SeatingPreference = seatingPreference === "any" ? "indoor" : seatingPreference;
-
-  return {
-    id: randomUUID(),
-    label: "General Seating",
-    capacity: Math.max(partySize, 100),
-    seating_type: fallbackSeating,
-    features: null,
-  };
+  return null;
 }
 
 export async function logAuditEvent(

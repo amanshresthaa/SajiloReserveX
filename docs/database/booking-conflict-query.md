@@ -1,8 +1,8 @@
 # Booking Conflict Query & Index Notes
 
 ## Why these indexes
-- `bookings_table_date_start_idx` supports per-table conflict scans by `table_id`, `booking_date`, `start_time`, enabling index-only lookups for the allocation workflow.
-- `bookings_restaurant_contact_idx` accelerates duplicate detection when checking the same diner (restaurant + email + phone) during submission and anti-dupe sweeps.
+- `bookings_table_date_start_idx` supports per-table conflict scans by `table_id`, `booking_date`, `start_time`, enabling index-only lookups for the allocation workflow. The migration `database/migrations/003_add_booking_indexes.sql` creates it in a regular transaction for Supabase compatibility; use `scripts/db/booking-indexes-concurrent.sql` when you need `CREATE INDEX CONCURRENTLY` (e.g., production) ahead of the migration plane.
+- `bookings_restaurant_contact_idx` accelerates duplicate detection when checking the same diner (restaurant + email + phone) during submission and anti-dupe sweeps. The manual script mirrors the same definition so you can opt into concurrent builds without code changes.
 - Both indexes include frequently read columns so the executor can satisfy the query directly from the index on hot paths.
 
 ## Batch conflict SQL (shared script)
