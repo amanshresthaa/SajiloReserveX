@@ -21,6 +21,7 @@
   - Collapsed pill shown when hero section is off-screen OR when `step > 1`.
   - Expandable panel revealing step statuses, using micro-speed animation (`transition`, `duration-150`, slight `translate-y`/`opacity` changes) and respecting pointer + keyboard access.
   - Render step metadata + current summary (party/time/date), with progress indicator (e.g., mini step bullets + textual status).
+  - Surface the primary and secondary CTAs for the active step (e.g., Continue/Back/Confirm) so guests can progress without scrolling; match button variants to step context.
 - Implement `useStickyProgress` hook leveraging `IntersectionObserver` (pattern from `components/FeaturesListicle.tsx`) to toggle visibility based on a ref passed from the hero container; guard for SSR.
 - Hook in subtle haptics via a small helper (e.g., `useSubtleHaptics`) that calls `navigator.vibrate(8)` when the progress card reveals or on step completion, feature-detected for supported devices.
 
@@ -38,6 +39,8 @@
 - Confirm localStorage persistence still works (hydrate on load, save when remember toggled).
 - Review accessibility: focus traps for alert dialog, aria labels for sticky toggle button, `aria-live` status updates.
 - Remove redundant inline declarations from the original page file after imports migrate.
+- Hide horizontal scrollbar chrome on the guest + time scrollers (maintain snap + pointer affordance).
+- Tuck the service selector into the “Additional preferences” accordion to declutter the primary layout while keeping analytics behavior.
 
 ## 6. Verification
 - Manual QA: run through create booking, waitlist scenario, manage lookup, ensuring sticky tracker hides/shows appropriately and footers remain usable on mobile viewport sizes.
