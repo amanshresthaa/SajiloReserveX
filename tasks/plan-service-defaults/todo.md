@@ -1,0 +1,4 @@
+- [x] Update bookingHelpers service windows & bookingTypeFromTime
+- [x] Adjust PlanStep service availability and labels
+- [x] Update slot labels and default resolution
+- [x] Run verification script for key scenarios
