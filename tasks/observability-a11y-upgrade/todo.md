@@ -2,20 +2,20 @@
 
 ## Story E1 – Analytics emitter & instrumentation
 
-- [ ] Define strong TypeScript types for analytics event schema (payload, user, context).
-- [ ] Implement anon ID + email hash helpers leveraging Supabase session when available.
-- [ ] Extend emitter with buffered batching, flush logic (sendBeacon/fetch), and schema injection (user/context metadata, timestamp).
-- [ ] Update `/api/events` handler tests/docs if schema changes; ensure dev logging unchanged.
+- [x] Define strong TypeScript types for analytics event schema (payload, user, context).
+- [x] Implement anon ID + email hash helpers leveraging Supabase session when available.
+- [x] Extend emitter with buffered batching, flush logic (sendBeacon/fetch), and schema injection (user/context metadata, timestamp).
+- [x] Update `/api/events` handler tests/docs if schema changes; ensure dev logging unchanged.
 - [ ] Adjust analytics callsites to rely on new emitter signature and cover additional key actions identified during audit.
-- [ ] Add Vitest coverage for emitter behaviour (queueing, flush, dev fallback).
+- [x] Add Vitest coverage for emitter behaviour (queueing, flush, dev fallback).
 
 ## Story E2 – Accessibility audit & fixes
 
-- [ ] Inventory dashboard components/pages and evaluate against checklist.
-- [ ] Patch dialogs, buttons, tables, and forms to meet focus, labeling, and interaction requirements.
+- [x] Inventory dashboard components/pages and evaluate against checklist.
+- [x] Patch dialogs, buttons, tables, and forms to meet focus, labeling, and interaction requirements.
 - [ ] Introduce focus management helper(s) (`components/a11y/FocusGuard.tsx`) if gaps exist.
 - [ ] Add automated axe accessibility checks (Playwright integration per requirement).
-- [ ] Document findings and verification notes.
+- [x] Document findings and verification notes.
 
 ## Story F1 – Vitest coverage
 
@@ -41,4 +41,4 @@
 ## Cross-cutting validation
 
 - [ ] Run lint/typecheck/test suites as changes progress.
-- [ ] Maintain verification log in `tasks/observability-a11y-upgrade/verification.md`.
+- [x] Maintain verification log in `tasks/observability-a11y-upgrade/verification.md`.
