@@ -1,0 +1,7 @@
+- [x] Implement `app/api/profile/route.ts` (GET/PUT) with validation helpers and default row creation.
+- [x] Implement `app/api/profile/image/route.ts` handling Supabase Storage uploads.
+- [x] Add shared validation/types (schema, DTO) and extend `lib/query/keys.ts`.
+- [x] Create server routing (`app/(authed)/profile/layout.tsx`, `app/(authed)/profile/manage/page.tsx`) and update middleware matcher.
+- [x] Build client form components/hooks (`components/profile/ProfileManageForm.tsx`, uploader helper, hooks for GET/PUT) plus navigation updates.
+- [x] Add docs in `docs/profile-management.md` and update mobile tab/linking.
+- [ ] Implement tests (Vitest unit + component, Playwright spec) and run lint/typecheck/test commands.

@@ -15,12 +15,20 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
               View, edit, or cancel your upcoming reservations.
             </p>
           </div>
-          <Link
-            href="/reserve"
-            className={cn(buttonVariants({ variant: "primary", size: "primary" }), "min-w-[164px]")}
-          >
-            New booking
-          </Link>
+          <div className="flex flex-wrap items-center gap-3">
+            <Link
+              href="/profile/manage"
+              className={cn(buttonVariants({ variant: "outline", size: "primary" }), "min-w-[164px]")}
+            >
+              Manage profile
+            </Link>
+            <Link
+              href="/reserve"
+              className={cn(buttonVariants({ variant: "primary", size: "primary" }), "min-w-[164px]")}
+            >
+              New booking
+            </Link>
+          </div>
         </div>
       </header>
       <main id="main-content" tabIndex={-1} className="container mx-auto px-6 py-8 focus:outline-none">
