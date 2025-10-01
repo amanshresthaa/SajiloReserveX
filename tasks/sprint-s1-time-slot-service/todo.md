@@ -1,0 +1,7 @@
+- [x] Scaffold `reserve/shared/time` primitives and exports.
+- [x] Implement wizard time-slot service pure functions.
+- [x] Add `useTimeSlots` React hook.
+- [x] Update PlanStep to consume new service/hook.
+- [x] Add unit tests for primitives/service/hook.
+- [x] Run lint & test suites.
+- [x] Note interim duplication & next steps for S2/S3.
