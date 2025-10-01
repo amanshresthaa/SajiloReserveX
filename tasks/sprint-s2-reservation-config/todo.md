@@ -1,0 +1,7 @@
+- [x] Implement `reserve/shared/config/reservations.ts` with defaults, env overrides, and issue reporting.
+- [x] Refactor time-slot service to consume the new reservation config.
+- [x] Update `useTimeSlots`, PlanStep (if needed), and ConfirmationStep to read from shared config.
+- [x] Align booking helpers and legacy helpers with the shared config to remove duplicated literals.
+- [x] Add unit tests for config resolver and update existing tests impacted by the change.
+- [x] Run lint and full test suite.
+- [x] Document issues/next steps for downstream stories (S3/S4).
