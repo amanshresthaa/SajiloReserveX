@@ -1,6 +1,0 @@
-- [x] Create plan-step component directory and scaffold `PlanStepForm`, `TimeSlotGrid`, `OccasionPicker`.
-- [x] Refactor `PlanStep.tsx` into a thin orchestrator (<80 LOC).
-- [x] Wire analytics via `onTrack` prop and update consumer modules.
-- [x] Ensure booking form logic lives in `PlanStepForm` and extracted components stay under hook/LOC limits.
-- [x] Introduce Storybook configuration, add stories with interaction tests for new components.
-- [x] Run lint/tests (and Storybook smoke if feasible), then update notes with follow-ups.

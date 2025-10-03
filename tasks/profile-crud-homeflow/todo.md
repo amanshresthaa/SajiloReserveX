@@ -1,6 +1,0 @@
-- [x] Add `phone` column to profiles schema + update Supabase types/helpers.
-- [x] Extend profile API validation/handlers (GET/PUT) to handle phone.
-- [x] Update client profile form and mobile page with phone field; ensure email read-only.
-- [x] Whitelist Supabase storage host in `next.config.js` for avatar images.
-- [x] Refresh home page hero/navigation for better `/`, `/dashboard`, `/reserve`, `/profile/manage` flow.
-- [x] Update tests/docs; run lint & vitest (note baseline typecheck issues).

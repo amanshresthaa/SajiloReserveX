@@ -1,4 +1,0 @@
-- [x] Confirm `public.profiles` schema in `database/database.sql` and `current.sql` includes `name` and `image` with expected constraints.
-- [x] Compare generated Supabase types to schema to determine source of mismatch.
-- [x] Decide whether a `database.sql` patch is required and document outcome.
-- [x] Update `types/supabase.ts` so `public.profiles` includes `name` and `image` in `Row`/`Insert`/`Update`.
