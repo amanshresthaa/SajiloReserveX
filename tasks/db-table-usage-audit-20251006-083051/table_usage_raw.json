@@ -1,0 +1,579 @@
+[
+  {
+    "table": "bookings",
+    "count": 23,
+    "files": [
+      ["app/api/bookings/[id]/route.ts", 6],
+      ["server/bookings.ts", 5],
+      ["scripts/db/backfill-customers-loyalty.sql", 4],
+      ["app/api/bookings/route.ts", 3],
+      ["server/booking-reference.ts", 1],
+      ["server/reservations/getReservation.ts", 1],
+      ["app/api/bookings/[id]/history/route.ts", 1],
+      ["app/api/test/bookings/route.ts", 1],
+      ["app/api/test/reservations/[reservationId]/confirmation/route.ts", 1]
+    ],
+    "operations": ["INSERT", "SELECT", "UPDATE"],
+    "supabase_refs": [
+      {
+        "file": "server/booking-reference.ts",
+        "match": ".from(\"bookings\")",
+        "context": "       .select(\"id\")       .eq(\"reference\", reference)       .limit(1);      if (error) {       throw error;     }      "
+      },
+      {
+        "file": "server/bookings.ts",
+        "match": ".from(\"bookings\")",
+        "context": "     .select(BOOKING_SELECT)     .eq(\"restaurant_id\", restaurantId)     .eq(\"customer_id\", customer.id)     .in(\"status\""
+      },
+      {
+        "file": "server/bookings.ts",
+        "match": ".from(\"bookings\")",
+        "context": "       .select(\"id,table_id,start_time,end_time,status\")       .eq(\"restaurant_id\", restaurantId)       .eq(\"booking_dat"
+      },
+      {
+        "file": "server/bookings.ts",
+        "match": ".from(\"bookings\")",
+        "context": "     .update({ status: \"cancelled\" })     .eq(\"id\", bookingId)     .select(BOOKING_SELECT)     .single();    if (error) "
+      },
+      {
+        "file": "server/bookings.ts",
+        "match": ".from(\"bookings\")",
+        "context": "     .update(nextPayload)     .eq(\"id\", bookingId)     .select(BOOKING_SELECT)     .single();    if (error) {     throw "
+      },
+      {
+        "file": "server/bookings.ts",
+        "match": ".from(\"bookings\")",
+        "context": "     .insert(insertPayload)     .select(BOOKING_SELECT)     .single();    if (error) {     throw error;   }    const boo"
+      },
+      {
+        "file": "server/reservations/getReservation.ts",
+        "match": ".from('bookings')",
+        "context": "       .select(RESERVATION_SELECT)       .eq('id', id)       .maybeSingle();      if (error) {       throw new GetReserv"
+      },
+      {
+        "file": "app/api/bookings/route.ts",
+        "match": ".from(\"bookings\")",
+        "context": "         .select(\"*\")         .eq(\"restaurant_id\", restaurantId)         .eq(\"idempotency_key\", idempotencyKey)         "
+      },
+      {
+        "file": "app/api/bookings/route.ts",
+        "match": ".from(\"bookings\")",
+        "context": "               .select(\"*\")               .eq(\"restaurant_id\", restaurantId)               .eq(\"idempotency_key\", idempo"
+      },
+      {
+        "file": "app/api/bookings/route.ts",
+        "match": ".from(\"bookings\")",
+        "context": "               .select(\"*\")               .eq(\"restaurant_id\", restaurantId)               .eq(\"client_request_id\", clie"
+      },
+      {
+        "file": "app/api/bookings/[id]/route.ts",
+        "match": ".from(\"bookings\")",
+        "context": "       .select(\"*\")       .eq(\"id\", bookingId)       .maybeSingle();      if (error) {       throw error;     }      con"
+      },
+      {
+        "file": "app/api/bookings/[id]/route.ts",
+        "match": ".from(\"bookings\")",
+        "context": "             .select(\"id,start_time,end_time,status\")             .eq(\"table_id\", existingBooking.table_id)             "
+      },
+      {
+        "file": "app/api/bookings/[id]/route.ts",
+        "match": ".from(\"bookings\")",
+        "context": "       .select(         \"id,restaurant_id,table_id,booking_date,start_time,end_time,start_at,end_at,slot,reference,party"
+      },
+      {
+        "file": "app/api/bookings/[id]/route.ts",
+        "match": ".from(\"bookings\")",
+        "context": "       .select(\"*\")       .eq(\"id\", bookingId)       .maybeSingle();      if (error) {       throw error;     }      con"
+      },
+      {
+        "file": "app/api/bookings/[id]/route.ts",
+        "match": ".from(\"bookings\")",
+        "context": "             .select(\"id,start_time,end_time,status\")             .eq(\"table_id\", existingBooking.table_id)             "
+      },
+      {
+        "file": "app/api/bookings/[id]/route.ts",
+        "match": ".from(\"bookings\")",
+        "context": "       .select(\"*\")       .eq(\"id\", bookingId)       .maybeSingle();      if (error) {       throw error;     }      con"
+      },
+      {
+        "file": "app/api/bookings/[id]/history/route.ts",
+        "match": ".from('bookings')",
+        "context": "     .select('id, customer_email, restaurant_id')     .eq('id', bookingId)     .maybeSingle();    if (bookingError) {   "
+      },
+      {
+        "file": "app/api/test/bookings/route.ts",
+        "match": ".from('bookings')",
+        "context": "     .insert(bookingInsert)     .select('id, reference, start_at, end_at, status')     .single();    if (insertedBooking"
+      },
+      {
+        "file": "app/api/test/reservations/[reservationId]/confirmation/route.ts",
+        "match": ".from('bookings')",
+        "context": "     .select('reference')     .eq('id', normalizedReservationId)     .maybeSingle();    if (error) {     return NextResp"
+      }
+    ],
+    "sql_refs": [
+      {
+        "file": "scripts/db/backfill-customers-loyalty.sql",
+        "snippet": "-- Rebuild customers, customer_profiles, and loyalty aggregates from bookings data. -- This script is idempotent and can be rerun to repair drift between boo",
+        "operation": "SELECT"
+      },
+      {
+        "file": "scripts/db/backfill-customers-loyalty.sql",
+        "snippet": "ofiles, loyalty_points, and loyalty_point_events.  BEGIN;  -- Refresh customers from bookings contact data. WITH normalized_bookings AS (   SELECT     b.id,     b.restaurant",
+        "operation": "SELECT"
+      },
+      {
+        "file": "scripts/db/backfill-customers-loyalty.sql",
+        "snippet": "tlist_at),   updated_at = EXCLUDED.updated_at;  -- Recalculate loyalty balances from bookings. WITH program_map AS (   SELECT restaurant_id, id AS program_id   FROM public.l",
+        "operation": "SELECT"
+      },
+      {
+        "file": "scripts/db/backfill-customers-loyalty.sql",
+        "snippet": "last_awarded_at,   updated_at = EXCLUDED.updated_at;  -- Rebuild ledger entries from bookings history. DELETE FROM public.loyalty_point_events;  WITH program_map AS (   SELE",
+        "operation": "SELECT"
+      }
+    ]
+  },
+  {
+    "table": "profiles",
+    "count": 11,
+    "files": [
+      ["app/api/webhook/stripe/route.ts", 4],
+      ["lib/profile/server.ts", 2],
+      ["app/api/stripe/create-checkout/route.ts", 2],
+      ["app/api/profile/route.ts", 1],
+      ["app/api/stripe/create-portal/route.ts", 1],
+      ["app/api/test/playwright-session/route.ts", 1]
+    ],
+    "operations": ["INSERT", "SELECT", "UPDATE"],
+    "supabase_refs": [
+      {
+        "file": "lib/profile/server.ts",
+        "match": ".from(\"profiles\")",
+        "context": "     .select(PROFILE_COLUMNS)     .eq(\"id\", user.id)     .maybeSingle<ProfileRecord>();    if (error) {     throw error;"
+      },
+      {
+        "file": "lib/profile/server.ts",
+        "match": ".from(\"profiles\")",
+        "context": "     .upsert(insertPayload, { onConflict: \"id\" })     .select(PROFILE_COLUMNS)     .single<ProfileRecord>();    if (inse"
+      },
+      {
+        "file": "app/api/profile/route.ts",
+        "match": ".from(\"profiles\")",
+        "context": "       .update(updatePayload)       .eq(\"id\", user.id)       .select(PROFILE_COLUMNS)       .single();      if (updateEr"
+      },
+      {
+        "file": "app/api/stripe/create-portal/route.ts",
+        "match": ".from(\"profiles\")",
+        "context": "       .select(\"*\")       .eq(\"id\", session?.user?.id)       .single();      if (!data?.customer_id) {       return Next"
+      },
+      {
+        "file": "app/api/stripe/create-checkout/route.ts",
+        "match": ".from(\"profiles\")",
+        "context": "       .select(\"*\")       .eq(\"id\", session?.user?.id)       .single();      // If no profile found, create one. This is"
+      },
+      {
+        "file": "app/api/stripe/create-checkout/route.ts",
+        "match": ".from(\"profiles\")",
+        "context": ".insert({         id: session.user.id,         price_id: priceId,         email: session?.user?.email,       });     }  "
+      },
+      {
+        "file": "app/api/test/playwright-session/route.ts",
+        "match": ".from('profiles')",
+        "context": "     .upsert(profilePayload, { onConflict: 'id' })     .select('id, name, email, phone')     .single();    if (upsertPro"
+      },
+      {
+        "file": "app/api/webhook/stripe/route.ts",
+        "match": ".from(\"profiles\")",
+        "context": "             .update({               customer_id: customerId,               price_id: priceId,               has_access:"
+      },
+      {
+        "file": "app/api/webhook/stripe/route.ts",
+        "match": ".from(\"profiles\")",
+        "context": "             .update({ has_access: false })             .eq(\"customer_id\", customerId);         }          processingSta"
+      },
+      {
+        "file": "app/api/webhook/stripe/route.ts",
+        "match": ".from(\"profiles\")",
+        "context": "             .select(\"*\")             .eq(\"customer_id\", customerId)             .maybeSingle();            if (profile "
+      },
+      {
+        "file": "app/api/webhook/stripe/route.ts",
+        "match": ".from(\"profiles\")",
+        "context": "               .update({ has_access: true })               .eq(\"customer_id\", customerId);           }         }        "
+      }
+    ],
+    "sql_refs": []
+  },
+  {
+    "table": "customers",
+    "count": 6,
+    "files": [
+      ["server/customers.ts", 4],
+      ["app/api/test/bookings/route.ts", 2]
+    ],
+    "operations": ["INSERT", "SELECT", "UPDATE"],
+    "supabase_refs": [
+      {
+        "file": "server/customers.ts",
+        "match": ".from(\"customers\")",
+        "context": "     .select(\"id,restaurant_id,email,phone,full_name,marketing_opt_in,created_at,updated_at,email_normalized,phone_norma"
+      },
+      {
+        "file": "server/customers.ts",
+        "match": ".from(\"customers\")",
+        "context": "     .upsert(insertPayload, {       onConflict: CUSTOMER_CONFLICT_KEY,       ignoreDuplicates: false,     })     .select"
+      },
+      {
+        "file": "server/customers.ts",
+        "match": ".from(\"customers\")",
+        "context": "       .update({ marketing_opt_in: true, full_name: data.full_name ?? params.name ?? null })       .eq(\"id\", data.id)   "
+      },
+      {
+        "file": "server/customers.ts",
+        "match": ".from(\"customers\")",
+        "context": "       .update({ full_name: params.name })       .eq(\"id\", data.id)       .select(\"id,restaurant_id,email,phone,full_nam"
+      },
+      {
+        "file": "app/api/test/bookings/route.ts",
+        "match": ".from('customers')",
+        "context": "     .select('id')     .eq('restaurant_id', restaurantId)     .eq('email', normalizedEmail)     .maybeSingle();    if (e"
+      },
+      {
+        "file": "app/api/test/bookings/route.ts",
+        "match": ".from('customers')",
+        "context": "       .insert({         restaurant_id: restaurantId,         email: normalizedEmail,         phone,         full_name: "
+      }
+    ],
+    "sql_refs": []
+  },
+  {
+    "table": "waiting_list",
+    "count": 6,
+    "files": [["server/bookings.ts", 6]],
+    "operations": ["INSERT", "SELECT", "UPDATE"],
+    "supabase_refs": [
+      {
+        "file": "server/bookings.ts",
+        "match": ".from(\"waiting_list\")",
+        "context": "     .select(\"id\", { count: \"exact\", head: true })     .eq(\"restaurant_id\", params.restaurantId)     .eq(\"booking_date\","
+      },
+      {
+        "file": "server/bookings.ts",
+        "match": ".from(\"waiting_list\")",
+        "context": "     .select(\"id\")     .eq(\"restaurant_id\", payload.restaurant_id)     .eq(\"booking_date\", payload.booking_date)     .eq"
+      },
+      {
+        "file": "server/bookings.ts",
+        "match": ".from(\"waiting_list\")",
+        "context": "       .update({         party_size: payload.party_size,         seating_preference: seatingPreference,         notes: p"
+      },
+      {
+        "file": "server/bookings.ts",
+        "match": ".from(\"waiting_list\")",
+        "context": "       .select(\"id,created_at\")       .eq(\"id\", existing.id)       .maybeSingle();      if (entryError) {       throw en"
+      },
+      {
+        "file": "server/bookings.ts",
+        "match": ".from(\"waiting_list\")",
+        "context": ".insert({     restaurant_id: payload.restaurant_id,     booking_date: payload.booking_date,     desired_time: payload.de"
+      },
+      {
+        "file": "server/bookings.ts",
+        "match": ".from(\"waiting_list\")",
+        "context": "     .select(\"id,created_at\")     .eq(\"restaurant_id\", payload.restaurant_id)     .eq(\"booking_date\", payload.booking_da"
+      }
+    ],
+    "sql_refs": []
+  },
+  {
+    "table": "customer_profiles",
+    "count": 4,
+    "files": [["server/customers.ts", 4]],
+    "operations": ["INSERT", "SELECT"],
+    "supabase_refs": [
+      {
+        "file": "server/customers.ts",
+        "match": ".from(\"customer_profiles\")",
+        "context": "     .select(\"*\")     .eq(\"customer_id\", params.customerId)     .maybeSingle();    if (lookupError) {     throw lookupEr"
+      },
+      {
+        "file": "server/customers.ts",
+        "match": ".from(\"customer_profiles\")",
+        "context": "     .upsert(payload, { onConflict: \"customer_id\" });    if (upsertError) {     throw upsertError;   } }  export async f"
+      },
+      {
+        "file": "server/customers.ts",
+        "match": ".from(\"customer_profiles\")",
+        "context": "     .select(\"total_cancellations,last_booking_at,updated_at\")     .eq(\"customer_id\", params.customerId)     .maybeSingl"
+      },
+      {
+        "file": "server/customers.ts",
+        "match": ".from(\"customer_profiles\")",
+        "context": "     .upsert(       {         customer_id: params.customerId,         total_cancellations: totalCancellations,         l"
+      }
+    ],
+    "sql_refs": []
+  },
+  {
+    "table": "loyalty_points",
+    "count": 4,
+    "files": [
+      ["database/database.sql", 2],
+      ["server/loyalty.ts", 2]
+    ],
+    "operations": ["INSERT", "SELECT", "UPDATE"],
+    "supabase_refs": [
+      {
+        "file": "server/loyalty.ts",
+        "match": ".from(\"loyalty_points\")",
+        "context": "     .select(\"id,balance,lifetime_points\")     .eq(\"program_id\", params.program.id)     .eq(\"customer_id\", params.custom"
+      },
+      {
+        "file": "server/loyalty.ts",
+        "match": ".from(\"loyalty_points\")",
+        "context": "     .upsert(upsertPayload, { onConflict: \"program_id,customer_id\" });    if (upsertError) {     throw upsertError;   } "
+      }
+    ],
+    "sql_refs": [
+      {
+        "file": "database/database.sql",
+        "snippet": "WHERE schemaname='public' AND tablename='loyalty_points' AND policyname='Tenant update loyalty_points'   ) THEN     EXECUTE $sql$CREATE POLICY \"Tenant update loyalty_points\" ON publ",
+        "operation": "UPDATE"
+      },
+      {
+        "file": "database/database.sql",
+        "snippet": "='Tenant update loyalty_points'   ) THEN     EXECUTE $sql$CREATE POLICY \"Tenant update loyalty_points\" ON public.loyalty_points       FOR UPDATE TO authenticated       USING (public",
+        "operation": "UPDATE"
+      }
+    ]
+  },
+  {
+    "table": "stripe_events",
+    "count": 4,
+    "files": [["app/api/webhook/stripe/route.ts", 4]],
+    "operations": ["INSERT", "SELECT", "UPDATE"],
+    "supabase_refs": [
+      {
+        "file": "app/api/webhook/stripe/route.ts",
+        "match": ".from(\"stripe_events\")",
+        "context": "     .select(\"id,status\")     .eq(\"event_id\", eventId)     .maybeSingle();    if (lookupError && lookupError.code !== \"P"
+      },
+      {
+        "file": "app/api/webhook/stripe/route.ts",
+        "match": ".from(\"stripe_events\")",
+        "context": "     .insert(eventRow)     .select(\"id\")     .single();    if (insertResult.error) {     void recordObservabilityEvent({"
+      },
+      {
+        "file": "app/api/webhook/stripe/route.ts",
+        "match": ".from(\"stripe_events\")",
+        "context": "         .update({           processed_at: new Date().toISOString(),           status: processingStatus,         })     "
+      }
+    ],
+    "sql_refs": [
+      {
+        "file": "app/api/webhook/stripe/route.ts",
+        "snippet": ");        if (updateError) {         console.error(\"[stripe][webhook] Failed to update stripe_events\", updateError);       }     }   }    return NextResponse.json({ received: true",
+        "operation": "UPDATE"
+      }
+    ]
+  },
+  {
+    "table": "loyalty_point_events",
+    "count": 3,
+    "files": [
+      ["database/database.sql", 2],
+      ["server/loyalty.ts", 1]
+    ],
+    "operations": ["INSERT", "UPDATE"],
+    "supabase_refs": [
+      {
+        "file": "server/loyalty.ts",
+        "match": ".from(\"loyalty_point_events\")",
+        "context": ".insert({     program_id: params.program.id,     customer_id: params.customerId,     booking_id: params.bookingId,     p"
+      }
+    ],
+    "sql_refs": [
+      {
+        "file": "database/database.sql",
+        "snippet": "schemaname='public' AND tablename='loyalty_point_events' AND policyname='Tenant update loyalty_point_events'   ) THEN     EXECUTE $sql$CREATE POLICY \"Tenant update loyalty_point_events\" O",
+        "operation": "UPDATE"
+      },
+      {
+        "file": "database/database.sql",
+        "snippet": "nt update loyalty_point_events'   ) THEN     EXECUTE $sql$CREATE POLICY \"Tenant update loyalty_point_events\" ON public.loyalty_point_events       FOR UPDATE TO authenticated       USING (",
+        "operation": "UPDATE"
+      }
+    ]
+  },
+  {
+    "table": "restaurant_tables",
+    "count": 3,
+    "files": [
+      ["app/api/bookings/[id]/route.ts", 2],
+      ["server/bookings.ts", 1]
+    ],
+    "operations": ["SELECT"],
+    "supabase_refs": [
+      {
+        "file": "server/bookings.ts",
+        "match": ".from(\"restaurant_tables\")",
+        "context": "     .select(TABLE_SELECT)     .eq(\"restaurant_id\", restaurantId)     .gte(\"capacity\", partySize)     .order(\"capacity\","
+      },
+      {
+        "file": "app/api/bookings/[id]/route.ts",
+        "match": ".from(\"restaurant_tables\")",
+        "context": "           .select(\"id,capacity,seating_type\")           .eq(\"id\", existingBooking.table_id)           .maybeSingle();  "
+      },
+      {
+        "file": "app/api/bookings/[id]/route.ts",
+        "match": ".from(\"restaurant_tables\")",
+        "context": "           .select(\"id,capacity,seating_type\")           .eq(\"id\", existingBooking.table_id)           .maybeSingle();  "
+      }
+    ],
+    "sql_refs": []
+  },
+  {
+    "table": "audit_logs",
+    "count": 2,
+    "files": [
+      ["server/bookingHistory.ts", 1],
+      ["server/bookings.ts", 1]
+    ],
+    "operations": ["INSERT", "SELECT"],
+    "supabase_refs": [
+      {
+        "file": "server/bookingHistory.ts",
+        "match": ".from('audit_logs')",
+        "context": "     .select('id, action, metadata, created_at, actor, entity, entity_id')     .eq('entity', 'booking')     .eq('entity_"
+      },
+      {
+        "file": "server/bookings.ts",
+        "match": ".from(\"audit_logs\")",
+        "context": ".insert({     action: params.action,     entity: params.entity,     entity_id: params.entityId ?? null,     metadata: pa"
+      }
+    ],
+    "sql_refs": []
+  },
+  {
+    "table": "leads",
+    "count": 2,
+    "files": [
+      ["app/api/lead/route.ts", 1],
+      ["app/api/test/leads/route.ts", 1]
+    ],
+    "operations": ["DELETE", "INSERT", "SELECT"],
+    "supabase_refs": [
+      {
+        "file": "app/api/lead/route.ts",
+        "match": ".from(\"leads\")",
+        "context": ".insert({ email: body.email });      return NextResponse.json({});   } catch (error: unknown) {     const message = stri"
+      },
+      {
+        "file": "app/api/test/leads/route.ts",
+        "match": ".from('leads')",
+        "context": "     .delete()     .eq('email', parsed.data.email.toLowerCase())     .select('email');    if (error) {     return NextRe"
+      }
+    ],
+    "sql_refs": []
+  },
+  {
+    "table": "restaurants",
+    "count": 2,
+    "files": [["server/supabase.ts", 2]],
+    "operations": ["SELECT"],
+    "supabase_refs": [
+      {
+        "file": "server/supabase.ts",
+        "match": ".from(\"restaurants\")",
+        "context": "             .select(\"id\")             .eq(\"slug\", DEFAULT_RESTAURANT_SLUG)             .maybeSingle();            if (!"
+      },
+      {
+        "file": "server/supabase.ts",
+        "match": ".from(\"restaurants\")",
+        "context": "           .select(\"id\")           .order(\"created_at\", { ascending: true })           .limit(1)           .maybeSingle("
+      }
+    ],
+    "sql_refs": []
+  },
+  {
+    "table": "analytics_events",
+    "count": 1,
+    "files": [["server/analytics.ts", 1]],
+    "operations": ["INSERT"],
+    "supabase_refs": [
+      {
+        "file": "server/analytics.ts",
+        "match": ".from(\"analytics_events\")",
+        "context": ".insert({     event_type: params.eventType,     schema_version: ANALYTICS_SCHEMA_VERSION,     restaurant_id: params.rest"
+      }
+    ],
+    "sql_refs": []
+  },
+  {
+    "table": "booking_versions",
+    "count": 1,
+    "files": [["server/bookingHistory.ts", 1]],
+    "operations": ["SELECT"],
+    "supabase_refs": [
+      {
+        "file": "server/bookingHistory.ts",
+        "match": ".from('booking_versions')",
+        "context": "     .select('version_id, booking_id, restaurant_id, change_type, changed_by, changed_at, old_data, new_data')     .eq('"
+      }
+    ],
+    "sql_refs": []
+  },
+  {
+    "table": "loyalty_programs",
+    "count": 1,
+    "files": [["server/loyalty.ts", 1]],
+    "operations": ["SELECT"],
+    "supabase_refs": [
+      {
+        "file": "server/loyalty.ts",
+        "match": ".from(\"loyalty_programs\")",
+        "context": "     .select(\"*\")     .eq(\"restaurant_id\", restaurantId)     .eq(\"is_active\", true)     .maybeSingle();    if (error && "
+      }
+    ],
+    "sql_refs": []
+  },
+  {
+    "table": "observability_events",
+    "count": 1,
+    "files": [["server/observability.ts", 1]],
+    "operations": ["INSERT"],
+    "supabase_refs": [
+      {
+        "file": "server/observability.ts",
+        "match": ".from(\"observability_events\")",
+        "context": ".insert({       source: params.source,       event_type: params.eventType,       severity: params.severity ?? \"info\",   "
+      }
+    ],
+    "sql_refs": []
+  },
+  {
+    "table": "availability_rules",
+    "count": 0,
+    "files": [],
+    "operations": [],
+    "supabase_refs": [],
+    "sql_refs": []
+  },
+  {
+    "table": "restaurant_areas",
+    "count": 0,
+    "files": [],
+    "operations": [],
+    "supabase_refs": [],
+    "sql_refs": []
+  },
+  {
+    "table": "reviews",
+    "count": 0,
+    "files": [],
+    "operations": [],
+    "supabase_refs": [],
+    "sql_refs": []
+  }
+]
