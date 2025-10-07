@@ -19,12 +19,12 @@
 
 ## US-002 — Booking Wizard Steps 1–4
 
-- [ ] Audit existing wizard wiring in Next app; ensure SPA mounts correctly.
+- [x] Audit existing wizard wiring in Next app; ensure SPA mounts correctly.
 - [x] Align wizard fixtures and query hydration for tests.
-- [ ] Implement Plan step UI (calendar, party selector, time grid).
-- [ ] Ensure Details step validation UX matches spec (placeholders, focus).
-- [ ] Finalise Review step summary + analytics.
-- [ ] Hook Confirmation mutation with optimistic UI.
+- [x] Implement Plan step UI (calendar, party selector, time grid).
+- [x] Ensure Details step validation UX matches spec (placeholders, focus).
+- [x] Finalise Review step summary + analytics.
+- [x] Hook Confirmation mutation with optimistic UI.
 - [x] Add Vitest coverage for new logic (analytics, validation, DI).
 - [ ] Add Playwright flow completing booking <2 mins (mobile + desktop).
 
