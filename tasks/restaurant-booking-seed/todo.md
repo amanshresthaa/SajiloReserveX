@@ -1,0 +1,4 @@
+- [x] Create/prepare `supabase/seed.sql` with truncation and restaurant inserts
+- [x] Insert generated customer records (including special email per restaurant)
+- [x] Insert 150 bookings per restaurant with correct date distribution
+- [x] Sync verification scripts to new expectations and document verification steps
