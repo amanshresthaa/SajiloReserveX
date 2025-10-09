@@ -14,6 +14,7 @@ Deliver a richer `/ops` dashboard that equips restaurant teams with actionable s
 - [ ] Users can filter bookings with accessible controls for `All`, `Upcoming`, `Show`, and `No show`.
 - [ ] Schedule displays customer, start/end time, guest count, notes preview, status, and a “Details” action exposing contact/reference data.
 - [ ] Bookings whose start time has passed but are still pending/confirmed are flagged for follow-up.
+- [ ] Calendar popover allows selecting any service day with guest-volume heatmap cues.
 - [ ] Tests cover summary aggregation (including new fields) and timezone handling; verification doc captures automated + manual outcomes.
 
 ## Architecture
@@ -130,3 +131,12 @@ type TodayBookingsSummary = {
 - Should filter selections persist across sessions/URL (future enhancement)?
 - Need dedicated styling for cancelled rows beyond badge (e.g., muted text)? pending design direction.
 - Any additional metrics (e.g., revenue) required for near-term roadmap?
+- Calendar view: should we embed a full scheduler grid or start with a lightweight date picker that reuses the existing summary card?
+- Heatmap thresholds: keep the 60-cover baseline static, or should it key off restaurant capacity?
+
+## Future Iterations (Calendar View Exploration)
+
+- Generalise `getTodayBookingsSummary` into `getBookingsSummaryForDate(restaurantId, date)` so the same aggregation powers any selected day.
+- Introduce a top-level date selector (likely Shadcn `Calendar` or `DatePicker`) that operates in the restaurant’s timezone and feeds the chosen date into the server component.
+- Consider progressive enhancement: default to “today” but allow navigating to past/future dates, reflecting the selection in the URL (query param) for deep links.
+- Extend metrics to describe the selected date (e.g., “Bookings for 12 Oct 2025”) and adjust empty states accordingly.

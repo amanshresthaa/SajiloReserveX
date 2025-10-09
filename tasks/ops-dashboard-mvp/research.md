@@ -62,3 +62,4 @@
 - Ensure UI copy and empty/error states align with ops tone established in existing components; reuse SHADCN primitives for consistency and accessibility.
 - For past-start detection, leverage `Intl.DateTimeFormat` with restaurant timezone to derive current `HH:mm` strings, keeping comparisons lightweight without additional libraries.
 - Introduced `app/api/ops/bookings/[id]/status` for dashboard-only status toggles (show/no show) with Supabase membership checks.
+- Calendar view will require a generalized `getBookingsSummaryForDate(restaurantId, date)` helper (likely delegating to current summary logic) plus a timezone-aware date-picker or calendar component (consider Shadcn `Calendar` or `DatePicker`) that respects RSC constraints.

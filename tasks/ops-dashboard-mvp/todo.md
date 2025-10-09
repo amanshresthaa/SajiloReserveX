@@ -14,6 +14,8 @@
 
 ## UI/UX
 
+- [x] Add calendar-based date selector for viewing other service days
+- [x] Overlay heatmap intensity cues on calendar days based on covers
 - [x] Add filter controls for All / Upcoming / Show / No show
 - [x] Render responsive desktop table + mobile cards with expanded booking fields
 - [x] Implement booking detail dialog (notes, contacts, metadata)

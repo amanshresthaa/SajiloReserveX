@@ -8,6 +8,8 @@
 - [x] Supabase error surfaces developer-visible logs without crashing UI _(verified via code inspection + new error-handling path in `app/(ops)/ops/page.tsx`)_
 - [ ] Past-start bookings surface attention badge prompting follow-up _(pending manual QA)_
 - [ ] Show/No-show toggle updates Supabase status after confirmation _(pending manual QA)_
+- [ ] Selecting a different date via calendar updates bookings and metrics _(pending manual QA)_
+- [ ] Calendar heatmap reflects guest volume intensity (60 covers baseline) _(pending manual QA)_
 
 ## Accessibility Checklist
 
@@ -36,7 +38,7 @@
 
 ## Summary
 
-Automation confirms the enriched booking summary (contact/reference/detail fields plus upcoming/completed/no-show totals) still aggregates correctly, and linting passes after the redesigned dashboard shipped filter controls, responsive layouts, detail dialogs, and past-start attention states. The `/ops` server page continues to fail gracefully on Supabase errors. Remaining work: execute manual QA against seeded data (keyboard travel, responsive table/cards, filter counts, attention badges, dialog content), resolve the upstream `CustomerNavbar` unit test failure (outside this effort), and consider improving the Vitest command ergonomics for targeted runs.
+Automation confirms the enriched booking summary (contact/reference/detail fields plus upcoming/completed/no-show totals) still aggregates correctly, and linting passes after the dashboard gained calendar-based date selection, responsive metrics, detail dialogs, and past-start attention states. The `/ops` server page continues to fail gracefully on Supabase errors. Remaining work: execute manual QA against seeded data (calendar navigation, keyboard travel, responsive table/cards, filter counts, attention badges, dialog content), resolve the upstream `CustomerNavbar` unit test failure (outside this effort), and consider improving the Vitest command ergonomics for targeted runs.
 
 ## Sign-off
 
