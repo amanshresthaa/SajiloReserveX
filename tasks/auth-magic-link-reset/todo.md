@@ -1,4 +1,0 @@
-- [x] Update SignInForm to target `/api/auth/callback` with redirected param
-- [x] Enhance `/api/auth/callback` to honor redirect + validate destination
-- [x] Replace owner sign-in UI with magic-link flow and remove password routes/schemas
-- [x] Clean up analytics/docs/tests for password removal; add new magic-link tests
