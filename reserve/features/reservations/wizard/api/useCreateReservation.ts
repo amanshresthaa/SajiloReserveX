@@ -31,8 +31,8 @@ export function useCreateReservation() {
         seating: draft.seating,
         notes: draft.notes ?? undefined,
         name: draft.name,
-        email: draft.email,
-        phone: draft.phone,
+        email: draft.email ?? undefined,
+        phone: draft.phone ?? undefined,
         marketingOptIn: draft.marketingOptIn,
       };
 
@@ -75,6 +75,7 @@ export function useCreateReservation() {
         code: error?.code ?? 'UNKNOWN',
         status: error?.status,
         bookingId: variables?.bookingId ?? null,
+        context: 'customer' as const,
       };
       track('wizard_submit_failed', payload);
       emit('wizard_submit_failed', payload);
