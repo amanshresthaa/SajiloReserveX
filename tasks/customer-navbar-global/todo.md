@@ -1,5 +1,0 @@
-- [x] Render `CustomerNavbar` from `LayoutClient` for global availability.
-- [x] Remove home-page specific navbar import.
-- [x] Make navbar container sticky with correct stacking context.
-- [x] Adjust downstream layouts if top spacing issues appear.
-- [x] Run targeted tests and `pnpm run build` for verification.

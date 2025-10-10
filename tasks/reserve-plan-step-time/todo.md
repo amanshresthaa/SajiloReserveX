@@ -1,7 +1,0 @@
-- [x] Update wizard time slot tests to expect 15-minute intervals (counts, last slot, labels).
-- [x] Refresh UI/tests referencing half-hour values to quarter-hour equivalents.
-- [x] Set reservation config interval to 15 minutes.
-- [x] Replace half-hour normalization in `usePlanStepForm` with quarter-hour logic.
-- [x] Change time input step attribute to 900 seconds.
-- [x] Make plan step accordion collapsed by default.
-- [x] Run relevant test suites and perform spot checks.

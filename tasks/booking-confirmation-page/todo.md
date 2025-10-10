@@ -1,7 +1,0 @@
-- [x] Assess loader & data contracts; list required server props (json-ld, venue snapshot).
-- [x] Extend `/reserve/[reservationId]` loader to compute structured data + pass props with hydration intact.
-- [x] Update `ReservationDetailClient` to consume new props, align share payload + alerts.
-- [x] Add Vitest coverage for analytics emissions & offline UX.
-- [x] Add Playwright e2e coverage for share CTA success + offline alert.
-- [x] Run targeted Vitest + Playwright suites; review typecheck if time.
-- [x] Capture findings/risks in task notes.
