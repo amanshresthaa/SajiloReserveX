@@ -18,6 +18,9 @@
 - Frontend availability uses `/api/restaurants/[slug]/schedule`, which reuses the same helper, ensuring UI slots are always within operating hours.
 - Shared time utilities in `reserve/shared/time/time.ts` provide `normalizeTime`, `toMinutes`, and slot generation helpers consumed on both client and server.
 - Booking end-time logic lives in `deriveEndTime` within `server/bookings.ts`, deriving the finish time based on inferred booking type.
+- `useTimeSlots` hook leverages React Query to fetch the schedule for the active date, returning `slots`, `schedule`, and `serviceAvailability`, but does not expose a derived `hasAvailability` state.
+- `Calendar24Field` disables suggestions whose `slot.disabled` flag is `true` but only prevents selecting dates before `minDate`; closed or fully booked days remain selectable.
+- `usePlanStepForm` keeps the last chosen `time` even when a newly selected date has zero valid slots, so the wizard "Continue" CTA can remain enabled despite no availability.
 
 ## External Resources
 
@@ -32,11 +35,14 @@
 - Backend currently infers "lunch"/"dinner" booking types from the submitted time unless explicitly "drinks"; validation must preserve this flow.
 - Route handlers should reuse the service Supabase client obtained via `getServiceSupabaseClient` to avoid redundant connections when fetching schedule data.
 - Guests can call the API directly, so backend validation must block invalid requests even if the UI remains stricter.
+- Calendar UX must keep closed dates inaccessible (e.g., Sundays/Mondays) while still allowing overrides (holidays) to be communicated; `react-day-picker` supports matcher arrays/functions for the `disabled` prop.
+- React Hook Form errors determine `formState.isValid`; clearing the time field or setting a manual error will automatically disable the wizard action buttons.
 
 ## Open Questions
 
 - Should we also reject bookings whose derived end time extends past `closes_at`, even if the start time is within hours? _(Resolved: reject to avoid overruns.)_
 - Do we need to cross-check requested booking type against service periods (e.g., lunch vs dinner windows) or is open/close enforcement sufficient?
+- What is the best caching strategy for disabled dates so we avoid repeatedly looking up the same closed day when a guest reopens the calendar?
 
 ## Recommendations
 
@@ -45,6 +51,9 @@
 - Normalize the requested `time` and ensure it matches a computed slot; treat absence as an out-of-hours/invalid-time error.
 - Optionally compare the derived end time to `closesAt` using `toMinutes` if the policy requires bookings to finish before closing.
 - Return structured error payloads (e.g., `{ error: 'Outside operating hours' }`) so the frontend can surface actionable feedback.
+- Extend plan-step state with a derived `hasAvailableSlots` flag, clear the selected time when false, and surface inline errors to block progression.
+- Cache unavailable dates client-side (e.g., in a `Set`) and feed them into the calendar `disabled` matcher so previously rejected days become instantly blocked.
+- Show a contextual alert explaining the closure/unavailability and guiding guests to pick a different date or time.
 
 ## Additional Findings (2025-10-11)
 
