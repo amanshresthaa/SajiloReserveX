@@ -87,6 +87,6 @@ Maintain existing API response shapes; introduce converters in services to map t
 
 ## Rollout
 
-- Feature flag: wrap new Ops shell in `config.flags.opsV5` (defaults to `false` until QA complete); toggle for staged rollout.
+- Feature flag: legacy toggle removed — Ops v5 experience now ships by default.
 - Exposure: enable in staging -> internal beta -> 100%.
 - Monitoring: watch Supabase logs for API errors + client Sentry for Ops route issues. Update `verification.md` with findings.

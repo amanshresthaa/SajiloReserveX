@@ -3,7 +3,7 @@
 ## Setup
 
 - [x] Scaffold `src/` directory structure (components/common, components/features, hooks, contexts, services, utils, types).
-- [x] Introduce `config.flags.opsV5` feature toggle wired through env/config.
+- [x] Remove legacy ops feature flag toggle; new architecture is always enabled.
 - [x] Create Ops task barrel files (index exports) for new structure.
 
 ## Core
