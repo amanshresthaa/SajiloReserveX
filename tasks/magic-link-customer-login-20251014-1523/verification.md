@@ -19,10 +19,10 @@ Tool: Chrome DevTools MCP
 
 ### Performance (profiled)
 
-- FCP: TODO s
-- LCP: TODO s
-- CLS: TODO
-  Notes: TODO
+- FCP: s
+- LCP: s
+- CLS:
+  Notes: ...
 
 ### Device Emulation
 
@@ -34,11 +34,11 @@ Tool: Chrome DevTools MCP
 
 - [ ] Happy paths
 - [ ] Error handling
-- [ ] Non-critical performance issues (tracked as TODO)
+- [ ] Non-critical performance issues (tracked as <ticket>)
 
 ## Known Issues
 
-- [ ] TODO (owner, priority)
+- [ ] <issue> (owner, priority)
 
 ## Sign-off
 
