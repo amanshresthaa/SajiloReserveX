@@ -56,3 +56,45 @@
 - **Observability**: Instrument auto-assignment to capture candidate list (top 3), chosen assignment, scores, and skip reasons. Use JSON logs + `recordObservabilityEvent` with new event types (e.g., `capacity.assignment.decision`). Extend metrics module to track counters/histograms; if OpenTelemetry not already wired, provide no-op fallback to avoid runtime failures.
 - **Dashboard**: Provide API endpoint to aggregate metrics (counts, overage averages, merge rate, skip reasons by day) guarded by `feature.ops.metrics`. On UI, create new section within Ops dashboard (likely `Operations Insights`) with charts (bar/line) using existing `Card`/`Skeleton`, ensuring accessible colors. Cache via React Query with feature flag gating.
 - **Documentation**: Update README/Docs if needed to describe allowed capacities + new features. We'll note any assumptions or follow-ups in task folder.
+
+---
+
+## Coverage & Performance Follow-Up (2025-10-21)
+
+1. **Analytics events (`server/analytics.ts`)**
+   - `insertAnalyticsEvent` injects `ANALYTICS_SCHEMA_VERSION` into both the database column and payload.
+   - Booking helpers translate camelCase inputs to snake_case and default optional loyalty/idempotency fields.
+   - No automated tests currently assert payload shape or error propagation.
+
+2. **Restaurant details workflow (`server/restaurants/details.ts`, `update.ts`)**
+   - `sanitizeString` trims/null-coerces; `validateDetailsInput` enforces slug regex, positive capacity, and timezone validity via `assertValidTimezone`.
+   - `updateRestaurantDetails` merges existing record with overrides prior to validation, then delegates to `updateRestaurant`.
+   - Need mocked Supabase client/update dependency to confirm outgoing payload and rejection paths for invalid slug/timezone.
+
+3. **Auth guards (`server/auth/guards.ts`)**
+   - `requireSession` wraps Supabase `getUser`, distinguishing transport errors (500) from unauthenticated callers (401).
+   - `requireRestaurantMember` remaps membership errors (`MEMBERSHIP_NOT_FOUND`, `MEMBERSHIP_ROLE_DENIED`) to GuardError 403; unknown failures escalate to 500.
+   - `listUserRestaurantMemberships` proxies `fetchUserMemberships` and should raise GuardError on failure.
+   - No direct unit suite yet; downstream access tests only cover happy paths.
+
+4. **Reserve wizard reducer (`reserve/features/reservations/wizard/model/reducer.ts`)**
+   - Key transitions: `SET_CONFIRMATION` normalises time/marketing opt-in, `START_EDIT` hydrates form state, `RESET_FORM` preserves remembered contacts, `HYDRATE_CONTACTS` toggles remember flag.
+   - Deterministic fixtures required; leverage actual normalisers (no DOM).
+
+5. **Rate limiter (`server/security/rate-limit.ts`)**
+   - Lazy Upstash client initialisation with single-warning fallback to memory store.
+   - Memory path tracks identifier/window counts; Redis branch sets TTL and falls back on errors/NaN.
+   - Tests must reset `lib/env` cache (`vi.resetModules`) and spy on `console`.
+
+6. **Past booking guard (`server/bookings/pastTimeValidation.ts`)**
+   - `PastBookingError` includes rounded `timeDeltaMinutes`; catch-all wraps unexpected failures into generic Error.
+   - Need regression for invalid timezone path and ensure admin override bypass works end-to-end.
+
+7. **Capacity selector stress (`server/capacity/selector.ts`)**
+   - BFS constrained by `maxTables`, yet dense adjacency can inflate diagnostics.
+   - Build synthetic dataset (~30–40 tables, dense adjacency) to assert `mergeCombosEvaluated` stays < 5k and runtime ≲150 ms (measure with `process.hrtime.bigint`).
+
+8. **Risks / Open Questions**
+   - Resetting env cache for rate limiter tests is non-trivial; must ensure `cachedEnv` cleared between imports.
+   - Performance assertions may be flaky—pair runtime checks with diagnostics counts, document environment assumptions.
+   - Avoid importing full Next.js request objects in unit tests; mock minimal interfaces where needed.

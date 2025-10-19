@@ -37,6 +37,19 @@
 - Deviations:
   - Will document if migration ordering conflicts with existing seeds or requires manual data correction.
 
+## Coverage Extensions (2025-10-21)
+
+- [x] Add analytics event emitter unit tests (created/cancelled happy path + error propagation).
+- [x] Add restaurant details/update unit tests covering sanitisation + invalid inputs.
+- [x] Add auth guard unit tests for `requireSession`, `requireRestaurantMember`, `listUserRestaurantMemberships`.
+- [x] Add reservation wizard reducer unit tests for core transitions.
+- [x] Add rate limiter unit tests (redis success, fallback warning, window rollover).
+- [x] Strengthen PastBooking guard coverage (invalid timezone + override bypass).
+
+## Performance
+
+- [x] Implement selector stress test capturing diagnostics/runtime and assert thresholds.
+
 ## Batched Questions (if any)
 
 - None currently; will capture during implementation if blockers surface.

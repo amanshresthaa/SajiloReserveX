@@ -11,6 +11,8 @@ We will equip allocator flows with deterministic, explainable seat selection and
 - [ ] `merge_group_members` trigger rejects disconnected or cross-zone merges; regression tests prove impossible to save invalid combinations.
 - [ ] Ops dashboard (behind `feature.ops.metrics`) renders daily metrics (assignments, skips by reason, avg overage, merge rate, time-to-assign) and skip reasons for sampled bookings.
 - [ ] Structured logs + counters emitted for every auto-assignment attempt and verified via local test harness (mocked telemetry) without breaking existing logging.
+- [ ] Targeted unit suites cover analytics event helpers, auth guards, restaurant detail updates, reservation reducer, rate limiter, and PastBooking guard edge cases with ≥90% branch coverage.
+- [ ] Capacity selector stress test documents diagnostics/runtime under dense adjacency scenarios and stays within agreed thresholds.
 
 ## Architecture & Components
 
@@ -90,10 +92,17 @@ We will equip allocator flows with deterministic, explainable seat selection and
   - Scoring function monotonicity & determinism via property tests (Vitest `test.each` + seeded RNG).
   - Policy getter ensuring defaults + overrides.
   - Allowed capacities API validators (mock Supabase).
+  - Analytics event emitters insert correct schema version + payload (mock Supabase insert).
+  - Restaurant detail update workflow sanitises inputs, enforces slug/timezone, and forwards canonical payload.
+  - Auth guards wrap Supabase/membership errors into `GuardError` with correct status codes.
+  - Reservation wizard reducer transitions (`SET_CONFIRMATION`, `START_EDIT`, `RESET_FORM`, `HYDRATE_CONTACTS`) behave deterministically.
+  - Rate limiter covers redis success, fallback warnings, and memory window rollover.
+  - Past booking guard verifies invalid timezone path + override bypass.
 - **Integration**:
   - `autoAssignTablesForDate` end-to-end with mock client verifying logs/metrics instrumentation & selection quality.
   - API route tests for allowed capacities + metrics (using `next-test-api-route-handler` style).
   - Database migration review via `pnpm lint:supabase` equivalent (if available) or SQL static analysis.
+  - Synthetic stress harness for selector evaluating dense adjacency graphs, recording runtime + diagnostics.
 - **E2E**:
   - Playwright scenario toggling new feature flag verifying UI surfaces metrics + skip reasons (if infrastructure allows).
 - **Accessibility**:

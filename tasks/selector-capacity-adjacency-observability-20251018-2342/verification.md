@@ -22,7 +22,7 @@ Tool: Chrome DevTools MCP
 - FCP: _TBD_ s
 - LCP: _TBD_ s
 - CLS: _TBD_
-  Notes: ...
+  Notes: Selector stress harness (`36` tables, neighbour span `5`) evaluated `540` merge combos in ≈`9.09 ms` (`pnpm tsx --tsconfig tsconfig.json /tmp/capacity-perf-sample.ts`).
 
 ### Device Emulation
 
@@ -46,6 +46,9 @@ Tool: Chrome DevTools MCP
   - `pnpm vitest run tests/server/capacity/selector.scoring.test.ts --config vitest.config.ts`
   - `pnpm vitest run tests/server/capacity/autoAssignTables.test.ts --config vitest.config.ts`
   - `pnpm vitest run src/app/api/ops/allowed-capacities/route.test.ts src/app/api/ops/metrics/selector/route.test.ts --config vitest.config.ts`
+  - `pnpm vitest run tests/server/analytics/events.test.ts tests/server/security/rate-limit.test.ts tests/server/auth/guards.test.ts tests/server/capacity/selector.performance.test.ts tests/server/bookings/pastTimeValidation.test.ts --config vitest.config.ts`
+  - `pnpm vitest run tests/server/restaurants/details.test.ts --config vitest.config.ts`
+  - `pnpm vitest run tests/server/reserve/wizardReducer.test.ts --config vitest.config.ts`
 - SQL trigger verification plan:
   - Use `SELECT are_tables_connected(:restaurant_id, :table_ids)` to pre-compute the merge graph and confirm adjacency depth prior to enabling groups.
   - Attempt an `INSERT` into `merge_group_members` where one table lacks adjacency to the anchor and expect the trigger to raise `merge_group_requires_adjacency`.
