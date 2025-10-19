@@ -45,6 +45,7 @@ Tool: Chrome DevTools MCP
 - Automated tests executed:
   - `pnpm vitest run tests/server/capacity/selector.scoring.test.ts --config vitest.config.ts`
   - `pnpm vitest run tests/server/capacity/autoAssignTables.test.ts --config vitest.config.ts`
+  - `pnpm vitest run src/app/api/ops/allowed-capacities/route.test.ts src/app/api/ops/metrics/selector/route.test.ts --config vitest.config.ts`
 - Pending manual QA steps:
   - Enable `FEATURE_SELECTOR_SCORING`, `FEATURE_CAPACITY_CONFIG`, `FEATURE_OPS_METRICS`, `FEATURE_ADJACENCY_VALIDATION` in staging.
   - Validate allowed capacity management UI in Ops dashboard (add/remove capacities, ensure tables respect list).

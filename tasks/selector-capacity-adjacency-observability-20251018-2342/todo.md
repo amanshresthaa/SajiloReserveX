@@ -24,7 +24,7 @@
 
 - [x] Property tests for scoring (prefers singles, monotonic overage, deterministic).
 - [x] Unit tests for BFS generator + weight config.
-- [ ] API route tests for allowed capacities + selector metrics.
+- [x] API route tests for allowed capacities + selector metrics.
 - [ ] Update/extend auto-assign integration tests to validate scoring + logging.
 - [ ] Add SQL test plan / reasoning for adjacency trigger (document in verification).
 - [ ] Frontend tests (React Testing Library) verifying new dashboard renders & handles empty/error states.
