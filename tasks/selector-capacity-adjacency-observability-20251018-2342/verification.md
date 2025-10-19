@@ -46,6 +46,12 @@ Tool: Chrome DevTools MCP
   - `pnpm vitest run tests/server/capacity/selector.scoring.test.ts --config vitest.config.ts`
   - `pnpm vitest run tests/server/capacity/autoAssignTables.test.ts --config vitest.config.ts`
   - `pnpm vitest run src/app/api/ops/allowed-capacities/route.test.ts src/app/api/ops/metrics/selector/route.test.ts --config vitest.config.ts`
+- SQL trigger verification plan:
+  - Use `SELECT are_tables_connected(:restaurant_id, :table_ids)` to pre-compute the merge graph and confirm adjacency depth prior to enabling groups.
+  - Attempt an `INSERT` into `merge_group_members` where one table lacks adjacency to the anchor and expect the trigger to raise `merge_group_requires_adjacency`.
+  - Validate successful cases by inserting an allowed pair, then deleting a member and re-querying `are_tables_connected` to ensure the trigger prevents orphaned entries.
+- Frontend regression coverage:
+  - `pnpm vitest run tests/ops/dashboard.metrics.test.tsx --config vitest.config.ts`
 - Pending manual QA steps:
   - Enable `FEATURE_SELECTOR_SCORING`, `FEATURE_CAPACITY_CONFIG`, `FEATURE_OPS_METRICS`, `FEATURE_ADJACENCY_VALIDATION` in staging.
   - Validate allowed capacity management UI in Ops dashboard (add/remove capacities, ensure tables respect list).
