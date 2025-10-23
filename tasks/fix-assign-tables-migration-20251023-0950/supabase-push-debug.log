@@ -1,0 +1,313 @@
+Using project host: supabase.co
+Loading project ref from file: supabase/.temp/project-ref
+Using connection pooler: postgresql://postgres.mqtchcaavsucsdjskptc:[YOUR-PASSWORD]@aws-1-eu-north-1.pooler.supabase.com:6543/postgres
+Supabase CLI 2.48.3
+Connecting to remote database...
+2025/10/23 10:53:30 PG Send: {"Type":"StartupMessage","ProtocolVersion":196608,"Parameters":{"database":"postgres","user":"postgres.mqtchcaavsucsdjskptc"}}
+2025/10/23 10:53:31 PG Recv: {"Type":"AuthenticationSASL","AuthMechanisms":["SCRAM-SHA-256"]}
+2025/10/23 10:53:31 PG Send: {"Type":"SASLInitialResponse","AuthMechanism":"SCRAM-SHA-256","Data":"n,,n=,r=H0WosXR82Jy31O+A+WEjGf21"}
+2025/10/23 10:53:31 PG Recv: {"Type":"AuthenticationSASLContinue","Data":"r=H0WosXR82Jy31O+A+WEjGf21RUJwbXBMU1JzaVdJU0xTWG1kQzlibWdRbHVrSQ==,s=sa//Gr9DF09GKYnKq/TqNQ==,i=4096"}
+2025/10/23 10:53:31 PG Send: {"Type":"SASLResponse","Data":"c=biws,r=H0WosXR82Jy31O+A+WEjGf21RUJwbXBMU1JzaVdJU0xTWG1kQzlibWdRbHVrSQ==,p=9BV+9HUgu/bZRqTaVjPP9X9quD/OTMi5gGmohmuKWAs="}
+2025/10/23 10:53:31 PG Recv: {"Type":"AuthenticationSASLFinal","Data":"v=8kr1gL5mZhL8nsDxmr1+YsrMWPA6D6mUh0BR9QMi/dI="}
+2025/10/23 10:53:31 PG Recv: {"Type":"AuthenticationOK"}
+2025/10/23 10:53:31 PG Recv: {"Type":"ParameterStatus","Name":"DateStyle","Value":"ISO, MDY"}
+2025/10/23 10:53:31 PG Recv: {"Type":"ParameterStatus","Name":"IntervalStyle","Value":"postgres"}
+2025/10/23 10:53:31 PG Recv: {"Type":"ParameterStatus","Name":"TimeZone","Value":"UTC"}
+2025/10/23 10:53:31 PG Recv: {"Type":"ParameterStatus","Name":"application_name","Value":"Supavisor"}
+2025/10/23 10:53:31 PG Recv: {"Type":"ParameterStatus","Name":"client_encoding","Value":"UTF8"}
+2025/10/23 10:53:31 PG Recv: {"Type":"ParameterStatus","Name":"default_transaction_read_only","Value":"off"}
+2025/10/23 10:53:31 PG Recv: {"Type":"ParameterStatus","Name":"in_hot_standby","Value":"off"}
+2025/10/23 10:53:31 PG Recv: {"Type":"ParameterStatus","Name":"integer_datetimes","Value":"on"}
+2025/10/23 10:53:31 PG Recv: {"Type":"ParameterStatus","Name":"is_superuser","Value":"off"}
+2025/10/23 10:53:31 PG Recv: {"Type":"ParameterStatus","Name":"scram_iterations","Value":"4096"}
+2025/10/23 10:53:31 PG Recv: {"Type":"ParameterStatus","Name":"server_encoding","Value":"UTF8"}
+2025/10/23 10:53:31 PG Recv: {"Type":"ParameterStatus","Name":"server_version","Value":"17.4"}
+2025/10/23 10:53:31 PG Recv: {"Type":"ParameterStatus","Name":"session_authorization","Value":"postgres"}
+2025/10/23 10:53:31 PG Recv: {"Type":"ParameterStatus","Name":"standard_conforming_strings","Value":"on"}
+2025/10/23 10:53:31 PG Recv: {"Type":"BackendKeyData","ProcessID":26460899,"SecretKey":2990067588}
+2025/10/23 10:53:31 PG Recv: {"Type":"ReadyForQuery","TxStatus":"I"}
+2025/10/23 10:53:31 PG Send: {"Type":"Parse","Name":"lrupsc_1_0","Query":"SELECT version FROM supabase_migrations.schema_migrations ORDER BY version","ParameterOIDs":null}
+2025/10/23 10:53:31 PG Send: {"Type":"Describe","ObjectType":"S","Name":"lrupsc_1_0"}
+2025/10/23 10:53:31 PG Send: {"Type":"Sync"}
+2025/10/23 10:53:32 PG Recv: {"Type":"ParseComplete"}
+2025/10/23 10:53:32 PG Recv: {"Type":"ParameterDescription","ParameterOIDs":[]}
+2025/10/23 10:53:32 PG Recv: {"Type":"RowDescription","Fields":[{"Name":"version","TableOID":93985,"TableAttributeNumber":1,"DataTypeOID":25,"DataTypeSize":-1,"TypeModifier":-1,"Format":0}]}
+2025/10/23 10:53:32 PG Recv: {"Type":"ReadyForQuery","TxStatus":"I"}
+2025/10/23 10:53:32 PG Send: {"Type":"Bind","DestinationPortal":"","PreparedStatement":"lrupsc_1_0","ParameterFormatCodes":null,"Parameters":[],"ResultFormatCodes":[0]}
+2025/10/23 10:53:32 PG Send: {"Type":"Describe","ObjectType":"P","Name":""}
+2025/10/23 10:53:32 PG Send: {"Type":"Execute","Portal":"","MaxRows":0}
+2025/10/23 10:53:32 PG Send: {"Type":"Sync"}
+2025/10/23 10:53:32 PG Recv: {"Type":"BindComplete"}
+2025/10/23 10:53:32 PG Recv: {"Type":"RowDescription","Fields":[{"Name":"version","TableOID":93985,"TableAttributeNumber":1,"DataTypeOID":25,"DataTypeSize":-1,"TypeModifier":-1,"Format":0}]}
+2025/10/23 10:53:32 PG Recv: {"Type":"DataRow","Values":[{"text":"20251019102432"}]}
+2025/10/23 10:53:32 PG Recv: {"Type":"DataRow","Values":[{"text":"20251020140700"}]}
+2025/10/23 10:53:32 PG Recv: {"Type":"DataRow","Values":[{"text":"20251020193000"}]}
+2025/10/23 10:53:32 PG Recv: {"Type":"DataRow","Values":[{"text":"20251020232438"}]}
+2025/10/23 10:53:32 PG Recv: {"Type":"DataRow","Values":[{"text":"20251020235523"}]}
+2025/10/23 10:53:32 PG Recv: {"Type":"DataRow","Values":[{"text":"20251021094500"}]}
+2025/10/23 10:53:32 PG Recv: {"Type":"DataRow","Values":[{"text":"20251021094501"}]}
+2025/10/23 10:53:32 PG Recv: {"Type":"DataRow","Values":[{"text":"20251021094502"}]}
+2025/10/23 10:53:32 PG Recv: {"Type":"DataRow","Values":[{"text":"20251021094503"}]}
+2025/10/23 10:53:32 PG Recv: {"Type":"CommandComplete","CommandTag":"SELECT 9"}
+2025/10/23 10:53:32 PG Recv: {"Type":"ReadyForQuery","TxStatus":"I"}
+Do you want to push these migrations to the remote database?
+ • 20251021094504_recreate_assign_tables_atomic.sql
+ • 20251021094505_recreate_unassign_tables_atomic.sql
+ • 20251021152000_add_update_booking_capacity_rpc.sql
+ • 20251022224206_add_last_seating_buffer.sql
+
+ [Y/n] 
+2025/10/23 10:53:32 PG Send: {"Type":"Parse","Name":"","Query":"SET lock_timeout = '4s'","ParameterOIDs":null}
+2025/10/23 10:53:32 PG Send: {"Type":"Bind","DestinationPortal":"","PreparedStatement":"","ParameterFormatCodes":null,"Parameters":[],"ResultFormatCodes":[]}
+2025/10/23 10:53:32 PG Send: {"Type":"Describe","ObjectType":"P","Name":""}
+2025/10/23 10:53:32 PG Send: {"Type":"Execute","Portal":"","MaxRows":0}
+2025/10/23 10:53:32 PG Send: {"Type":"Parse","Name":"","Query":"CREATE SCHEMA IF NOT EXISTS supabase_migrations","ParameterOIDs":null}
+2025/10/23 10:53:32 PG Send: {"Type":"Bind","DestinationPortal":"","PreparedStatement":"","ParameterFormatCodes":null,"Parameters":[],"ResultFormatCodes":[]}
+2025/10/23 10:53:32 PG Send: {"Type":"Describe","ObjectType":"P","Name":""}
+2025/10/23 10:53:32 PG Send: {"Type":"Execute","Portal":"","MaxRows":0}
+2025/10/23 10:53:32 PG Send: {"Type":"Parse","Name":"","Query":"CREATE TABLE IF NOT EXISTS supabase_migrations.schema_migrations (version text NOT NULL PRIMARY KEY)","ParameterOIDs":null}
+2025/10/23 10:53:32 PG Send: {"Type":"Bind","DestinationPortal":"","PreparedStatement":"","ParameterFormatCodes":null,"Parameters":[],"ResultFormatCodes":[]}
+2025/10/23 10:53:32 PG Send: {"Type":"Describe","ObjectType":"P","Name":""}
+2025/10/23 10:53:32 PG Send: {"Type":"Execute","Portal":"","MaxRows":0}
+2025/10/23 10:53:32 PG Send: {"Type":"Parse","Name":"","Query":"ALTER TABLE supabase_migrations.schema_migrations ADD COLUMN IF NOT EXISTS statements text[]","ParameterOIDs":null}
+2025/10/23 10:53:32 PG Send: {"Type":"Bind","DestinationPortal":"","PreparedStatement":"","ParameterFormatCodes":null,"Parameters":[],"ResultFormatCodes":[]}
+2025/10/23 10:53:32 PG Send: {"Type":"Describe","ObjectType":"P","Name":""}
+2025/10/23 10:53:32 PG Send: {"Type":"Execute","Portal":"","MaxRows":0}
+2025/10/23 10:53:32 PG Send: {"Type":"Parse","Name":"","Query":"ALTER TABLE supabase_migrations.schema_migrations ADD COLUMN IF NOT EXISTS name text","ParameterOIDs":null}
+2025/10/23 10:53:32 PG Send: {"Type":"Bind","DestinationPortal":"","PreparedStatement":"","ParameterFormatCodes":null,"Parameters":[],"ResultFormatCodes":[]}
+2025/10/23 10:53:32 PG Send: {"Type":"Describe","ObjectType":"P","Name":""}
+2025/10/23 10:53:32 PG Send: {"Type":"Execute","Portal":"","MaxRows":0}
+2025/10/23 10:53:32 PG Send: {"Type":"Sync"}
+2025/10/23 10:53:32 PG Recv: {"Type":"ParseComplete"}
+2025/10/23 10:53:32 PG Recv: {"Type":"BindComplete"}
+2025/10/23 10:53:32 PG Recv: {"Type":"NoData"}
+2025/10/23 10:53:32 PG Recv: {"Type":"CommandComplete","CommandTag":"SET"}
+2025/10/23 10:53:32 PG Recv: {"Type":"ParseComplete"}
+2025/10/23 10:53:32 PG Recv: {"Type":"BindComplete"}
+2025/10/23 10:53:32 PG Recv: {"Type":"NoData"}
+2025/10/23 10:53:32 PG Recv: {"Severity":"NOTICE","SeverityUnlocalized":"NOTICE","Code":"42P06","Message":"schema \"supabase_migrations\" already exists, skipping","Detail":"","Hint":"","Position":0,"InternalPosition":0,"InternalQuery":"","Where":"","SchemaName":"","TableName":"","ColumnName":"","DataTypeName":"","ConstraintName":"","File":"schemacmds.c","Line":132,"Routine":"CreateSchemaCommand","UnknownFields":null}
+2025/10/23 10:53:32 PG Recv: {"Type":"CommandComplete","CommandTag":"CREATE SCHEMA"}
+2025/10/23 10:53:32 PG Recv: {"Type":"ParseComplete"}
+2025/10/23 10:53:32 PG Recv: {"Type":"BindComplete"}
+2025/10/23 10:53:32 PG Recv: {"Type":"NoData"}
+2025/10/23 10:53:32 PG Recv: {"Severity":"NOTICE","SeverityUnlocalized":"NOTICE","Code":"42P07","Message":"relation \"schema_migrations\" already exists, skipping","Detail":"","Hint":"","Position":0,"InternalPosition":0,"InternalQuery":"","Where":"","SchemaName":"","TableName":"","ColumnName":"","DataTypeName":"","ConstraintName":"","File":"parse_utilcmd.c","Line":207,"Routine":"transformCreateStmt","UnknownFields":null}
+2025/10/23 10:53:32 PG Recv: {"Type":"CommandComplete","CommandTag":"CREATE TABLE"}
+2025/10/23 10:53:32 PG Recv: {"Type":"ParseComplete"}
+2025/10/23 10:53:32 PG Recv: {"Type":"BindComplete"}
+2025/10/23 10:53:32 PG Recv: {"Type":"NoData"}
+2025/10/23 10:53:32 PG Recv: {"Severity":"NOTICE","SeverityUnlocalized":"NOTICE","Code":"42701","Message":"column \"statements\" of relation \"schema_migrations\" already exists, skipping","Detail":"","Hint":"","Position":0,"InternalPosition":0,"InternalQuery":"","Where":"","SchemaName":"","TableName":"","ColumnName":"","DataTypeName":"","ConstraintName":"","File":"tablecmds.c","Line":7438,"Routine":"check_for_column_name_collision","UnknownFields":null}
+2025/10/23 10:53:32 PG Recv: {"Type":"CommandComplete","CommandTag":"ALTER TABLE"}
+2025/10/23 10:53:32 PG Recv: {"Type":"ParseComplete"}
+2025/10/23 10:53:32 PG Recv: {"Type":"BindComplete"}
+2025/10/23 10:53:32 PG Recv: {"Type":"NoData"}
+2025/10/23 10:53:32 PG Recv: {"Severity":"NOTICE","SeverityUnlocalized":"NOTICE","Code":"42701","Message":"column \"name\" of relation \"schema_migrations\" already exists, skipping","Detail":"","Hint":"","Position":0,"InternalPosition":0,"InternalQuery":"","Where":"","SchemaName":"","TableName":"","ColumnName":"","DataTypeName":"","ConstraintName":"","File":"tablecmds.c","Line":7438,"Routine":"check_for_column_name_collision","UnknownFields":null}
+2025/10/23 10:53:32 PG Recv: {"Type":"CommandComplete","CommandTag":"ALTER TABLE"}
+2025/10/23 10:53:32 PG Recv: {"Type":"ReadyForQuery","TxStatus":"I"}
+Applying migration 20251021094504_recreate_assign_tables_atomic.sql...
+2025/10/23 10:53:32 PG Send: {"Type":"Parse","Name":"","Query":"-- Recreate assign_tables_atomic without merge support\nCREATE FUNCTION public.assign_tables_atomic(\n  p_booking_id uuid,\n  p_table_ids uuid[],\n  p_window tstzrange,\n  p_assigned_by uuid DEFAULT NULL,\n  p_idempotency_key text DEFAULT NULL\n) RETURNS TABLE(table_id uuid, assignment_id uuid)\nLANGUAGE plpgsql\nSECURITY DEFINER\nAS $$\nDECLARE\n  v_booking RECORD;\n  v_restaurant_id uuid;\n  v_target_tables uuid[];\n  v_target_table uuid;\n  v_existing_tables uuid[];\n  v_table RECORD;\n  v_slot_id uuid := NULL;\n  v_now timestamptz := now();\n  v_window tstzrange := p_window;\n  v_assignment_id uuid;\n  v_lock_restaurant int4;\n  v_lock_date int4;\nBEGIN\n  IF p_table_ids IS NULL OR array_length(p_table_ids, 1) = 0 THEN\n    RAISE EXCEPTION 'assign_tables_atomic requires at least one table id'\n      USING ERRCODE = '23514';\n  END IF;\n\n  SELECT array_agg(DISTINCT table_id ORDER BY table_id)\n  INTO v_target_tables\n  FROM unnest(p_table_ids) AS t(table_id);\n\n  IF v_target_tables IS NULL OR array_length(v_target_tables, 1) = 0 THEN\n    RAISE EXCEPTION 'assign_tables_atomic requires at least one valid table id'\n      USING ERRCODE = '23514';\n  END IF;\n\n  IF array_length(v_target_tables, 1) \u003e 1 THEN\n    RAISE EXCEPTION 'assign_tables_atomic only supports a single table after merge removal'\n      USING ERRCODE = '23514';\n  END IF;\n\n  v_target_table := v_target_tables[1];\n\n  SELECT *\n  INTO v_booking\n  FROM public.bookings\n  WHERE id = p_booking_id\n  FOR UPDATE;\n\n  IF NOT FOUND THEN\n    RAISE EXCEPTION 'Booking % not found', p_booking_id\n      USING ERRCODE = 'P0002';\n  END IF;\n\n  v_restaurant_id := v_booking.restaurant_id;\n\n  v_lock_restaurant := hashtext(v_restaurant_id::text);\n  v_lock_date := COALESCE((v_booking.booking_date - DATE '2000-01-01')::int, 0);\n  PERFORM pg_advisory_xact_lock(v_lock_restaurant, v_lock_date);\n\n  IF v_window IS NULL THEN\n    v_window := tstzrange(v_booking.start_at, v_booking.end_at, '[)');\n  END IF;\n\n  IF v_window IS NULL OR lower(v_window) IS NULL OR upper(v_window) IS NULL OR lower(v_window) \u003e= upper(v_window) THEN\n    RAISE EXCEPTION 'Invalid assignment window for booking %', p_booking_id\n      USING ERRCODE = '22000';\n  END IF;\n\n  IF p_idempotency_key IS NOT NULL THEN\n    SELECT array_agg(bta.table_id ORDER BY bta.table_id)\n    INTO v_existing_tables\n    FROM public.booking_table_assignments bta\n    WHERE bta.booking_id = p_booking_id\n      AND bta.idempotency_key = p_idempotency_key;\n\n    IF v_existing_tables IS NOT NULL THEN\n      IF v_existing_tables \u003c\u003e v_target_tables THEN\n        RAISE EXCEPTION 'assign_tables_atomic idempotency key mismatch'\n          USING ERRCODE = 'P0003',\n                DETAIL = 'Idempotency key reuse detected with a different table id';\n      END IF;\n\n      RETURN QUERY\n        SELECT\n          bta.table_id,\n          bta.id AS assignment_id\n        FROM public.booking_table_assignments bta\n        WHERE bta.booking_id = p_booking_id\n          AND bta.idempotency_key = p_idempotency_key;\n\n      RETURN;\n    END IF;\n  END IF;\n\n  SELECT id, restaurant_id\n  INTO v_table\n  FROM public.table_inventory\n  WHERE id = v_target_table\n  FOR UPDATE;\n\n  IF NOT FOUND THEN\n    RAISE EXCEPTION 'Table % not found', v_target_table\n      USING ERRCODE = 'P0002';\n  END IF;\n\n  IF v_table.restaurant_id \u003c\u003e v_restaurant_id THEN\n    RAISE EXCEPTION 'Table % belongs to a different restaurant', v_target_table\n      USING ERRCODE = '23503';\n  END IF;\n\n  IF v_booking.booking_date IS NOT NULL AND v_booking.start_time IS NOT NULL THEN\n    SELECT id\n    INTO v_slot_id\n    FROM public.booking_slots\n    WHERE restaurant_id = v_restaurant_id\n      AND slot_date = v_booking.booking_date\n      AND slot_time = v_booking.start_time\n    LIMIT 1;\n\n    IF v_slot_id IS NULL THEN\n      SELECT public.get_or_create_booking_slot(v_restaurant_id, v_booking.booking_date, v_booking.start_time, 999)\n      INTO v_slot_id;\n    END IF;\n  END IF;\n\n  INSERT INTO public.booking_table_assignments (\n    booking_id,\n    table_id,\n    slot_id,\n    assigned_by,\n    idempotency_key\n  ) VALUES (\n    p_booking_id,\n    v_target_table,\n    v_slot_id,\n    p_assigned_by,\n    p_idempotency_key\n  )\n  ON CONFLICT (booking_id, table_id) DO UPDATE\n  SET assigned_by = EXCLUDED.assigned_by,\n      assigned_at = v_now,\n      idempotency_key = COALESCE(EXCLUDED.idempotency_key, public.booking_table_assignments.idempotency_key)\n  RETURNING id INTO v_assignment_id;\n\n  BEGIN\n    INSERT INTO public.allocations (\n      booking_id,\n      restaurant_id,\n      resource_type,\n      resource_id,\n      \"window\",\n      created_by,\n      shadow,\n      created_at,\n      updated_at\n    ) VALUES (\n      p_booking_id,\n      v_restaurant_id,\n      'table',\n      v_target_table,\n      v_window,\n      p_assigned_by,\n      false,\n      v_now,\n      v_now\n    )\n    ON CONFLICT ON CONSTRAINT allocations_booking_resource_key DO UPDATE\n    SET \"window\" = EXCLUDED.\"window\",\n        created_by = EXCLUDED.created_by,\n        updated_at = v_now;\n  EXCEPTION\n    WHEN unique_violation OR exclusion_violation THEN\n      RAISE EXCEPTION 'allocations_no_overlap'\n        USING ERRCODE = 'P0001',\n              DETAIL = format('Resource %s overlaps requested window for booking %s', v_target_table, p_booking_id);\n  END;\n\n  UPDATE public.table_inventory\n  SET status = 'reserved'::public.table_status\n  WHERE id = v_target_table;\n\n  table_id := v_target_table;\n  assignment_id := v_assignment_id;\n  RETURN NEXT;\nEND;\n$$;\n\nALTER FUNCTION public.assign_tables_atomic(uuid, uuid[], tstzrange, uuid, text) OWNER TO postgres;\nGRANT ALL ON FUNCTION public.assign_tables_atomic(uuid, uuid[], tstzrange, uuid, text) TO service_role;","ParameterOIDs":null}
+2025/10/23 10:53:32 PG Send: {"Type":"Bind","DestinationPortal":"","PreparedStatement":"","ParameterFormatCodes":null,"Parameters":[],"ResultFormatCodes":[]}
+2025/10/23 10:53:32 PG Send: {"Type":"Describe","ObjectType":"P","Name":""}
+2025/10/23 10:53:32 PG Send: {"Type":"Execute","Portal":"","MaxRows":0}
+2025/10/23 10:53:32 PG Send: {"Type":"Parse","Name":"","Query":"INSERT INTO supabase_migrations.schema_migrations(version, name, statements) VALUES($1, $2, $3)","ParameterOIDs":[25,25,1009]}
+2025/10/23 10:53:32 PG Send: {"Type":"Bind","DestinationPortal":"","PreparedStatement":"","ParameterFormatCodes":[0,0,1],"Parameters":[{"text":"20251021094504"},{"text":"recreate_assign_tables_atomic"},{"binary":"0000000100000000000000190000000100000001000016052d2d2052656372656174652061737369676e5f7461626c65735f61746f6d696320776974686f7574206d6572676520737570706f72740a4352454154452046554e4354494f4e207075626c69632e61737369676e5f7461626c65735f61746f6d6963280a2020705f626f6f6b696e675f696420757569642c0a2020705f7461626c655f69647320757569645b5d2c0a2020705f77696e646f77207473747a72616e67652c0a2020705f61737369676e65645f627920757569642044454641554c54204e554c4c2c0a2020705f6964656d706f74656e63795f6b657920746578742044454641554c54204e554c4c0a292052455455524e53205441424c45287461626c655f696420757569642c2061737369676e6d656e745f69642075756964290a4c414e475541474520706c706773716c0a534543555249545920444546494e45520a41532024240a4445434c4152450a2020765f626f6f6b696e67205245434f52443b0a2020765f72657374617572616e745f696420757569643b0a2020765f7461726765745f7461626c657320757569645b5d3b0a2020765f7461726765745f7461626c6520757569643b0a2020765f6578697374696e675f7461626c657320757569645b5d3b0a2020765f7461626c65205245434f52443b0a2020765f736c6f745f69642075756964203a3d204e554c4c3b0a2020765f6e6f772074696d657374616d70747a203a3d206e6f7728293b0a2020765f77696e646f77207473747a72616e6765203a3d20705f77696e646f773b0a2020765f61737369676e6d656e745f696420757569643b0a2020765f6c6f636b5f72657374617572616e7420696e74343b0a2020765f6c6f636b5f6461746520696e74343b0a424547494e0a2020494620705f7461626c655f696473204953204e554c4c204f522061727261795f6c656e67746828705f7461626c655f6964732c203129203d2030205448454e0a20202020524149534520455843455054494f4e202761737369676e5f7461626c65735f61746f6d6963207265717569726573206174206c65617374206f6e65207461626c65206964270a2020202020205553494e4720455252434f4445203d20273233353134273b0a2020454e442049463b0a0a202053454c4543542061727261795f6167672844495354494e4354207461626c655f6964204f52444552204259207461626c655f6964290a2020494e544f20765f7461726765745f7461626c65730a202046524f4d20756e6e65737428705f7461626c655f696473292041532074287461626c655f6964293b0a0a2020494620765f7461726765745f7461626c6573204953204e554c4c204f522061727261795f6c656e67746828765f7461726765745f7461626c65732c203129203d2030205448454e0a20202020524149534520455843455054494f4e202761737369676e5f7461626c65735f61746f6d6963207265717569726573206174206c65617374206f6e652076616c6964207461626c65206964270a2020202020205553494e4720455252434f4445203d20273233353134273b0a2020454e442049463b0a0a202049462061727261795f6c656e67746828765f7461726765745f7461626c65732c203129203e2031205448454e0a20202020524149534520455843455054494f4e202761737369676e5f7461626c65735f61746f6d6963206f6e6c7920737570706f72747320612073696e676c65207461626c65206166746572206d657267652072656d6f76616c270a2020202020205553494e4720455252434f4445203d20273233353134273b0a2020454e442049463b0a0a2020765f7461726765745f7461626c65203a3d20765f7461726765745f7461626c65735b315d3b0a0a202053454c454354202a0a2020494e544f20765f626f6f6b696e670a202046524f4d207075626c69632e626f6f6b696e67730a20205748455245206964203d20705f626f6f6b696e675f69640a2020464f52205550444154453b0a0a20204946204e4f5420464f554e44205448454e0a20202020524149534520455843455054494f4e2027426f6f6b696e672025206e6f7420666f756e64272c20705f626f6f6b696e675f69640a2020202020205553494e4720455252434f4445203d20275030303032273b0a2020454e442049463b0a0a2020765f72657374617572616e745f6964203a3d20765f626f6f6b696e672e72657374617572616e745f69643b0a0a2020765f6c6f636b5f72657374617572616e74203a3d20686173687465787428765f72657374617572616e745f69643a3a74657874293b0a2020765f6c6f636b5f64617465203a3d20434f414c455343452828765f626f6f6b696e672e626f6f6b696e675f64617465202d20444154452027323030302d30312d303127293a3a696e742c2030293b0a2020504552464f524d2070675f61647669736f72795f786163745f6c6f636b28765f6c6f636b5f72657374617572616e742c20765f6c6f636b5f64617465293b0a0a2020494620765f77696e646f77204953204e554c4c205448454e0a20202020765f77696e646f77203a3d207473747a72616e676528765f626f6f6b696e672e73746172745f61742c20765f626f6f6b696e672e656e645f61742c20275b2927293b0a2020454e442049463b0a0a2020494620765f77696e646f77204953204e554c4c204f52206c6f77657228765f77696e646f7729204953204e554c4c204f5220757070657228765f77696e646f7729204953204e554c4c204f52206c6f77657228765f77696e646f7729203e3d20757070657228765f77696e646f7729205448454e0a20202020524149534520455843455054494f4e2027496e76616c69642061737369676e6d656e742077696e646f7720666f7220626f6f6b696e672025272c20705f626f6f6b696e675f69640a2020202020205553494e4720455252434f4445203d20273232303030273b0a2020454e442049463b0a0a2020494620705f6964656d706f74656e63795f6b6579204953204e4f54204e554c4c205448454e0a2020202053454c4543542061727261795f616767286274612e7461626c655f6964204f52444552204259206274612e7461626c655f6964290a20202020494e544f20765f6578697374696e675f7461626c65730a2020202046524f4d207075626c69632e626f6f6b696e675f7461626c655f61737369676e6d656e7473206274610a202020205748455245206274612e626f6f6b696e675f6964203d20705f626f6f6b696e675f69640a202020202020414e44206274612e6964656d706f74656e63795f6b6579203d20705f6964656d706f74656e63795f6b65793b0a0a20202020494620765f6578697374696e675f7461626c6573204953204e4f54204e554c4c205448454e0a202020202020494620765f6578697374696e675f7461626c6573203c3e20765f7461726765745f7461626c6573205448454e0a2020202020202020524149534520455843455054494f4e202761737369676e5f7461626c65735f61746f6d6963206964656d706f74656e6379206b6579206d69736d61746368270a202020202020202020205553494e4720455252434f4445203d20275030303033272c0a2020202020202020202020202020202044455441494c203d20274964656d706f74656e6379206b65792072657573652064657465637465642077697468206120646966666572656e74207461626c65206964273b0a202020202020454e442049463b0a0a20202020202052455455524e2051554552590a202020202020202053454c4543540a202020202020202020206274612e7461626c655f69642c0a202020202020202020206274612e69642041532061737369676e6d656e745f69640a202020202020202046524f4d207075626c69632e626f6f6b696e675f7461626c655f61737369676e6d656e7473206274610a20202020202020205748455245206274612e626f6f6b696e675f6964203d20705f626f6f6b696e675f69640a20202020202020202020414e44206274612e6964656d706f74656e63795f6b6579203d20705f6964656d706f74656e63795f6b65793b0a0a20202020202052455455524e3b0a20202020454e442049463b0a2020454e442049463b0a0a202053454c4543542069642c2072657374617572616e745f69640a2020494e544f20765f7461626c650a202046524f4d207075626c69632e7461626c655f696e76656e746f72790a20205748455245206964203d20765f7461726765745f7461626c650a2020464f52205550444154453b0a0a20204946204e4f5420464f554e44205448454e0a20202020524149534520455843455054494f4e20275461626c652025206e6f7420666f756e64272c20765f7461726765745f7461626c650a2020202020205553494e4720455252434f4445203d20275030303032273b0a2020454e442049463b0a0a2020494620765f7461626c652e72657374617572616e745f6964203c3e20765f72657374617572616e745f6964205448454e0a20202020524149534520455843455054494f4e20275461626c6520252062656c6f6e677320746f206120646966666572656e742072657374617572616e74272c20765f7461726765745f7461626c650a2020202020205553494e4720455252434f4445203d20273233353033273b0a2020454e442049463b0a0a2020494620765f626f6f6b696e672e626f6f6b696e675f64617465204953204e4f54204e554c4c20414e4420765f626f6f6b696e672e73746172745f74696d65204953204e4f54204e554c4c205448454e0a2020202053454c4543542069640a20202020494e544f20765f736c6f745f69640a2020202046524f4d207075626c69632e626f6f6b696e675f736c6f74730a2020202057484552452072657374617572616e745f6964203d20765f72657374617572616e745f69640a202020202020414e4420736c6f745f64617465203d20765f626f6f6b696e672e626f6f6b696e675f646174650a202020202020414e4420736c6f745f74696d65203d20765f626f6f6b696e672e73746172745f74696d650a202020204c494d495420313b0a0a20202020494620765f736c6f745f6964204953204e554c4c205448454e0a20202020202053454c454354207075626c69632e6765745f6f725f6372656174655f626f6f6b696e675f736c6f7428765f72657374617572616e745f69642c20765f626f6f6b696e672e626f6f6b696e675f646174652c20765f626f6f6b696e672e73746172745f74696d652c20393939290a202020202020494e544f20765f736c6f745f69643b0a20202020454e442049463b0a2020454e442049463b0a0a2020494e5345525420494e544f207075626c69632e626f6f6b696e675f7461626c655f61737369676e6d656e747320280a20202020626f6f6b696e675f69642c0a202020207461626c655f69642c0a20202020736c6f745f69642c0a2020202061737369676e65645f62792c0a202020206964656d706f74656e63795f6b65790a2020292056414c55455320280a20202020705f626f6f6b696e675f69642c0a20202020765f7461726765745f7461626c652c0a20202020765f736c6f745f69642c0a20202020705f61737369676e65645f62792c0a20202020705f6964656d706f74656e63795f6b65790a2020290a20204f4e20434f4e464c4943542028626f6f6b696e675f69642c207461626c655f69642920444f205550444154450a20205345542061737369676e65645f6279203d204558434c554445442e61737369676e65645f62792c0a20202020202061737369676e65645f6174203d20765f6e6f772c0a2020202020206964656d706f74656e63795f6b6579203d20434f414c45534345284558434c554445442e6964656d706f74656e63795f6b65792c207075626c69632e626f6f6b696e675f7461626c655f61737369676e6d656e74732e6964656d706f74656e63795f6b6579290a202052455455524e494e4720696420494e544f20765f61737369676e6d656e745f69643b0a0a2020424547494e0a20202020494e5345525420494e544f207075626c69632e616c6c6f636174696f6e7320280a202020202020626f6f6b696e675f69642c0a20202020202072657374617572616e745f69642c0a2020202020207265736f757263655f747970652c0a2020202020207265736f757263655f69642c0a2020202020202277696e646f77222c0a202020202020637265617465645f62792c0a202020202020736861646f772c0a202020202020637265617465645f61742c0a202020202020757064617465645f61740a20202020292056414c55455320280a202020202020705f626f6f6b696e675f69642c0a202020202020765f72657374617572616e745f69642c0a202020202020277461626c65272c0a202020202020765f7461726765745f7461626c652c0a202020202020765f77696e646f772c0a202020202020705f61737369676e65645f62792c0a20202020202066616c73652c0a202020202020765f6e6f772c0a202020202020765f6e6f770a20202020290a202020204f4e20434f4e464c494354204f4e20434f4e53545241494e5420616c6c6f636174696f6e735f626f6f6b696e675f7265736f757263655f6b657920444f205550444154450a20202020534554202277696e646f7722203d204558434c554445442e2277696e646f77222c0a2020202020202020637265617465645f6279203d204558434c554445442e637265617465645f62792c0a2020202020202020757064617465645f6174203d20765f6e6f773b0a2020455843455054494f4e0a202020205748454e20756e697175655f76696f6c6174696f6e204f52206578636c7573696f6e5f76696f6c6174696f6e205448454e0a202020202020524149534520455843455054494f4e2027616c6c6f636174696f6e735f6e6f5f6f7665726c6170270a20202020202020205553494e4720455252434f4445203d20275030303031272c0a202020202020202020202020202044455441494c203d20666f726d617428275265736f75726365202573206f7665726c617073207265717565737465642077696e646f7720666f7220626f6f6b696e67202573272c20765f7461726765745f7461626c652c20705f626f6f6b696e675f6964293b0a2020454e443b0a0a2020555044415445207075626c69632e7461626c655f696e76656e746f72790a202053455420737461747573203d20277265736572766564273a3a7075626c69632e7461626c655f7374617475730a20205748455245206964203d20765f7461726765745f7461626c653b0a0a20207461626c655f6964203a3d20765f7461726765745f7461626c653b0a202061737369676e6d656e745f6964203a3d20765f61737369676e6d656e745f69643b0a202052455455524e204e4558543b0a454e443b0a24243b0a0a414c5445522046554e4354494f4e207075626c69632e61737369676e5f7461626c65735f61746f6d696328757569642c20757569645b5d2c207473747a72616e67652c20757569642c207465787429204f574e455220544f20706f7374677265733b0a4752414e5420414c4c204f4e2046554e4354494f4e207075626c69632e61737369676e5f7461626c65735f61746f6d696328757569642c20757569645b5d2c207473747a72616e67652c20757569642c20746578742920544f20736572766963655f726f6c653b"}],"ResultFormatCodes":[]}
+2025/10/23 10:53:32 PG Send: {"Type":"Describe","ObjectType":"P","Name":""}
+2025/10/23 10:53:32 PG Send: {"Type":"Execute","Portal":"","MaxRows":0}
+2025/10/23 10:53:32 PG Send: {"Type":"Sync"}
+2025/10/23 10:53:35 PG Recv: {"Type":"ErrorResponse","Severity":"ERROR","SeverityUnlocalized":"ERROR","Code":"42601","Message":"cannot insert multiple commands into a prepared statement","Detail":"","Hint":"","Position":0,"InternalPosition":0,"InternalQuery":"","Where":"","SchemaName":"","TableName":"","ColumnName":"","DataTypeName":"","ConstraintName":"","File":"postgres.c","Line":1478,"Routine":"exec_parse_message","UnknownFields":null}
+2025/10/23 10:53:35 PG Recv: {"Type":"ReadyForQuery","TxStatus":"I"}
+2025/10/23 10:53:35 PG Send: {"Type":"Terminate"}
+ERROR: cannot insert multiple commands into a prepared statement (SQLSTATE 42601)                                     
+At statement: 0                                                                                                       
+-- Recreate assign_tables_atomic without merge support                                                                
+CREATE FUNCTION public.assign_tables_atomic(                                                                          
+  p_booking_id uuid,                                                                                                  
+  p_table_ids uuid[],                                                                                                 
+  p_window tstzrange,                                                                                                 
+  p_assigned_by uuid DEFAULT NULL,                                                                                    
+  p_idempotency_key text DEFAULT NULL                                                                                 
+) RETURNS TABLE(table_id uuid, assignment_id uuid)                                                                    
+LANGUAGE plpgsql                                                                                                      
+SECURITY DEFINER                                                                                                      
+AS $$                                                                                                                 
+DECLARE                                                                                                               
+  v_booking RECORD;                                                                                                   
+  v_restaurant_id uuid;                                                                                               
+  v_target_tables uuid[];                                                                                             
+  v_target_table uuid;                                                                                                
+  v_existing_tables uuid[];                                                                                           
+  v_table RECORD;                                                                                                     
+  v_slot_id uuid := NULL;                                                                                             
+  v_now timestamptz := now();                                                                                         
+  v_window tstzrange := p_window;                                                                                     
+  v_assignment_id uuid;                                                                                               
+  v_lock_restaurant int4;                                                                                             
+  v_lock_date int4;                                                                                                   
+BEGIN                                                                                                                 
+  IF p_table_ids IS NULL OR array_length(p_table_ids, 1) = 0 THEN                                                     
+    RAISE EXCEPTION 'assign_tables_atomic requires at least one table id'                                             
+      USING ERRCODE = '23514';                                                                                        
+  END IF;                                                                                                             
+                                                                                                                      
+  SELECT array_agg(DISTINCT table_id ORDER BY table_id)                                                               
+  INTO v_target_tables                                                                                                
+  FROM unnest(p_table_ids) AS t(table_id);                                                                            
+                                                                                                                      
+  IF v_target_tables IS NULL OR array_length(v_target_tables, 1) = 0 THEN                                             
+    RAISE EXCEPTION 'assign_tables_atomic requires at least one valid table id'                                       
+      USING ERRCODE = '23514';                                                                                        
+  END IF;                                                                                                             
+                                                                                                                      
+  IF array_length(v_target_tables, 1) > 1 THEN                                                                        
+    RAISE EXCEPTION 'assign_tables_atomic only supports a single table after merge removal'                           
+      USING ERRCODE = '23514';                                                                                        
+  END IF;                                                                                                             
+                                                                                                                      
+  v_target_table := v_target_tables[1];                                                                               
+                                                                                                                      
+  SELECT *                                                                                                            
+  INTO v_booking                                                                                                      
+  FROM public.bookings                                                                                                
+  WHERE id = p_booking_id                                                                                             
+  FOR UPDATE;                                                                                                         
+                                                                                                                      
+  IF NOT FOUND THEN                                                                                                   
+    RAISE EXCEPTION 'Booking % not found', p_booking_id                                                               
+      USING ERRCODE = 'P0002';                                                                                        
+  END IF;                                                                                                             
+                                                                                                                      
+  v_restaurant_id := v_booking.restaurant_id;                                                                         
+                                                                                                                      
+  v_lock_restaurant := hashtext(v_restaurant_id::text);                                                               
+  v_lock_date := COALESCE((v_booking.booking_date - DATE '2000-01-01')::int, 0);                                      
+  PERFORM pg_advisory_xact_lock(v_lock_restaurant, v_lock_date);                                                      
+                                                                                                                      
+  IF v_window IS NULL THEN                                                                                            
+    v_window := tstzrange(v_booking.start_at, v_booking.end_at, '[)');                                                
+  END IF;                                                                                                             
+                                                                                                                      
+  IF v_window IS NULL OR lower(v_window) IS NULL OR upper(v_window) IS NULL OR lower(v_window) >= upper(v_window) THEN
+    RAISE EXCEPTION 'Invalid assignment window for booking %', p_booking_id                                           
+      USING ERRCODE = '22000';                                                                                        
+  END IF;                                                                                                             
+                                                                                                                      
+  IF p_idempotency_key IS NOT NULL THEN                                                                               
+    SELECT array_agg(bta.table_id ORDER BY bta.table_id)                                                              
+    INTO v_existing_tables                                                                                            
+    FROM public.booking_table_assignments bta                                                                         
+    WHERE bta.booking_id = p_booking_id                                                                               
+      AND bta.idempotency_key = p_idempotency_key;                                                                    
+                                                                                                                      
+    IF v_existing_tables IS NOT NULL THEN                                                                             
+      IF v_existing_tables <> v_target_tables THEN                                                                    
+        RAISE EXCEPTION 'assign_tables_atomic idempotency key mismatch'                                               
+          USING ERRCODE = 'P0003',                                                                                    
+                DETAIL = 'Idempotency key reuse detected with a different table id';                                  
+      END IF;                                                                                                         
+                                                                                                                      
+      RETURN QUERY                                                                                                    
+        SELECT                                                                                                        
+          bta.table_id,                                                                                               
+          bta.id AS assignment_id                                                                                     
+        FROM public.booking_table_assignments bta                                                                     
+        WHERE bta.booking_id = p_booking_id                                                                           
+          AND bta.idempotency_key = p_idempotency_key;                                                                
+                                                                                                                      
+      RETURN;                                                                                                         
+    END IF;                                                                                                           
+  END IF;                                                                                                             
+                                                                                                                      
+  SELECT id, restaurant_id                                                                                            
+  INTO v_table                                                                                                        
+  FROM public.table_inventory                                                                                         
+  WHERE id = v_target_table                                                                                           
+  FOR UPDATE;                                                                                                         
+                                                                                                                      
+  IF NOT FOUND THEN                                                                                                   
+    RAISE EXCEPTION 'Table % not found', v_target_table                                                               
+      USING ERRCODE = 'P0002';                                                                                        
+  END IF;                                                                                                             
+                                                                                                                      
+  IF v_table.restaurant_id <> v_restaurant_id THEN                                                                    
+    RAISE EXCEPTION 'Table % belongs to a different restaurant', v_target_table                                       
+      USING ERRCODE = '23503';                                                                                        
+  END IF;                                                                                                             
+                                                                                                                      
+  IF v_booking.booking_date IS NOT NULL AND v_booking.start_time IS NOT NULL THEN                                     
+    SELECT id                                                                                                         
+    INTO v_slot_id                                                                                                    
+    FROM public.booking_slots                                                                                         
+    WHERE restaurant_id = v_restaurant_id                                                                             
+      AND slot_date = v_booking.booking_date                                                                          
+      AND slot_time = v_booking.start_time                                                                            
+    LIMIT 1;                                                                                                          
+                                                                                                                      
+    IF v_slot_id IS NULL THEN                                                                                         
+      SELECT public.get_or_create_booking_slot(v_restaurant_id, v_booking.booking_date, v_booking.start_time, 999)    
+      INTO v_slot_id;                                                                                                 
+    END IF;                                                                                                           
+  END IF;                                                                                                             
+                                                                                                                      
+  INSERT INTO public.booking_table_assignments (                                                                      
+    booking_id,                                                                                                       
+    table_id,                                                                                                         
+    slot_id,                                                                                                          
+    assigned_by,                                                                                                      
+    idempotency_key                                                                                                   
+  ) VALUES (                                                                                                          
+    p_booking_id,                                                                                                     
+    v_target_table,                                                                                                   
+    v_slot_id,                                                                                                        
+    p_assigned_by,                                                                                                    
+    p_idempotency_key                                                                                                 
+  )                                                                                                                   
+  ON CONFLICT (booking_id, table_id) DO UPDATE                                                                        
+  SET assigned_by = EXCLUDED.assigned_by,                                                                             
+      assigned_at = v_now,                                                                                            
+      idempotency_key = COALESCE(EXCLUDED.idempotency_key, public.booking_table_assignments.idempotency_key)          
+  RETURNING id INTO v_assignment_id;                                                                                  
+                                                                                                                      
+  BEGIN                                                                                                               
+    INSERT INTO public.allocations (                                                                                  
+      booking_id,                                                                                                     
+      restaurant_id,                                                                                                  
+      resource_type,                                                                                                  
+      resource_id,                                                                                                    
+      "window",                                                                                                       
+      created_by,                                                                                                     
+      shadow,                                                                                                         
+      created_at,                                                                                                     
+      updated_at                                                                                                      
+    ) VALUES (                                                                                                        
+      p_booking_id,                                                                                                   
+      v_restaurant_id,                                                                                                
+      'table',                                                                                                        
+      v_target_table,                                                                                                 
+      v_window,                                                                                                       
+      p_assigned_by,                                                                                                  
+      false,                                                                                                          
+      v_now,                                                                                                          
+      v_now                                                                                                           
+    )                                                                                                                 
+    ON CONFLICT ON CONSTRAINT allocations_booking_resource_key DO UPDATE                                              
+    SET "window" = EXCLUDED."window",                                                                                 
+        created_by = EXCLUDED.created_by,                                                                             
+        updated_at = v_now;                                                                                           
+  EXCEPTION                                                                                                           
+    WHEN unique_violation OR exclusion_violation THEN                                                                 
+      RAISE EXCEPTION 'allocations_no_overlap'                                                                        
+        USING ERRCODE = 'P0001',                                                                                      
+              DETAIL = format('Resource %s overlaps requested window for booking %s', v_target_table, p_booking_id);  
+  END;                                                                                                                
+                                                                                                                      
+  UPDATE public.table_inventory                                                                                       
+  SET status = 'reserved'::public.table_status                                                                        
+  WHERE id = v_target_table;                                                                                          
+                                                                                                                      
+  table_id := v_target_table;                                                                                         
+  assignment_id := v_assignment_id;                                                                                   
+  RETURN NEXT;                                                                                                        
+END;                                                                                                                  
+$$;                                                                                                                   
+                                                                                                                      
+ALTER FUNCTION public.assign_tables_atomic(uuid, uuid[], tstzrange, uuid, text) OWNER TO postgres;                    
+GRANT ALL ON FUNCTION public.assign_tables_atomic(uuid, uuid[], tstzrange, uuid, text) TO service_role;               
