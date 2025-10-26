@@ -7,7 +7,7 @@ Tool: Chrome DevTools MCP
 ### Console & Network
 
 - [ ] No Console errors _(pending DevTools session after code deploy)_
-- [ ] Network requests shaped per contract _(pending)_
+- [ ] Network requests shaped per contract _(pending)_ — manual hold 409 payload now includes validation details highlighting `conflict` check with `tableStatus: reserved`.
 - [ ] Performance warnings addressed (note if any)
 
 ### DOM & Accessibility
