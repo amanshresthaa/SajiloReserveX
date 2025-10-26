@@ -1,0 +1,838 @@
+{
+  "flowName": "Customer Booking Edit Flow",
+  "description": "Complete flow for customers editing their own bookings through the dashboard",
+  "lastUpdated": "2025-10-26",
+  "layers": {
+    "presentation": {
+      "layer": "UI Components",
+      "files": [
+        {
+          "path": "/components/dashboa            {
+              "step": 13,
+              "component": "API Route /api/bookings/[id]",
+              "action": "Logs audit event",
+              "function": "logAuditEvent()",
+              "auditAction": "booking.updated",
+              "metadata": "Before/after snapshot"
+            },BookingDialog.tsx",
+          "type": "React Component",
+          "responsibilities": [
+            "Renders modal/dialog for editing bookings",
+            "Manages form state with react-hook-form",
+            "Validates input using Zod schema",
+            "Integrates ScheduleAwareTimestampPicker for date/time selection",
+            "Displays error messages with user-friendly copy",
+            "Emits analytics events (booking_edit_opened)",
+            "Handles loading, success, and error states"
+          ],
+          "keyFeatures": [
+            "Schedule-aware date/time picker with availability rules",
+            "Party size input validation (min: 1)",
+            "Optional notes field (max: 500 chars)",
+            "Real-time validation feedback",
+            "Disabled save button until valid time selected",
+            "Accessible form with proper labels and ARIA"
+          ],
+          "props": {
+            "booking": "BookingDTO | null - Existing booking data",
+            "open": "boolean - Dialog open state",
+            "onOpenChange": "(open: boolean) => void - Dialog state handler",
+            "mutationHook": "Optional hook override for testing",
+            "restaurantSlug": "string | null - For schedule loading",
+            "restaurantTimezone": "string | null - For time conversion"
+          },
+          "codeSnippets": {
+            "componentSignature": "export type EditBookingDialogProps = {\n  booking: BookingDTO | null;\n  open: boolean;\n  onOpenChange: (open: boolean) => void;\n  mutationHook?: UseUpdateBookingHook;\n  restaurantSlug?: string | null;\n  restaurantTimezone?: string | null;\n};\n\nexport function EditBookingDialog({\n  booking,\n  open,\n  onOpenChange,\n  mutationHook,\n  restaurantSlug: restaurantSlugOverride,\n  restaurantTimezone: restaurantTimezoneOverride,\n}: EditBookingDialogProps) {\n  // Component implementation\n}",
+            "zodSchema": "const schema = z.object({\n  start: z\n    .string()\n    .min(1, 'Select a start time')\n    .refine((value) => {\n      const date = new Date(value);\n      return !Number.isNaN(date.getTime());\n    }, 'Select a valid start time'),\n  partySize: z.coerce.number().int().min(1, 'Party size must be at least 1'),\n  notes: z.string().max(500, 'Notes must be 500 characters or less').nullable().optional(),\n});\n\ntype FormValues = z.infer<typeof schema>;",
+            "formInitialization": "const defaultValues = useMemo<FormValues>(\n  () => ({\n    start: booking?.startIso ?? '',\n    partySize: booking?.partySize ?? 2,\n    notes: booking?.notes ?? '',\n  }),\n  [booking?.notes, booking?.partySize, booking?.startIso],\n);\n\nconst resolver = zodResolver(schema) as Resolver<FormValues>;\n\nconst {\n  control,\n  handleSubmit,\n  reset,\n  watch,\n  formState: { errors, isDirty },\n} = useForm<FormValues>({\n  resolver,\n  defaultValues,\n});",
+            "mutationUsage": "const useMutationHook = mutationHook ?? useUpdateBooking;\nconst mutation = useMutationHook();",
+            "submitHandler": "const onSubmit = async (values: z.infer<typeof schema>) => {\n  if (!booking) return;\n  setFormError(null);\n  const startIso = values.start;\n  const startDate = new Date(startIso);\n  const endIso = derivedEndIso;\n\n  if (!startIso || Number.isNaN(startDate.getTime()) || !endIso) {\n    toast.error('Please provide valid date and time');\n    return;\n  }\n\n  try {\n    await mutation.mutateAsync({\n      id: booking.id,\n      startIso,\n      endIso,\n      partySize: values.partySize,\n      notes: values.notes ?? null,\n    });\n    onOpenChange(false);\n  } catch (error) {\n    const err = error as HttpError;\n    const code = err?.code;\n    const preset = code ? errorCopy[code] : null;\n    const message = preset ?? err?.message ?? 'Something went wrong. Please try again.';\n\n    if (message) {\n      setFormError({ message, code });\n      return;\n    }\n\n    setFormError({ message: 'Something went wrong. Please try again.', code });\n  }\n};",
+            "analyticsEmit": "useEffect(() => {\n  if (open && booking) {\n    emit('booking_edit_opened', { bookingId: booking.id });\n    reset(defaultValues);\n    setFormError(null);\n  }\n}, [booking, defaultValues, open, reset]);",
+            "scheduleAwarePickerUsage": "<Controller\n  name=\"start\"\n  control={control}\n  render={({ field, fieldState }) => (\n    <ScheduleAwareTimestampPicker\n      restaurantSlug={effectiveRestaurantSlug}\n      restaurantTimezone={effectiveRestaurantTimezone}\n      value={field.value || null}\n      onChange={(next) => field.onChange(next ?? '')}\n      onBlur={field.onBlur}\n      label=\"Start time\"\n      description=\"Select a future time during operating hours.\"\n      errorMessage={fieldState.error?.message ?? null}\n      disabled={mutation.isPending || missingScheduleMetadata}\n      minDate={fallbackMinDate}\n      timeScrollArea\n    />\n  )}\n/>",
+            "saveButtonLogic": "<Button\n  type=\"submit\"\n  disabled={\n    mutation.isPending ||\n    !isDirty ||\n    missingScheduleMetadata ||\n    !hasCommittedStart\n  }\n>\n  {mutation.isPending ? 'Saving…' : missingScheduleMetadata ? 'Unavailable' : 'Save changes'}\n</Button>"
+          },
+          "validation": {
+            "schema": "Zod schema with three fields",
+            "fields": {
+              "start": {
+                "type": "string (ISO datetime)",
+                "rules": [
+                  "Required - min length 1",
+                  "Must be valid datetime",
+                  "Must be in future (handled by API)",
+                  "Must be within operating hours (schedule-aware)"
+                ]
+              },
+              "partySize": {
+                "type": "number (integer)",
+                "rules": [
+                  "Required",
+                  "Minimum: 1",
+                  "Coerced to integer"
+                ]
+              },
+              "notes": {
+                "type": "string | null",
+                "rules": [
+                  "Optional",
+                  "Maximum: 500 characters",
+                  "Nullable"
+                ]
+              }
+            }
+          },
+          "errorHandling": {
+            "errorCodes": {
+              "OVERLAP_DETECTED": "Time overlaps existing booking",
+              "CUTOFF_PASSED": "Booking can no longer be changed online",
+              "CLOSED_DATE": "Restaurant closed on selected date",
+              "BOOKING_NOT_FOUND": "Booking not found",
+              "FORBIDDEN": "Permission denied",
+              "UNAUTHENTICATED": "Session expired",
+              "INVALID_INPUT": "Validation failed",
+              "INVALID_TIME": "Invalid time format",
+              "OUTSIDE_HOURS": "Outside operating hours",
+              "SERVICE_PERIOD": "Not available for service type",
+              "CAPACITY_EXCEEDED": "No availability at that time",
+              "PAST_TIME": "Time has already passed",
+              "BOOKING_IN_PAST": "Booking is in the past",
+              "UNKNOWN": "Unexpected error"
+            }
+          }
+        },
+        {
+          "path": "/components/features/booking-state-machine/ScheduleAwareTimestampPicker.tsx",
+          "type": "React Component",
+          "responsibilities": [
+            "Renders date picker with schedule constraints",
+            "Displays available time slots",
+            "Shows capacity and availability warnings",
+            "Prevents selection of closed dates",
+            "Highlights selected date and time",
+            "Loads availability for selected date"
+          ]
+        }
+      ]
+    },
+    "hooks": {
+      "layer": "Data Layer / State Management",
+      "files": [
+        {
+          "path": "/hooks/useUpdateBooking.ts",
+          "type": "React Query Hook",
+          "responsibilities": [
+            "Manages booking update mutation",
+            "Calls API endpoint with PUT request",
+            "Handles success/error states",
+            "Shows toast notifications",
+            "Invalidates relevant queries on success",
+            "Emits analytics events"
+          ],
+          "implementation": {
+            "library": "@tanstack/react-query (useMutation)",
+            "method": "PUT",
+            "endpoint": "/api/bookings/{id}",
+            "inputType": "UpdateBookingInput",
+            "returnType": "BookingDTO",
+            "errorType": "HttpError"
+          },
+          "inputSchema": {
+            "id": "string - Booking UUID",
+            "startIso": "string - ISO datetime string",
+            "endIso": "string (optional) - ISO datetime string",
+            "partySize": "number - Integer >= 1",
+            "notes": "string | null (optional) - Max 500 chars"
+          },
+          "analytics": {
+            "events": [
+              "booking_edit_submitted - When mutation starts",
+              "booking_edit_succeeded - On successful update",
+              "booking_edit_failed - On error (includes error code)"
+            ]
+          },
+          "cacheInvalidation": [
+            "All 'bookings' queries",
+            "Schedule queries for the restaurant slug",
+            "Booking detail query for the specific ID",
+            "Reservation detail query for the specific ID"
+          ],
+          "configuration": {
+            "networkMode": "offlineFirst",
+            "meta": {
+              "persist": true
+            }
+          },
+          "toastMessages": {
+            "success": "Booking updated",
+            "error": "Dynamic based on error code (special handling for BOOKING_IN_PAST)"
+          },
+          "codeSnippets": {
+            "hookImplementation": "export function useUpdateBooking() {\n  const queryClient = useQueryClient();\n\n  return useMutation<BookingDTO, HttpError, UpdateBookingInput>({\n    mutationFn: async ({ id, ...body }) => {\n      emit('booking_edit_submitted', { bookingId: id });\n      const updated = await fetchJson<BookingDTO>(`/api/bookings/${id}`, {\n        method: 'PUT',\n        headers: { 'Content-Type': 'application/json' },\n        body: JSON.stringify(body),\n      });\n      emit('booking_edit_succeeded', { bookingId: id });\n      return updated;\n    },\n    networkMode: 'offlineFirst',\n    meta: { persist: true },\n    onSuccess: (updated) => {\n      toast.success('Booking updated');\n      queryClient.invalidateQueries({\n        predicate: (query) => {\n          if (!Array.isArray(query.queryKey) || query.queryKey.length === 0) {\n            return false;\n          }\n          const [scope, subScope] = query.queryKey as unknown[];\n          if (scope === 'bookings') {\n            return true;\n          }\n          if (scope === 'reservations' && subScope === 'schedule') {\n            if (updated?.restaurantSlug && typeof query.queryKey[2] === 'string') {\n              return query.queryKey[2] === updated.restaurantSlug;\n            }\n            return true;\n          }\n          return false;\n        },\n      });\n      if (updated?.id) {\n        queryClient.invalidateQueries({ queryKey: queryKeys.bookings.detail(updated.id) });\n        queryClient.invalidateQueries({ queryKey: reservationKeys.detail(updated.id) });\n      }\n    },\n    onError: (error, variables) => {\n      emit('booking_edit_failed', { bookingId: variables.id, code: (error as HttpError)?.code });\n      const message =\n        error.code === 'BOOKING_IN_PAST'\n          ? BOOKING_IN_PAST_CUSTOMER_MESSAGE\n          : error.message;\n      toast.error(message);\n    },\n  });\n}",
+            "inputType": "export type UpdateBookingInput = {\n  id: string;\n  startIso: string;\n  endIso?: string;\n  partySize: number;\n  notes?: string | null;\n};",
+            "usageExample": "const mutation = useUpdateBooking();\n\n// Call the mutation\nawait mutation.mutateAsync({\n  id: 'booking-uuid',\n  startIso: '2025-10-27T19:00:00.000Z',\n  endIso: '2025-10-27T21:00:00.000Z',\n  partySize: 4,\n  notes: 'Window seat preferred',\n});"
+          }
+        }
+      ]
+    },
+    "api": {
+      "layer": "API Routes / Backend",
+      "files": [
+        {
+          "path": "/src/app/api/bookings/[id]/route.ts",
+          "type": "Next.js API Route Handler",
+          "method": "PUT",
+          "route": "/api/bookings/[id]",
+          "responsibilities": [
+            "Validates request payload (dual schema support)",
+            "Authenticates user session",
+            "Authorizes user to edit booking (email/phone match)",
+            "Validates booking constraints (time, availability, schedule)",
+            "Updates booking record in database",
+            "Logs audit events",
+            "Enqueues side effects (emails, notifications)",
+            "Returns updated booking data"
+          ],
+          "requestFlow": [
+            {
+              "step": 1,
+              "action": "Extract booking ID from route params",
+              "validation": "Must be valid UUID string"
+            },
+            {
+              "step": 2,
+              "action": "Parse request body JSON",
+              "errorResponse": {
+                "code": "INVALID_JSON",
+                "status": 400
+              }
+            },
+            {
+              "step": 3,
+              "action": "Try dashboard schema first (minimal update)",
+              "schema": "dashboardUpdateSchema",
+              "fields": [
+                "startIso (required datetime string)",
+                "endIso (optional datetime string)",
+                "partySize (required integer >= 1)",
+                "notes (optional string <= 500 chars, nullable)"
+              ],
+              "note": "Used by EditBookingDialog - preferred path"
+            },
+            {
+              "step": 4,
+              "action": "If dashboard schema fails, try full update schema (legacy)",
+              "schema": "updateSchema",
+              "fields": [
+                "restaurantId (optional UUID)",
+                "date (YYYY-MM-DD)",
+                "time (HH:MM)",
+                "party (integer >= 1)",
+                "bookingType (enum)",
+                "seating (enum)",
+                "notes (optional, max 500 chars)",
+                "name (2-120 chars)",
+                "email (valid email)",
+                "phone (7-50 chars)",
+                "marketingOptIn (boolean, default false)"
+              ],
+              "note": "Legacy format for backward compatibility"
+            },
+            {
+              "step": 5,
+              "action": "Load existing booking from database",
+              "errorResponse": {
+                "code": "BOOKING_NOT_FOUND",
+                "status": 404
+              }
+            },
+            {
+              "step": 6,
+              "action": "Get authenticated user session",
+              "errorResponse": {
+                "code": "UNAUTHENTICATED",
+                "status": 401
+              }
+            },
+            {
+              "step": 7,
+              "action": "Authorize user (verify ownership)",
+              "checks": [
+                "Customer email matches existing booking email",
+                "Customer phone matches existing booking phone"
+              ],
+              "errorResponse": {
+                "code": "FORBIDDEN",
+                "status": 403,
+                "message": "You can only update your own reservation"
+              }
+            },
+            {
+              "step": 8,
+              "action": "Validate booking is not in the past",
+              "check": "assertBookingNotInPast()",
+              "errorResponse": {
+                "code": "BOOKING_IN_PAST",
+                "status": 400
+              }
+            },
+            {
+              "step": 9,
+              "action": "Load restaurant schedule",
+              "function": "getRestaurantSchedule(restaurantId, date)"
+            },
+            {
+              "step": 10,
+              "action": "Validate time within operating hours",
+              "function": "assertBookingWithinOperatingWindow()",
+              "possibleErrors": [
+                "CLOSED_DATE - Restaurant closed",
+                "OUTSIDE_HOURS - Outside operating window",
+                "INVALID_TIME - Invalid time format"
+              ]
+            },
+            {
+              "step": 11,
+              "action": "Run booking validation service",
+              "function": "createBookingValidationService().validate()",
+              "checks": [
+                "Capacity availability",
+                "Overlapping bookings",
+                "Time slot constraints",
+                "Custom business rules"
+              ],
+              "possibleErrors": [
+                "CAPACITY_EXCEEDED",
+                "OVERLAP_DETECTED",
+                "SERVICE_PERIOD"
+              ]
+            },
+            {
+              "step": 12,
+              "action": "Update booking record",
+              "function": "updateBookingRecord()",
+              "database": "Supabase bookings table"
+            },
+            {
+              "step": 13,
+              "action": "Log audit event",
+              "function": "logAuditEvent()",
+              "action": "booking.updated",
+              "metadata": "Snapshot of before/after states"
+            },
+            {
+              "step": 14,
+              "action": "Enqueue side effects",
+              "function": "enqueueBookingUpdatedSideEffects()",
+              "sideEffects": [
+                "Send confirmation email",
+                "Trigger notifications",
+                "Update external integrations",
+                "Invalidate cache"
+              ]
+            },
+            {
+              "step": 15,
+              "action": "Return updated booking",
+              "responseFormat": {
+                "booking": "BookingDTO object"
+              },
+              "status": 200
+            }
+          ],
+          "authentication": {
+            "method": "Supabase Auth",
+            "required": true,
+            "sessionSource": "getRouteHandlerSupabaseClient()"
+          },
+          "authorization": {
+            "rule": "User can only edit their own bookings",
+            "verification": "Email and phone must match existing booking"
+          },
+          "validationLayers": [
+            "Schema validation (Zod)",
+            "Authentication check",
+            "Authorization check (ownership)",
+            "Past time validation",
+            "Operating hours validation",
+            "Business rules validation (capacity, overlap, etc.)"
+          ],
+          "errorResponses": {
+            "400": [
+              "INVALID_JSON",
+              "INVALID_PAYLOAD",
+              "BOOKING_IN_PAST",
+              "CLOSED_DATE",
+              "OUTSIDE_HOURS",
+              "INVALID_TIME",
+              "CAPACITY_EXCEEDED",
+              "OVERLAP_DETECTED",
+              "SERVICE_PERIOD",
+              "PAST_TIME"
+            ],
+            "401": [
+              "UNAUTHENTICATED"
+            ],
+            "403": [
+              "FORBIDDEN"
+            ],
+            "404": [
+              "BOOKING_NOT_FOUND",
+              "MISSING_BOOKING_ID"
+            ],
+            "500": [
+              "UNKNOWN"
+            ]
+          },
+          "sideEffects": {
+            "immediate": [
+              "Database update",
+              "Audit log creation",
+              "Cache invalidation"
+            ],
+            "async": [
+              "Email confirmation",
+              "Push notifications",
+              "Webhook triggers",
+              "Analytics tracking"
+            ]
+          }
+        }
+      ]
+    },
+    "database": {
+      "layer": "Database Operations",
+      "files": [
+        {
+          "path": "/server/bookings.ts",
+          "type": "Database Service",
+          "function": "updateBookingRecord",
+          "responsibilities": [
+            "Constructs database update payload",
+            "Normalizes enum values (booking_type, seating_preference, status)",
+            "Executes Supabase update query",
+            "Invalidates availability snapshot cache",
+            "Returns updated booking record"
+          ],
+          "signature": {
+            "function": "updateBookingRecord",
+            "parameters": [
+              {
+                "name": "client",
+                "type": "DbClient (Supabase client)",
+                "description": "Service-level Supabase client"
+              },
+              {
+                "name": "bookingId",
+                "type": "string",
+                "description": "UUID of booking to update"
+              },
+              {
+                "name": "payload",
+                "type": "UpdateBookingPayload",
+                "description": "Fields to update"
+              }
+            ],
+            "returns": "Promise<BookingRecord>",
+            "throws": [
+              "Supabase PostgrestError on database failure"
+            ]
+          },
+          "updatePayloadFields": {
+            "restaurant_id": "UUID",
+            "booking_date": "YYYY-MM-DD string",
+            "start_time": "HH:MM:SS string",
+            "end_time": "HH:MM:SS string",
+            "party_size": "integer",
+            "booking_type": "enum (breakfast|brunch|lunch|dinner|drinks)",
+            "seating_preference": "enum (indoor|outdoor|bar|any)",
+            "status": "enum (confirmed|pending|cancelled|seated|completed|no_show)",
+            "customer_name": "string",
+            "customer_email": "string (normalized)",
+            "customer_phone": "string",
+            "notes": "string | null",
+            "marketing_opt_in": "boolean",
+            "details": "JSON | null"
+          },
+          "dataTransformations": [
+            "Ensure booking_type is valid enum value",
+            "Ensure seating_preference is valid enum value",
+            "Ensure status is valid enum value",
+            "Convert undefined to null for nullable fields",
+            "Normalize details and idempotency_key"
+          ],
+          "databaseOperations": [
+            {
+              "table": "bookings",
+              "operation": "UPDATE",
+              "filter": "WHERE id = bookingId",
+              "select": "Full booking record with joins",
+              "modifier": ".single()"
+            }
+          ],
+          "cacheInvalidation": {
+            "function": "invalidateAvailabilitySnapshot",
+            "parameters": [
+              "restaurant_id",
+              "booking_date"
+            ],
+            "description": "Clears cached availability data for the affected date"
+          },
+          "returnValue": {
+            "type": "BookingRecord",
+            "description": "Complete booking record with all fields",
+            "includes": [
+              "Restaurant details",
+              "Customer information",
+              "Timing information",
+              "Status and metadata"
+            ]
+          }
+        }
+      ]
+    },
+    "validation": {
+      "layer": "Business Logic Validation",
+      "files": [
+        {
+          "path": "/server/booking/index.ts",
+          "type": "Validation Service",
+          "function": "createBookingValidationService",
+          "responsibilities": [
+            "Validates capacity constraints",
+            "Checks for booking overlaps",
+            "Enforces business rules",
+            "Returns validation errors with codes"
+          ]
+        },
+        {
+          "path": "/server/bookings/timeValidation.ts",
+          "type": "Time Validation",
+          "function": "assertBookingWithinOperatingWindow",
+          "responsibilities": [
+            "Validates against operating hours",
+            "Checks if restaurant is open on date",
+            "Ensures time is within service window"
+          ]
+        },
+        {
+          "path": "/server/bookings/pastTimeValidation.ts",
+          "type": "Past Time Validation",
+          "function": "assertBookingNotInPast",
+          "responsibilities": [
+            "Prevents editing of past bookings",
+            "Validates against current time in venue timezone"
+          ]
+        }
+      ]
+    },
+    "sideEffects": {
+      "layer": "Background Jobs & Side Effects",
+      "files": [
+        {
+          "path": "/server/jobs/booking-side-effects.ts",
+          "type": "Job Queue Handler",
+          "function": "enqueueBookingUpdatedSideEffects",
+          "responsibilities": [
+            "Enqueues email confirmation jobs",
+            "Triggers push notifications",
+            "Updates external systems",
+            "Invalidates relevant caches"
+          ],
+          "parameters": {
+            "previous": "Original booking state",
+            "updated": "New booking state",
+            "bookings": "All customer bookings for context"
+          }
+        }
+      ]
+    },
+    "utilities": {
+      "layer": "Shared Utilities",
+      "files": [
+        {
+          "path": "/lib/http/fetchJson.ts",
+          "responsibilities": [
+            "HTTP client wrapper",
+            "JSON serialization/deserialization",
+            "Error handling and transformation"
+          ]
+        },
+        {
+          "path": "/lib/analytics/emit.ts",
+          "responsibilities": [
+            "Analytics event tracking",
+            "Event emission to analytics service"
+          ]
+        },
+        {
+          "path": "/server/auth/guards.ts",
+          "responsibilities": [
+            "Authentication guards",
+            "Session validation",
+            "User lookup"
+          ]
+        },
+        {
+          "path": "/server/restaurants/schedule.ts",
+          "function": "getRestaurantSchedule",
+          "responsibilities": [
+            "Loads restaurant operating hours",
+            "Returns schedule for specific date",
+            "Handles special hours and closures"
+          ]
+        }
+      ]
+    }
+  },
+  "dataFlow": {
+    "steps": [
+      {
+        "step": 1,
+        "component": "EditBookingDialog",
+        "action": "User opens dialog",
+        "event": "booking_edit_opened",
+        "state": "Form initialized with existing booking data"
+      },
+      {
+        "step": 2,
+        "component": "ScheduleAwareTimestampPicker",
+        "action": "Loads restaurant schedule and availability",
+        "apiCalls": [
+          "GET /api/restaurants/{slug}/schedule",
+          "GET /api/reservations/availability"
+        ]
+      },
+      {
+        "step": 3,
+        "component": "EditBookingDialog",
+        "action": "User modifies date, time, party size, or notes",
+        "validation": "Real-time Zod validation"
+      },
+      {
+        "step": 4,
+        "component": "EditBookingDialog",
+        "action": "User clicks 'Save changes'",
+        "validation": "All fields valid, time selected"
+      },
+      {
+        "step": 5,
+        "component": "useUpdateBooking hook",
+        "action": "Mutation function called",
+        "event": "booking_edit_submitted",
+        "apiCall": {
+          "method": "PUT",
+          "endpoint": "/api/bookings/{id}",
+          "payload": {
+            "startIso": "ISO datetime",
+            "endIso": "ISO datetime (optional)",
+            "partySize": "integer",
+            "notes": "string | null"
+          }
+        }
+      },
+      {
+        "step": 6,
+        "component": "API Route /api/bookings/[id]",
+        "action": "Validates request and authorizes user",
+        "checks": [
+          "Valid JSON",
+          "Schema validation",
+          "User authenticated",
+          "User owns booking",
+          "Booking not in past"
+        ]
+      },
+      {
+        "step": 7,
+        "component": "API Route /api/bookings/[id]",
+        "action": "Validates business rules",
+        "checks": [
+          "Operating hours",
+          "Capacity available",
+          "No overlaps",
+          "Service period valid"
+        ]
+      },
+      {
+        "step": 8,
+        "component": "updateBookingRecord()",
+        "action": "Updates database record",
+        "database": "Supabase bookings table",
+        "transaction": "Single update with select"
+      },
+      {
+        "step": 9,
+        "component": "API Route /api/bookings/[id]",
+        "action": "Logs audit event",
+        "auditEventAction": "booking.updated",
+        "metadata": "Before/after snapshot"
+      },
+      {
+        "step": 10,
+        "component": "enqueueBookingUpdatedSideEffects()",
+        "action": "Queues background jobs",
+        "jobs": [
+          "Email confirmation",
+          "Push notifications",
+          "Cache invalidation"
+        ]
+      },
+      {
+        "step": 11,
+        "component": "API Route /api/bookings/[id]",
+        "action": "Returns updated booking",
+        "response": {
+          "booking": "BookingDTO object"
+        },
+        "status": 200
+      },
+      {
+        "step": 12,
+        "component": "useUpdateBooking hook",
+        "action": "Success handler",
+        "event": "booking_edit_succeeded",
+        "effects": [
+          "Show success toast: 'Booking updated'",
+          "Invalidate queries (bookings, schedule, detail)",
+          "Refetch affected data"
+        ]
+      },
+      {
+        "step": 13,
+        "component": "EditBookingDialog",
+        "action": "Dialog closes",
+        "state": "Form reset, modal hidden"
+      }
+    ],
+    "errorPath": {
+      "trigger": "Any validation or business rule failure",
+      "steps": [
+        {
+          "step": 1,
+          "component": "API Route",
+          "action": "Returns error response",
+          "format": {
+            "error": "Human-readable message",
+            "code": "Error code constant",
+            "status": "HTTP status code"
+          }
+        },
+        {
+          "step": 2,
+          "component": "useUpdateBooking hook",
+          "action": "Error handler",
+          "event": "booking_edit_failed (with code)",
+          "effect": "Show error toast with mapped message"
+        },
+        {
+          "step": 3,
+          "component": "EditBookingDialog",
+          "action": "Display error alert",
+          "ux": "User sees friendly error message and can retry"
+        }
+      ]
+    }
+  },
+  "securityControls": {
+    "authentication": {
+      "mechanism": "Supabase Auth",
+      "sessionType": "JWT tokens",
+      "enforcement": "Required for all edit operations"
+    },
+    "authorization": {
+      "model": "Resource ownership",
+      "rule": "Users can only edit their own bookings",
+      "verification": "Email and phone number match"
+    },
+    "inputValidation": {
+      "layers": [
+        "Client-side: Zod schema in EditBookingDialog",
+        "API-side: Zod schema in route handler",
+        "Business rules: Validation service",
+        "Database: Supabase constraints"
+      ]
+    },
+    "auditLogging": {
+      "enabled": true,
+      "events": [
+        "booking.updated"
+      ],
+      "metadata": "Before/after snapshots, actor identity"
+    },
+    "rateLimit": {
+      "note": "Should be implemented at API gateway or middleware level"
+    }
+  },
+  "performanceConsiderations": {
+    "caching": {
+      "queryCache": "React Query with automatic invalidation",
+      "availabilityCache": "Invalidated on booking updates",
+      "scheduleCache": "Restaurant schedule cached per request"
+    },
+    "optimization": {
+      "offlineFirst": "Mutation works offline and syncs when online",
+      "optimisticUpdates": "Can be added for instant UI feedback",
+      "batchInvalidation": "Multiple queries invalidated together"
+    }
+  },
+  "testing": {
+    "unit": [
+      "/reserve/tests/unit/EditBookingDialog.test.tsx",
+      "/src/app/api/bookings/[id]/route.test.ts"
+    ],
+    "coverage": [
+      "Form validation",
+      "Error handling",
+      "Success flows",
+      "Authorization checks",
+      "Business rule validation"
+    ]
+  },
+  "analyticsEvents": {
+    "booking_edit_opened": {
+      "trigger": "Dialog opens",
+      "payload": {
+        "bookingId": "string"
+      }
+    },
+    "booking_edit_submitted": {
+      "trigger": "Save button clicked",
+      "payload": {
+        "bookingId": "string"
+      }
+    },
+    "booking_edit_succeeded": {
+      "trigger": "Update successful",
+      "payload": {
+        "bookingId": "string"
+      }
+    },
+    "booking_edit_failed": {
+      "trigger": "Update failed",
+      "payload": {
+        "bookingId": "string",
+        "code": "error code"
+      }
+    }
+  },
+  "dependencies": {
+    "frontend": [
+      "react",
+      "react-hook-form",
+      "zod",
+      "@hookform/resolvers/zod",
+      "@tanstack/react-query",
+      "react-hot-toast"
+    ],
+    "backend": [
+      "next",
+      "@supabase/supabase-js",
+      "zod"
+    ]
+  },
+  "relatedDocumentation": [
+    "/tasks/booking-edit-modal-refactor-20251025-2340/",
+    "/tasks/rebuild-edit-booking-picker-20251025-2216/",
+    "/tasks/calendar-component-reuse-20251025-1109/"
+  ]
+}
