@@ -1,0 +1,58 @@
+{
+  "tableAssignment": {
+    "coreFlows": [
+      {
+        "path": "server/capacity/tables.ts",
+        "lines": "1026-1189",
+        "description": "loadAssignmentContext builds the table schedule map with dining and block intervals, reused across auto and manual flows."
+      },
+      {
+        "path": "server/capacity/tables.ts",
+        "lines": "872-1011",
+        "description": "assignTablesForBooking computes windows, filters tables, evaluates plans, and invokes assign_tables_atomic_v2 per booking."
+      },
+      {
+        "path": "server/capacity/tables.ts",
+        "lines": "1205-1283",
+        "description": "autoAssignTablesInternal batches assignment for a date; exports autoAssignTables/autoAssignTablesForDate delegate here."
+      }
+    ],
+    "availabilityChecks": [
+      {
+        "path": "server/capacity/tables.ts",
+        "lines": "610-675",
+        "description": "tableWindowIsFree and filterAvailableTables enforce that new block intervals only overlap existing dining intervals."
+      },
+      {
+        "path": "server/capacity/tables.ts",
+        "lines": "2802-2872",
+        "description": "isTableAvailable performs the legacy Supabase-backed availability check for manual contexts."
+      }
+    ],
+    "holdsAndRpc": [
+      {
+        "path": "server/capacity/holds.ts",
+        "lines": "146-438",
+        "description": "createTableHold, confirmTableHold, releaseTableHold, and conflict helpers manage manual/auto holds."
+      },
+      {
+        "path": "server/capacity/tables.ts",
+        "lines": "1399-1484",
+        "description": "invokeAssignTablesAtomic and invokeUnassignTablesAtomic bridge to Supabase RPCs for atomic assignment mutations."
+      }
+    ],
+    "manualFlows": [
+      {
+        "path": "server/capacity/tables.ts",
+        "lines": "1595-2097",
+        "description": "Manual selection, validation, and hold creation reuse the shared schedule map to flag conflicts and produce summaries."
+      },
+      {
+        "path": "server/capacity/tables.ts",
+        "lines": "2298-2486",
+        "description": "getManualAssignmentContext exposes schedule, holds, and conflicts for the ops dashboard."
+      }
+    ],
+    "notes": "All table-assignment pathways ultimately depend on loadAssignmentContext’s schedule map and the assign_tables_atomic_v2 Supabase RPC."
+  }
+}
