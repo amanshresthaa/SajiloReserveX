@@ -11,8 +11,8 @@
 - [x] Adjust RPC internals to use range overlap predicates
 - [x] Persist precise start/end in booking_table_assignments upsert
 - [x] Add exclusion constraint for overlapping assignments
-- [ ] Add TS stopgap to update booking_table_assignments.start_at/end_at when confirming assignments
-- [ ] Ensure availability checks (isTableAvailableV2) query precise windows
+- [x] Add TS stopgap to update booking_table_assignments.start_at/end_at when confirming assignments
+- [x] Ensure availability checks (isTableAvailableV2) query precise windows
 
 ## UI/UX
 
@@ -22,7 +22,7 @@
 
 - [x] Update server RPC wrapper tests to reflect new parameters
 - [x] Run targeted Vitest suites for capacity/ops manual routes
-- [ ] Extend mocks/coverage for new stopgap updates
+- [x] Extend mocks/coverage for new stopgap updates
 
 ## Notes
 

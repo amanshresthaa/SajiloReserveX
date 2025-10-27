@@ -21,6 +21,7 @@
 - New exclusion constraint may fail migration if existing overlapping records exist; need to evaluate and potentially clean or defer enforcement (`NOT VALID` then `VALIDATE`) depending on data.
 - Must ensure advisory locking and slot linkage continue functioning when window start precedes dining start due to buffer.
 - Stopgap writes should avoid infinite update loops (only run when mismatch) and work against mocked Supabase clients in tests.
+- Schema scan (rg against migrations) shows no day-level unique/exclusion constraints; existing policies already rely on timestamptz ranges.
 
 ## Open Questions (and answers if resolved)
 
