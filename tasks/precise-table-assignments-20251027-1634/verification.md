@@ -32,13 +32,15 @@ Tool: Chrome DevTools MCP
 
 ## Test Outcomes
 
-- [x] Happy paths (`pnpm vitest tests/server/capacity/assignTablesAtomic.test.ts`)
+- [x] Happy paths (`pnpm vitest tests/server/capacity/assignTablesAtomic.test.ts`, `pnpm vitest tests/server/capacity/manualSelection.test.ts`)
 - [x] Error handling (`pnpm vitest tests/server/capacity/manualConfirm.test.ts`, `pnpm vitest tests/server/ops/manualAssignmentRoutes.test.ts`)
+- [x] Regression sweep (`pnpm test:ops -- capacity/autoAssignTables.test.ts`) — targeted suites pass; run reports pre-existing failures in `tests/server/ops/bookings-route.test.ts` (missing env mock) and `src/app/api/owner/restaurants/[id]/service-periods/route.test.ts` (fixture syntax), unchanged by this work.
 - [ ] Non-critical performance issues (tracked as <ticket>)
 
 ## Known Issues
 
-- [ ] <issue> (owner, priority)
+- [ ] Ops bookings route tests require environment guard for rate-limit helper (existing)
+- [ ] Owner service-period route fixture still needs syntax cleanup in upstream task
 
 ## Sign-off
 
