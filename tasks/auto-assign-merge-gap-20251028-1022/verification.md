@@ -4,8 +4,6 @@
 
 Tool: Chrome DevTools MCP
 
-> Not applicable — no UI surface changed for this backend-only fix.
-
 ### Console & Network
 
 - [ ] No Console errors
@@ -21,10 +19,10 @@ Tool: Chrome DevTools MCP
 
 ### Performance (profiled)
 
-- FCP: N/A s
-- LCP: N/A s
-- CLS: N/A
-  Notes: Not applicable.
+- FCP: <value> s
+- LCP: <value> s
+- CLS: <value>
+  Notes: ...
 
 ### Device Emulation
 
@@ -34,15 +32,16 @@ Tool: Chrome DevTools MCP
 
 ## Test Outcomes
 
-- [x] Happy paths — `pnpm run build` (Next.js + TypeScript) passes.
-- [ ] Error handling
+- [x] Happy paths _(autoAssignTables merged tables scenario)_
+- [x] Error handling _(lunchtime overrun + insufficient capacity skips)_
 - [ ] Non-critical performance issues (tracked as <ticket>)
+- Notes: `pnpm exec vitest run --config vitest.config.ts tests/server/capacity/autoAssignTables.test.ts`; `pnpm exec vitest run --config vitest.config.ts tests/server/capacity/manualConfirm.test.ts`.
 
 ## Known Issues
 
-- [x] None
+- [ ] <issue> (owner, priority)
 
 ## Sign-off
 
-- [x] Engineering
+- [ ] Engineering
 - [ ] Design/PM
