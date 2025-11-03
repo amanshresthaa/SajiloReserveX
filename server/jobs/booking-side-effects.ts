@@ -1,12 +1,14 @@
 import { z } from "zod";
 
-
 import { recordBookingCancelledEvent, recordBookingCreatedEvent } from "@/server/analytics";
-import { sendBookingCancellationEmail, sendBookingConfirmationEmail, sendBookingUpdateEmail } from "@/server/emails/bookings";
+import { getBookingTableAssignments } from "@/server/capacity";
+import { autoAssignBestTablesForBooking } from "@/server/capacity/auto";
+import { sendBookingCancellationEmail, sendBookingConfirmationEmail, sendBookingUpdateEmail, sendPendingAssignmentAlertToOwners } from "@/server/emails/bookings";
 import { getServiceSupabaseClient } from "@/server/supabase";
 
 import type { BookingRecord } from "@/server/bookings";
 import type { Tables } from "@/types/supabase";
+import type { Database } from "@/types/supabase";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 export const BOOKING_CREATED_EVENT = "sajiloreservex/booking.created.side-effects" as const;
@@ -42,30 +44,27 @@ const bookingPayloadSchema = z
 
 type BookingPayload = z.infer<typeof bookingPayloadSchema>;
 
-const bookingCreatedSideEffectsSchema = z.object({
-  booking: bookingPayloadSchema,
-  idempotencyKey: z.string().nullable(),
-  restaurantId: z.string(),
-});
+export type BookingCreatedSideEffectsPayload = {
+  booking: BookingPayload;
+  idempotencyKey: string | null;
+  restaurantId: string;
+};
 
-const bookingUpdatedSideEffectsSchema = z.object({
-  previous: bookingPayloadSchema,
-  current: bookingPayloadSchema,
-  restaurantId: z.string(),
-});
+export type BookingUpdatedSideEffectsPayload = {
+  previous: BookingPayload;
+  current: BookingPayload;
+  restaurantId: string;
+};
 
-const bookingCancelledSideEffectsSchema = z.object({
-  previous: bookingPayloadSchema,
-  cancelled: bookingPayloadSchema,
-  restaurantId: z.string(),
-  cancelledBy: z.enum(["customer", "staff", "system"]),
-});
+export type BookingCancelledSideEffectsPayload = {
+  previous: BookingPayload;
+  cancelled: BookingPayload;
+  restaurantId: string;
+  cancelledBy: "customer" | "staff" | "system";
+};
 
-export type BookingCreatedSideEffectsPayload = z.infer<typeof bookingCreatedSideEffectsSchema>;
-export type BookingUpdatedSideEffectsPayload = z.infer<typeof bookingUpdatedSideEffectsSchema>;
-export type BookingCancelledSideEffectsPayload = z.infer<typeof bookingCancelledSideEffectsSchema>;
-
-type SupabaseLike = SupabaseClient<any, any, any>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type SupabaseLike = SupabaseClient<Database, "public", any>;
 
 function resolveSupabase(client?: SupabaseLike): SupabaseLike {
   return client ?? getServiceSupabaseClient();
@@ -102,18 +101,52 @@ async function processBookingCreatedSideEffects(
     console.error("[jobs][booking.created][analytics]", error);
   }
 
-  if (booking.customer_email && booking.customer_email.trim().length > 0) {
+  // Determine whether a table has already been assigned; if not, attempt a quick auto-assign
+  let hasAssigned = false;
+  try {
+    const assignments = await getBookingTableAssignments(booking.id, client);
+    hasAssigned = Array.isArray(assignments) && assignments.length > 0;
+  } catch {
+    hasAssigned = false;
+  }
+
+  if (!hasAssigned) {
     try {
-      await sendBookingConfirmationEmail(booking as BookingRecord);
-    } catch (error) {
-      console.error("[jobs][booking.created][email]", error);
+      // attempt one synchronous auto-assign pass (non-fatal)
+      hasAssigned = (await autoAssignBestTablesForBooking(booking.id)) || false;
+    } catch {
+      // ignore
     }
+  }
+
+  if (hasAssigned) {
+    if (booking.customer_email && booking.customer_email.trim().length > 0) {
+      try {
+        await sendBookingConfirmationEmail(booking as BookingRecord);
+      } catch (error) {
+        console.error("[jobs][booking.created][email.confirmation]", error);
+      }
+    }
+  } else {
+    try {
+      await sendPendingAssignmentAlertToOwners(booking as BookingRecord);
+    } catch (error) {
+      console.error("[jobs][booking.created][email.owner-alert]", error);
+    }
+  }
+
+  // Fire-and-forget: try background auto-assignment using manual selection logic.
+  // Do not block the side-effects pipeline and swallow errors.
+  try {
+    void autoAssignBestTablesForBooking(booking.id);
+  } catch (error) {
+    console.warn("[jobs][booking.created][auto-assign] enqueue failed", error);
   }
 }
 
 async function processBookingUpdatedSideEffects(
   payload: BookingUpdatedSideEffectsPayload,
-  supabase?: SupabaseLike,
+  _supabase?: SupabaseLike,
 ) {
   const { current } = payload;
   if (current.customer_email && current.customer_email.trim().length > 0) {

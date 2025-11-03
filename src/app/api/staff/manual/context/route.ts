@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 import { ManualSelectionInputError, getManualAssignmentContext } from "@/server/capacity/tables";
+import { ServiceNotFoundError, ServiceOverrunError } from "@/server/capacity";
 import { getRouteHandlerSupabaseClient, getServiceSupabaseClient } from "@/server/supabase";
 
 import type { NextRequest } from "next/server";
@@ -76,6 +77,28 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(
         { error: error.message, code: error.code },
         { status: error.status },
+      );
+    }
+
+    if (error instanceof ServiceOverrunError) {
+      return NextResponse.json(
+        {
+          error: error.message,
+          code: "SERVICE_OVERRUN",
+          details: {
+            service: error.service,
+            attemptedEnd: error.attemptedEnd?.toISO?.() ?? null,
+            serviceEnd: error.serviceEnd?.toISO?.() ?? null,
+          },
+        },
+        { status: 409 },
+      );
+    }
+
+    if (error instanceof ServiceNotFoundError) {
+      return NextResponse.json(
+        { error: error.message, code: "SERVICE_NOT_FOUND" },
+        { status: 409 },
       );
     }
 

@@ -66,6 +66,7 @@ export function useConfirmationStep({
   const [calendarLoading, setCalendarLoading] = useState(false);
   const [walletLoading, setWalletLoading] = useState(false);
   const [feedback, setFeedback] = useState<ConfirmationFeedback | null>(null);
+  const [hasAssignment, setHasAssignment] = useState<boolean | null>(null);
 
   const dismissFeedback = useCallback(() => setFeedback(null), []);
 
@@ -75,11 +76,14 @@ export function useConfirmationStep({
   const summaryTime = details.time ? formatReservationTime(details.time) : 'TBC';
   const partyText = `${details.party} ${details.party === 1 ? 'guest' : 'guests'}`;
 
-  const status: ConfirmationStatus = isLoading
-    ? 'pending'
-    : state.lastAction === 'update'
-      ? 'updated'
-      : 'confirmed';
+  const status: ConfirmationStatus = (() => {
+    if (isLoading) return 'pending';
+    const assigned = hasAssignment === true; // null treated as unknown -> pending
+    if (state.lastAction === 'update') {
+      return assigned ? 'updated' : 'pending';
+    }
+    return assigned ? 'confirmed' : 'pending';
+  })();
 
   const heading =
     status === 'pending'
@@ -161,6 +165,29 @@ export function useConfirmationStep({
   const handleNewBooking = useCallback(() => {
     onNewBooking();
   }, [onNewBooking]);
+
+  // Fetch assignment status once on mount/when booking id resolves
+  useEffect(() => {
+    let aborted = false;
+    const id = booking?.id ?? state.details.bookingId ?? null;
+    if (!id) {
+      setHasAssignment(null);
+      return;
+    }
+    (async () => {
+      try {
+        const res = await fetch(`/api/bookings/${id}/assignments/status`, { cache: 'no-store' });
+        if (!res.ok) throw new Error(`status ${res.status}`);
+        const data = (await res.json()) as { assigned?: boolean };
+        if (!aborted) setHasAssignment(Boolean(data?.assigned));
+      } catch {
+        if (!aborted) setHasAssignment(null);
+      }
+    })();
+    return () => {
+      aborted = true;
+    };
+  }, [booking?.id, state.details.bookingId]);
 
   useEffect(() => {
     onActionsChange([

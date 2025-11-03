@@ -20,6 +20,8 @@ import {
   inferMealTypeFromTime,
   logAuditEvent,
   calculateDurationMinutes,
+  generateUniqueBookingReference,
+  insertBookingRecord,
 } from "@/server/bookings";
 import {
   generateConfirmationToken,
@@ -28,7 +30,7 @@ import {
 } from "@/server/bookings/confirmation-token";
 import { PastBookingError, assertBookingNotInPast } from "@/server/bookings/pastTimeValidation";
 import { OperatingHoursError, assertBookingWithinOperatingWindow } from "@/server/bookings/timeValidation";
-import { createBookingWithCapacityCheck } from "@/server/capacity";
+import { createBookingWithCapacityCheck, getBookingErrorMessage } from "@/server/capacity";
 import { normalizeEmail, upsertCustomer } from "@/server/customers";
 import { enqueueBookingCreatedSideEffects, safeBookingPayload } from "@/server/jobs/booking-side-effects";
 import { getActiveLoyaltyProgram, calculateLoyaltyAward, applyLoyaltyAward } from "@/server/loyalty";
@@ -556,10 +558,97 @@ export async function POST(req: NextRequest) {
         clientRequestId,
       });
 
+      // If RPC signaled failure, return mapped error instead of throwing generic 500
+      if (!bookingResult.success) {
+        const message = getBookingErrorMessage(bookingResult);
+        const code = bookingResult.error ?? "UNKNOWN";
+
+        // Dev fallback: if capacity RPC failed in a way that blocks demo/dev, create a record without capacity enforcement.
+        if (env.node.env !== "production" && code === "INTERNAL_ERROR") {
+          try {
+            const reference = await generateUniqueBookingReference(supabase);
+            const fallback = await insertBookingRecord(supabase, {
+              restaurant_id: restaurantId,
+              customer_id: customer.id,
+              booking_date: data.date,
+              start_time: startTime,
+              end_time: endTime,
+              party_size: data.party,
+              booking_type: normalizedBookingType,
+              seating_preference: data.seating,
+              status: "confirmed",
+              reference,
+              customer_name: data.name,
+              customer_email: normalizeEmail(data.email),
+              customer_phone: data.phone.trim(),
+              notes: data.notes ?? null,
+              marketing_opt_in: data.marketingOptIn ?? false,
+              source: "api",
+              auth_user_id: null,
+              client_request_id: clientRequestId,
+              idempotency_key: idempotencyKey ?? null,
+              details: {
+                channel: "api.capacity_fallback",
+                fallback: "route_internal_error",
+                request: { client_request_id: clientRequestId, idempotency_key: idempotencyKey },
+              } as Json,
+            });
+            booking = fallback as BookingRecord;
+          } catch (fallbackError) {
+            return NextResponse.json(
+              { error: message, code, details: bookingResult.details ?? null },
+              { status: 500 },
+            );
+          }
+        } else {
+          const status = code === "CAPACITY_EXCEEDED" ? 409 : 500;
+          return NextResponse.json(
+            { error: message, code, details: bookingResult.details ?? null },
+            { status },
+          );
+        }
+      }
+
       booking = bookingResult.booking as BookingRecord | undefined;
 
+      // Fallback recovery: some environments may return success without embedding the row.
+      // Try to resolve the booking via idempotency key or a strong unique tuple.
       if (!booking) {
-        throw new Error("Booking creation succeeded but no booking data was returned.");
+        const serviceClient = getServiceSupabaseClient();
+        let recovered: BookingRecord | null = null;
+        try {
+          if (idempotencyKey) {
+            const { data: row } = await serviceClient
+              .from("bookings")
+              .select("*")
+              .eq("restaurant_id", restaurantId)
+              .eq("idempotency_key", idempotencyKey)
+              .maybeSingle();
+            if (row) recovered = row as BookingRecord;
+          }
+          if (!recovered) {
+            const { data: row } = await serviceClient
+              .from("bookings")
+              .select("*")
+              .eq("restaurant_id", restaurantId)
+              // prefer strong tuple by customer_email to avoid customer_id edge-cases
+              .eq("customer_email", normalizeEmail(data.email))
+              .eq("booking_date", data.date)
+              .eq("start_time", startTime)
+              .order("created_at", { ascending: false })
+              .limit(1)
+              .maybeSingle();
+            if (row) recovered = row as BookingRecord;
+          }
+        } catch (e) {
+          // ignore and throw below
+        }
+
+        if (recovered) {
+          booking = recovered;
+        } else {
+          throw new Error("Booking creation succeeded but no booking data was returned.");
+        }
       }
 
       reusedExisting = bookingResult.duplicate === true;

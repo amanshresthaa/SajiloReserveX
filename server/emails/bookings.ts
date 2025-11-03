@@ -1,7 +1,7 @@
 import config from "@/config";
 import { env } from "@/lib/env";
 import { buildCalendarEvent, type ReservationCalendarPayload } from "@/lib/reservations/calendar-event";
-import { DEFAULT_VENUE, type VenueDetails } from "@/lib/venue";
+import { type VenueDetails } from "@/lib/venue";
 import { sendEmail, type EmailAttachment } from "@/libs/resend";
 import { getServiceSupabaseClient } from "@/server/supabase";
 import {
@@ -624,4 +624,95 @@ export async function sendBookingUpdateEmail(booking: BookingRecord) {
 
 export async function sendBookingCancellationEmail(booking: BookingRecord) {
   await dispatchEmail("cancelled", booking);
+}
+
+// =============================
+// Owner Alerts (Ops)
+// =============================
+
+async function getRestaurantOwnerEmails(restaurantId: string): Promise<{ emails: string[]; venue: VenueDetails }> {
+  const supabase = getServiceSupabaseClient();
+  const venue = await resolveVenueDetails(restaurantId);
+
+  const { data: members, error: memberError } = await supabase
+    .from("restaurant_memberships")
+    .select("user_id, role")
+    .eq("restaurant_id", restaurantId)
+    .eq("role", "owner");
+
+  if (memberError) {
+    throw new Error(`Failed to fetch restaurant owners: ${memberError.message}`);
+  }
+
+  const ownerIds = (members ?? []).map((m) => m.user_id).filter((id): id is string => typeof id === "string" && id.length > 0);
+  if (ownerIds.length === 0) {
+    return { emails: venue.email ? [venue.email] : [], venue };
+  }
+
+  const { data: profiles, error: profilesError } = await supabase
+    .from("profiles")
+    .select("id,email,name")
+    .in("id", ownerIds);
+
+  if (profilesError) {
+    throw new Error(`Failed to fetch owner profiles: ${profilesError.message}`);
+  }
+
+  const emails = (profiles ?? [])
+    .map((p) => (typeof p.email === "string" ? p.email.trim() : ""))
+    .filter((e) => e.length > 0);
+
+  // Fallback to venue contact email if owners have no email on file
+  if (emails.length === 0 && venue.email) {
+    emails.push(venue.email);
+  }
+
+  return { emails, venue };
+}
+
+export async function sendPendingAssignmentAlertToOwners(booking: BookingRecord) {
+  if (!booking.restaurant_id) {
+    throw new Error("Booking is missing restaurant_id for owner alert");
+  }
+  const { emails, venue } = await getRestaurantOwnerEmails(booking.restaurant_id);
+  if (emails.length === 0) {
+    console.warn("[emails][owner-alert] No owner emails resolved; skipping", { restaurantId: booking.restaurant_id });
+    return;
+  }
+
+  const summary = buildSummary(booking, venue);
+  const subject = `Pending table assignment – ${venue.name} (${booking.reference})`;
+  const opsUrl = `${siteUrl}/ops/bookings`;
+  const html = `
+    <div style="font-family:${EMAIL_FONT_STACK};color:#111827">
+      <h2 style="margin:0 0 12px;font-size:20px;">Action required: Assign a table</h2>
+      <p style="margin:0 0 12px;">A new booking is awaiting table assignment.</p>
+      <ul style="margin:0 0 12px;padding-left:18px;">
+        <li><strong>Reference:</strong> ${escapeHtml(booking.reference ?? booking.id)}</li>
+        <li><strong>Guest:</strong> ${escapeHtml(booking.customer_name)} (${escapeHtml(booking.customer_email)})</li>
+        <li><strong>When:</strong> ${escapeHtml(summary.date)} at ${escapeHtml(summary.startTime)}</li>
+        <li><strong>Party:</strong> ${booking.party_size}</li>
+      </ul>
+      <p style="margin:0 0 18px;">Open the Ops dashboard to assign a table:</p>
+      ${renderActionButton("Open Ops – Bookings", opsUrl, { icon: "🗂️" })}
+    </div>
+  `;
+  const text = [
+    "Action required: Assign a table",
+    "",
+    `Reference: ${booking.reference ?? booking.id}`,
+    `Guest: ${booking.customer_name} (${booking.customer_email})`,
+    `When: ${summary.date} at ${summary.startTime}`,
+    `Party: ${booking.party_size}`,
+    "",
+    `Open Ops – Bookings: ${opsUrl}`,
+  ].join("\n");
+
+  await sendEmail({
+    to: emails,
+    subject,
+    html,
+    text,
+    fromName: venue.name,
+  });
 }

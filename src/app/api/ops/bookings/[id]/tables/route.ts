@@ -5,6 +5,7 @@ import { assignTableToBooking, evaluateManualSelection, getBookingTableAssignmen
 import { AssignTablesRpcError } from "@/server/capacity/holds";
 import { getRouteHandlerSupabaseClient, getServiceSupabaseClient } from "@/server/supabase";
 import { requireMembershipForRestaurant } from "@/server/team/access";
+import { sendBookingConfirmationEmail } from "@/server/emails/bookings";
 
 import type { NextRequest} from "next/server";
 
@@ -71,6 +72,15 @@ export async function POST(request: NextRequest, context: RouteContext) {
   const idempotencyKey = request.headers.get("Idempotency-Key");
 
   try {
+    // Capture prior assignment state to decide whether to email the customer post-commit
+    let hadAssignments = false;
+    try {
+      const before = await getBookingTableAssignments(bookingId, serviceClient);
+      hadAssignments = Array.isArray(before) && before.length > 0;
+    } catch {
+      hadAssignments = false;
+    }
+
     // Strict pre-check: reject direct assignment if any conflicting hold exists
     // Reuse manual selection evaluation to leverage shared conflict detection.
     const validation = await evaluateManualSelection({
@@ -103,6 +113,24 @@ export async function POST(request: NextRequest, context: RouteContext) {
     await assignTableToBooking(bookingId, parsedBody.data.tableId, user.id, serviceClient, {
       idempotencyKey: idempotencyKey?.trim() || null,
     });
+
+    // If this is the first successful assignment for the booking, send confirmation email to the guest.
+    try {
+      const after = await getBookingTableAssignments(bookingId, serviceClient);
+      const nowHasAssignments = Array.isArray(after) && after.length > 0;
+      if (!hadAssignments && nowHasAssignments) {
+        const { data: bookingRow } = await serviceClient
+          .from("bookings")
+          .select("*")
+          .eq("id", bookingId)
+          .maybeSingle();
+        if (bookingRow) {
+          await sendBookingConfirmationEmail(bookingRow as unknown as Parameters<typeof sendBookingConfirmationEmail>[0]);
+        }
+      }
+    } catch (e) {
+      console.warn("[ops][bookings][assign-table] post-assign email skipped", e);
+    }
   } catch (error) {
     if (error instanceof AssignTablesRpcError) {
       const status =
