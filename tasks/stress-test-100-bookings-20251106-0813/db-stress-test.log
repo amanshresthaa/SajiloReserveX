@@ -1,0 +1,11 @@
+
+> ship-fast-code@0.1.0 db:stress-test /Users/amankumarshrestha/Downloads/SajiloReserveX
+> echo '⚡ Running allocation stress test...' && source .env.local && psql "$SUPABASE_DB_URL" -v ON_ERROR_STOP=1 -f supabase/seeds/stress-test-allocation.sql && echo '✅ Stress test complete!'
+
+⚡ Running allocation stress test...
+BEGIN
+SET
+SET
+DO
+COMMIT
+✅ Stress test complete!

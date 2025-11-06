@@ -1,0 +1,372 @@
+
+> ship-fast-code@0.1.0 db:run-allocation-test /Users/amankumarshrestha/Downloads/SajiloReserveX
+> ./scripts/run-allocation-stress-test.sh
+
+
+╔════════════════════════════════════════════════════════════════╗
+║  ALLOCATION ALGORITHM STRESS TEST RUNNER                       ║
+╚════════════════════════════════════════════════════════════════╝
+
+📊 Baseline Statistics
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       ?column?        
+-----------------------
+ Bookings pending: 115
+(1 row)
+
+
+⚡ Running Allocation Algorithm
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Processing: demo-restaurant...
+[dotenv@17.2.3] injecting env (37) from .env.local -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+[dotenv@17.2.3] injecting env (0) from .env.development -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+
+⚡ ULTRA-FAST AUTO-ASSIGNMENT SCRIPT
+📍 demo-restaurant | 2025-11-06
+🚀 Concurrent: 15 | Single attempt only
+
+📊 Found 117 bookings (2 pending)
+
+⚡ Processing 2 bookings...
+   15 at a time, no retries
+
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:2|category:dining|seating:standard',
+  capacity: 2,
+  fallback: 0.16,
+  tableCount: 5,
+  seatSupply: 10
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:2|category:dining|seating:standard',
+  capacity: 2,
+  fallback: 0.16,
+  tableCount: 5,
+  seatSupply: 10
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:2|category:dining|seating:standard',
+  capacity: 2,
+  fallback: 0.16,
+  tableCount: 5,
+  seatSupply: 10
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:2|category:dining|seating:standard',
+  capacity: 2,
+  fallback: 0.16,
+  tableCount: 5,
+  seatSupply: 10
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:2|category:dining|seating:standard',
+  capacity: 2,
+  fallback: 0.16,
+  tableCount: 5,
+  seatSupply: 10
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:4|category:dining|seating:standard',
+  capacity: 4,
+  fallback: 0.0041,
+  tableCount: 11,
+  seatSupply: 44
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:4|category:dining|seating:standard',
+  capacity: 4,
+  fallback: 0.0041,
+  tableCount: 11,
+  seatSupply: 44
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:4|category:dining|seating:standard',
+  capacity: 4,
+  fallback: 0.0041,
+  tableCount: 11,
+  seatSupply: 44
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:4|category:dining|seating:standard',
+  capacity: 4,
+  fallback: 0.0041,
+  tableCount: 11,
+  seatSupply: 44
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:4|category:dining|seating:standard',
+  capacity: 4,
+  fallback: 0.0041,
+  tableCount: 11,
+  seatSupply: 44
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:4|category:dining|seating:standard',
+  capacity: 4,
+  fallback: 0.0041,
+  tableCount: 11,
+  seatSupply: 44
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:4|category:dining|seating:standard',
+  capacity: 4,
+  fallback: 0.0041,
+  tableCount: 11,
+  seatSupply: 44
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:4|category:dining|seating:standard',
+  capacity: 4,
+  fallback: 0.0041,
+  tableCount: 11,
+  seatSupply: 44
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:4|category:dining|seating:standard',
+  capacity: 4,
+  fallback: 0.0041,
+  tableCount: 11,
+  seatSupply: 44
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:4|category:dining|seating:standard',
+  capacity: 4,
+  fallback: 0.0041,
+  tableCount: 11,
+  seatSupply: 44
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:4|category:dining|seating:standard',
+  capacity: 4,
+  fallback: 0.0041,
+  tableCount: 11,
+  seatSupply: 44
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:2|category:dining|seating:standard',
+  capacity: 2,
+  fallback: 0.16,
+  tableCount: 5,
+  seatSupply: 10
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:2|category:dining|seating:standard',
+  capacity: 2,
+  fallback: 0.16,
+  tableCount: 5,
+  seatSupply: 10
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:2|category:dining|seating:standard',
+  capacity: 2,
+  fallback: 0.16,
+  tableCount: 5,
+  seatSupply: 10
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:2|category:dining|seating:standard',
+  capacity: 2,
+  fallback: 0.16,
+  tableCount: 5,
+  seatSupply: 10
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:2|category:dining|seating:standard',
+  capacity: 2,
+  fallback: 0.16,
+  tableCount: 5,
+  seatSupply: 10
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:4|category:dining|seating:standard',
+  capacity: 4,
+  fallback: 0.0041,
+  tableCount: 11,
+  seatSupply: 44
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:4|category:dining|seating:standard',
+  capacity: 4,
+  fallback: 0.0041,
+  tableCount: 11,
+  seatSupply: 44
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:4|category:dining|seating:standard',
+  capacity: 4,
+  fallback: 0.0041,
+  tableCount: 11,
+  seatSupply: 44
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:4|category:dining|seating:standard',
+  capacity: 4,
+  fallback: 0.0041,
+  tableCount: 11,
+  seatSupply: 44
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:4|category:dining|seating:standard',
+  capacity: 4,
+  fallback: 0.0041,
+  tableCount: 11,
+  seatSupply: 44
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:4|category:dining|seating:standard',
+  capacity: 4,
+  fallback: 0.0041,
+  tableCount: 11,
+  seatSupply: 44
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:4|category:dining|seating:standard',
+  capacity: 4,
+  fallback: 0.0041,
+  tableCount: 11,
+  seatSupply: 44
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:4|category:dining|seating:standard',
+  capacity: 4,
+  fallback: 0.0041,
+  tableCount: 11,
+  seatSupply: 44
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:4|category:dining|seating:standard',
+  capacity: 4,
+  fallback: 0.0041,
+  tableCount: 11,
+  seatSupply: 44
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:4|category:dining|seating:standard',
+  capacity: 4,
+  fallback: 0.0041,
+  tableCount: 11,
+  seatSupply: 44
+}
+[scarcity] using heuristic fallback {
+  restaurantId: '8dcb19c3-d767-4993-9b91-4655a4d95921',
+  type: 'capacity:4|category:dining|seating:standard',
+  capacity: 4,
+  fallback: 0.0041,
+  tableCount: 11,
+  seatSupply: 44
+}
+✅ 4d933476 | 17:00:00 | party=6 | status=confirmed → tables=D2-T02,D2-T04 (4589ms)
+✅ 928abbe1 | 19:30:00 | party=6 | status=confirmed → tables=D2-T02,D2-T04 (4597ms)
+
+═══════════════════════════════════════════════════════════
+  ⚡ ULTRA-FAST EXECUTION COMPLETE
+═══════════════════════════════════════════════════════════
+  Restaurant: Demo Restaurant
+  Date: 2025-11-06
+  Total bookings: 117
+  Pending processed: 2
+  ✅ Success (script reported): 2
+  ✅ Success (persisted confirmed): 2
+  ❌ Failed: 0
+  Success rate (script): 100%
+  Success rate (persisted): 100%
+  ⏱️  Total time: 5.66s
+  ⚡ Avg per booking: 4593ms
+  📁 Report: /Users/amankumarshrestha/Downloads/SajiloReserveX/reports/auto-assign-ultra-fast-2025-11-06-2025-11-06T08-26-17.376Z.json
+═══════════════════════════════════════════════════════════
+
+✅ SUCCESSFUL ASSIGNMENTS (2):
+
+  4d933476 | 17:00:00 | party=6 | tables: D2-T02, D2-T04
+  928abbe1 | 19:30:00 | party=6 | tables: D2-T02, D2-T04
+
+
+  ✅ Allocation complete in 7s
+
+📊 Post-Allocation Statistics
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      ?column?       
+---------------------
+ Total bookings: 117
+(1 row)
+
+         ?column?          
+---------------------------
+ Successfully allocated: 2
+(1 row)
+
+      ?column?      
+--------------------
+ Still pending: 115
+(1 row)
+
+      ?column?       
+---------------------
+ Tables used: 2 / 90
+(1 row)
+
+          ?column?          
+----------------------------
+ Multi-table assignments: 2
+(1 row)
+
+             ?column?              
+-----------------------------------
+ Average party size allocated: 6.0
+(1 row)
+
+
+⚡ Constraint Validation
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+> ship-fast-code@0.1.0 db:stress-test /Users/amankumarshrestha/Downloads/SajiloReserveX
+> echo '⚡ Running allocation stress test...' && source .env.local && psql "$SUPABASE_DB_URL" -v ON_ERROR_STOP=1 -f supabase/seeds/stress-test-allocation.sql && echo '✅ Stress test complete!'
+
+⚡ Running allocation stress test...
+BEGIN
+SET
+SET
+DO
+COMMIT
+✅ Stress test complete!
+
+╔════════════════════════════════════════════════════════════════╗
+║  STRESS TEST COMPLETE                                          ║
+╚════════════════════════════════════════════════════════════════╝
+
+  Performance: 7s for all allocations
+  See full results above
+
