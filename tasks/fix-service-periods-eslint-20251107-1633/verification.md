@@ -32,7 +32,8 @@ Tool: Not required (server/tests only). UI sections below remain unchecked becau
 
 ## Test Outcomes
 
-- [x] `pnpm exec eslint tests/server/restaurants/servicePeriods.test.ts server/restaurants/servicePeriods.ts --max-warnings=0` (passes)
+- [x] `pnpm exec eslint tests/server/restaurants/servicePeriods.test.ts server/restaurants/servicePeriods.ts --max-warnings=0`
+- [x] `pnpm run build` (Next.js build + sitemap succeeds; console shows expected feature-flag safety warnings only)
 
 ## Known Issues
 
