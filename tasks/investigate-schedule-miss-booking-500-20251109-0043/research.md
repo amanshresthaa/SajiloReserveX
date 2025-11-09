@@ -21,11 +21,14 @@
 
 ## Open Questions
 
-1. Is the seed data present locally for `white-horse-pub-waterbeach`? (owner: TBD)
-2. Should schedule misses be logged as warnings instead of errors when seeds missing? (owner: TBD)
+1. Is the seed data present locally for `white-horse-pub-waterbeach`? (Confirmed: yes; Supabase query shows slug + id exist.)
+2. Should schedule misses be logged as warnings instead of errors when seeds missing? (Resolved: actual misses were aborts, not missing data.)
 
 ## Recommended Direction
 
 - Inspect schedule API handler and booking POST handler to confirm they require remote Supabase data and fail when restaurant slug absent.
 - Provide fallback or developer guidance to load seeds; or alter env/dev config to point to existing restaurant slug.
 - After understanding root cause, implement fix ensuring `schedule.fetch.miss` reflects genuine misses only and booking submissions return 400/404 with actionable message when restaurant absent.
+- Identified findings:
+  - `schedule.fetch.miss` spam is caused by `AbortError`s from prefetch controllers; treat aborts as expected and skip analytics/logging.
+  - `POST /api/bookings` 500 occurs when the payload lacks `restaurantId`, causing the server to fall back to a stale default ID (`39cb...`). Ensure drafts never submit without a valid restaurant id and update defaults to the actual Waterbeach venue.

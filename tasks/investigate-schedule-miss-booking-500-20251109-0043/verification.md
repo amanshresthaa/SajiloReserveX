@@ -2,7 +2,7 @@
 
 ## Manual QA — Chrome DevTools (MCP)
 
-Tool: N/A (dev env)
+Tool: Not yet run (manual QA still pending — need Chrome DevTools MCP session)
 
 ### Console & Network
 
@@ -31,8 +31,11 @@ Tool: N/A (dev env)
 
 ## Test Outcomes
 
-- [ ] `pnpm run dev` (manual verification)
-- [ ] `pnpm run lint`
+- [ ] `pnpm run dev` (manual walkthrough & Chrome DevTools MCP)
+- [x] `pnpm exec vitest run --config vitest.config.ts src/app/api/restaurants/[slug]/calendar-mask/route.test.ts`
+- [x] `pnpm exec vitest run --config reserve/vitest.config.ts reserve/features/reservations/wizard/ui/steps/plan-step/__tests__/PlanStepForm.test.tsx`
+- [x] `pnpm run lint`
+- [ ] `pnpm run build`
 
 ## Known Issues
 
