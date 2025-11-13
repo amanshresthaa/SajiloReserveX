@@ -1,0 +1,20 @@
+# DB Diff — bookings.auto_assign_last_result
+
+UTC Timestamp: 2025-11-13T00:38:43Z
+
+## Before
+Command:
+psql "$SUPABASE_DB_URL" -t -A -c "select column_name, data_type from information_schema.columns where table_name = 'bookings' and column_name = 'auto_assign_last_result';"
+
+Result:
+<no rows>
+
+## Applied Migration
+psql "$SUPABASE_DB_URL" -v ON_ERROR_STOP=1 -f supabase/migrations/20251112195000_add_auto_assign_last_result.sql
+
+## After
+Command:
+psql "$SUPABASE_DB_URL" -t -A -c "select column_name, data_type from information_schema.columns where table_name = 'bookings' and column_name = 'auto_assign_last_result';"
+
+Result:
+auto_assign_last_result|jsonb

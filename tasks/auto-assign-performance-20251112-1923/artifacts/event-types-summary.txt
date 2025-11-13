@@ -1,0 +1,16 @@
+              event_type              | count 
+--------------------------------------+-------
+ auto_assign.attempt                  |    21
+ auto_assign.started                  |    15
+ inline_auto_assign.quote_result      |    14
+ inline_auto_assign.timeout           |    13
+ auto_assign.failed                   |    12
+ inline_auto_assign.no_hold           |     8
+ inline_auto_assign.operation_aborted |     7
+ auto_assign.attempt_error            |     6
+ inline_auto_assign.confirm_failed    |     6
+ auto_assign.stage_slow               |     3
+ inline_auto_assign.stage_slow        |     3
+ inline_auto_assign.quote_error       |     1
+(12 rows)
+
