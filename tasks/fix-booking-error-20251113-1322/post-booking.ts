@@ -1,5 +1,6 @@
 import { POST } from '@/app/api/bookings/route';
 import { NextRequest } from 'next/server';
+import { assertResponse } from './assert-response';
 
 async function main() {
   const payload = {
@@ -25,6 +26,7 @@ async function main() {
   });
 
   const res = await POST(req);
+  assertResponse(res);
   console.log(res.status);
   const json = await res.json();
   console.log(json);
