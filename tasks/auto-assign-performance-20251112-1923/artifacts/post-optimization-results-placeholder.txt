@@ -1,0 +1,28 @@
+# Post-Optimization Results Placeholder
+
+This file will be populated after:
+1. Feature flags FEATURE_AUTO_ASSIGN_RETRY_POLICY_V2 and PLANNER_CACHE_ENABLED are enabled in staging
+2. Sufficient soak time (≥7 days) with stable traffic
+3. Running post-optimization-query.sql against production database
+
+## Expected Timeline
+- Staging rollout: [TBD]
+- Production gradual rollout: 10% → 50% → 100%
+- Metrics collection window: 7 days at 100%
+- Final comparison: [TBD]
+
+## Monitoring Dashboards
+- auto_assign.* events: [Dashboard URL TBD]
+- Planner cache hit rate: [Dashboard URL TBD]
+- Retry policy effectiveness: [Dashboard URL TBD]
+
+## Success Criteria (from plan.md)
+- [ ] `recordObservabilityEvent` receives a `auto_assign.quote` for every planner call
+- [ ] Inline and job flows both log their events
+- [ ] Baseline doc captures median/p95/p99 durations and retry counts
+
+## Post-Optimization Targets
+- ↓ p95/p99 attempts_used (from baseline)
+- ↓ p95/p99 total_duration_ms (from baseline)
+- ↑ skipped_initial_count (inline skip optimization working)
+- Cache hit rate > 10% (if enabled and warmed)

@@ -1,0 +1,32 @@
+           source            |              event_type              | count 
+-----------------------------+--------------------------------------+-------
+ api.bookings                | guest_lookup.allowed                 |     3
+ api.ops                     | ops_bookings.list                    |     1
+ auto_assign                 | auto_assign.attempt                  |    41
+ auto_assign                 | auto_assign.quote                    |    27
+ auto_assign                 | auto_assign.started                  |    18
+ auto_assign                 | auto_assign.failed                   |    13
+ auto_assign                 | auto_assign.attempt_error            |     7
+ auto_assign                 | auto_assign.stage_slow               |     3
+ auto_assign                 | auto_assign.summary                  |     1
+ booking.modification        | booking.modification.pending         |     6
+ bookings.inline_auto_assign | inline_auto_assign.quote_result      |    20
+ bookings.inline_auto_assign | inline_auto_assign.no_hold           |    14
+ bookings.inline_auto_assign | inline_auto_assign.timeout           |    14
+ bookings.inline_auto_assign | inline_auto_assign.operation_aborted |     8
+ bookings.inline_auto_assign | inline_auto_assign.confirm_failed    |     6
+ bookings.inline_auto_assign | inline_auto_assign.stage_slow        |     3
+ bookings.inline_auto_assign | inline_auto_assign.quote_error       |     1
+ capacity.atomic_confirm     | transaction.failed                   |    12
+ capacity.atomic_confirm     | transaction.started                  |    12
+ capacity.atomic_confirm     | transaction.reconciled_mismatch      |     6
+ capacity.confirm            | confirm_hold.rpc_schema_cache_miss   |     6
+ capacity.confirm            | confirm_hold.rpc_fallback_succeeded  |     6
+ capacity.hold               | capacity.hold.created                |    12
+ capacity.holds              | hold.released                        |     2
+ capacity.rpc                | capacity.rpc.conflict                |  2323
+ capacity.selector           | capacity.selector.quote              |    12
+ capacity.transaction        | booking.creation.attempt             |    27
+ capacity.transaction        | booking.creation.success             |    27
+(28 rows)
+

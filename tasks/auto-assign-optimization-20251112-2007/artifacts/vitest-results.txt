@@ -1,0 +1,175 @@
+
+> ship-fast-code@0.1.0 test /Users/amankumarshrestha/Downloads/SajiloReserveX
+> vitest run --config reserve/vitest.config.ts
+
+
+ RUN  v3.2.4 /Users/amankumarshrestha/Downloads/SajiloReserveX/reserve
+
+ ✓ tests/features/restaurant-browser.test.tsx (5 tests) 1189ms
+   ✓ <RestaurantBrowser /> > filters restaurants by search term  712ms
+ ✓ tests/features/wizard/details-step.analytics.test.tsx (1 test) 308ms
+   ✓ <DetailsStep /> analytics > uses dependency-provided analytics tracker on submit  306ms
+ ✓ tests/unit/CustomerNavbar.test.tsx (2 tests) 1453ms
+   ✓ <CustomerNavbar /> > renders sign-in button for anonymous visitors  525ms
+   ✓ <CustomerNavbar /> > shows avatar menu and triggers sign out for authenticated users  927ms
+stdout | tests/unit/MyBookingsClient.analytics.test.tsx > MyBookingsClient analytics > tracks cancel dialog open event when cancel action is invoked
+[analytics] dashboard_viewed { totalBookings: [33m1[39m, filter: [32m'upcoming'[39m }
+[analytics] dashboard_cancel_opened { bookingId: [32m'booking-abc'[39m, status: [32m'confirmed'[39m }
+
+ ✓ tests/unit/MyBookingsClient.analytics.test.tsx (1 test) 92ms
+ ✓ tests/profile/ProfileManageForm.test.tsx (8 tests) 2923ms
+   ✓ ProfileManageForm > shows validation error and focuses name when too short  444ms
+   ✓ ProfileManageForm > submits trimmed name and surfaces success status  374ms
+   ✓ ProfileManageForm > submits phone changes  549ms
+   ✓ ProfileManageForm > surfaces idempotent status when duplicate request detected  398ms
+   ✓ ProfileManageForm > shows warning message when idempotency key conflicts  669ms
+ ✓ tests/unit/EditBookingDialog.test.tsx (5 tests) 2670ms
+   ✓ EditBookingDialog > submits derived end time when editing details  847ms
+   ✓ EditBookingDialog > displays mapped server error message  356ms
+   ✓ EditBookingDialog > disables editing when restaurant slug is missing  338ms
+   ✓ EditBookingDialog > re-disables saving when the picker clears its value  581ms
+   ✓ EditBookingDialog > prevents saving when party size exceeds the online limit  547ms
+stdout | features/reservations/wizard/ui/steps/plan-step/__tests__/PlanStepForm.test.tsx > <PlanStepForm /> > disables time selection and surfaces an alert when the schedule is closed
+[analytics] selection.blocked.closed { restaurantSlug: [32m'white-horse-pub-waterbeach'[39m, date: [32m'2025-05-11'[39m }
+
+ ✓ tests/features/booking-state-machine/ScheduleAwareTimestampPicker.test.tsx (8 tests) 4161ms
+   ✓ <ScheduleAwareTimestampPicker /> manual entry > prefills the saved date and time on initial render  433ms
+   ✓ <ScheduleAwareTimestampPicker /> manual entry > rejects manual times that are not available and surfaces an inline error  676ms
+   ✓ <ScheduleAwareTimestampPicker /> manual entry > clears the error once a valid slot is chosen  524ms
+   ✓ <ScheduleAwareTimestampPicker /> manual entry > keeps all time options visible after selecting a different slot on the same date  354ms
+   ✓ <ScheduleAwareTimestampPicker /> manual entry > clears the time and shows loading feedback when the date changes  1266ms
+   ✓ <ScheduleAwareTimestampPicker /> manual entry > surfaces closed-date messaging in the slot region and blocks selection  723ms
+ ✓ features/reservations/wizard/ui/steps/plan-step/components/__tests__/Calendar24Field.test.tsx (7 tests) 5078ms
+   ✓ <Calendar24Field /> > invokes onSelect when a date is chosen from the calendar  1837ms
+   ✓ <Calendar24Field /> > prevents selection for dates flagged by the matcher  1045ms
+   ✓ <Calendar24Field /> > notifies visible month changes  1383ms
+   ✓ <Calendar24Field /> > treats loading dates as disabled until schedules resolve  634ms
+ ✓ features/reservations/wizard/ui/steps/plan-step/__tests__/PlanStepForm.test.tsx (8 tests) 5071ms
+   ✓ <PlanStepForm /> > updates party size and occasion via handlers  2637ms
+   ✓ <PlanStepForm /> > normalizes manual times beyond the last seating buffer  798ms
+   ✓ <PlanStepForm /> > disables dates included in the initial calendar mask before schedules load  641ms
+ ✓ app/__tests__/router.test.tsx (2 tests) 1375ms
+   ✓ ReserveRouter > uses the default /reserve basename when no override is provided  1360ms
+ ✓ tests/unit/CancelBookingDialog.test.tsx (2 tests) 1833ms
+   ✓ CancelBookingDialog > calls cancel mutation when confirming  1654ms
+ ✓ features/reservations/wizard/ui/__tests__/WizardProgress.test.tsx (1 test) 437ms
+   ✓ WizardProgress > announces the current step for screen readers  435ms
+ ✓ features/reservations/wizard/ui/steps/plan-step/components/__tests__/OccasionPicker.responsive.test.tsx (2 tests) 907ms
+   ✓ OccasionPicker responsive layout > uses responsive grid classes and 44px targets  506ms
+   ✓ OccasionPicker responsive layout > disables options that are not available for the selected date  398ms
+ ✓ features/reservations/wizard/ui/__tests__/BookingWizard.offline.test.tsx (1 test) 1016ms
+   ✓ BookingWizard offline banner > shows offline banner, disables actions, and tracks analytics  1015ms
+ ✓ features/reservations/wizard/ui/__tests__/BookingWizard.plan-review.test.tsx (3 tests) 6694ms
+   ✓ BookingWizard plan to review flow > persists selections through review and triggers confirmation mutation  3797ms
+   ✓ BookingWizard plan to review flow > returns to review step and surfaces error when booking submission fails  1884ms
+   ✓ BookingWizard plan to review flow > shows booking-in-past guidance when API rejects due to past start time  1010ms
+stdout | tests/unit/BookingsListMobile.test.tsx > BookingsListMobile > shows empty state when no bookings and not loading
+[analytics] dashboard_empty_state_viewed {}
+
+ ✓ tests/unit/BookingsListMobile.test.tsx (4 tests) 1509ms
+   ✓ BookingsListMobile > renders booking summary and triggers actions  1359ms
+ ✓ tests/features/wizard/review-step.analytics.test.tsx (1 test) 109ms
+ ✓ shared/config/__tests__/reservations.test.ts (3 tests) 117ms
+ ✓ features/reservations/wizard/ui/steps/plan-step/components/__tests__/TimeSlotGrid.test.tsx (3 tests) 564ms
+   ✓ <TimeSlotGrid /> > renders grouped time buttons and invokes onSelect  356ms
+ ✓ tests/unit/useBookingsTableState.test.tsx (4 tests) 104ms
+ ✓ tests/features/wizard/plan-step-form.analytics.test.tsx (4 tests) 295ms
+ ✓ features/reservations/wizard/services/__tests__/useTimeSlots.test.tsx (2 tests) 138ms
+ ✓ shared/api/__tests__/client.test.ts (3 tests) 292ms
+stdout | tests/unit/analytics.emit.test.ts > analytics emitter > queues events and flushes via fetch on timer
+[analytics] booking_edit_submitted { bookingId: [32m'booking-42'[39m }
+
+stdout | tests/unit/analytics.emit.test.ts > analytics emitter > queues events and flushes via fetch on timer
+[analytics] flushing events timer [
+  {
+    name: [32m'booking_edit_submitted'[39m,
+    ts: [32m'2025-11-12T22:59:03.475Z'[39m,
+    user: { anonId: [32m'anon-123'[39m, emailHash: [32m'deadbeef'[39m },
+    context: { route: [32m'/my-bookings'[39m, version: [32m'web-dev'[39m },
+    props: { bookingId: [32m'booking-42'[39m }
+  }
+]
+
+stdout | tests/unit/analytics.emit.test.ts > analytics emitter > prefers sendBeacon when available
+[analytics] booking_cancelled { bookingId: [32m'booking-99'[39m }
+
+stdout | tests/unit/analytics.emit.test.ts > analytics emitter > prefers sendBeacon when available
+[analytics] flushing events manual [
+  {
+    name: [32m'booking_cancelled'[39m,
+    ts: [32m'2025-11-12T22:59:03.503Z'[39m,
+    user: { anonId: [32m'anon-123'[39m, emailHash: [32m'deadbeef'[39m },
+    context: { route: [32m'/my-bookings'[39m, version: [32m'web-dev'[39m },
+    props: { bookingId: [32m'booking-99'[39m }
+  }
+]
+
+stdout | tests/unit/analytics.emit.test.ts > analytics emitter > reuses resolved identity across emits
+[analytics] booking_cancelled { bookingId: [32m'booking-123'[39m }
+
+stdout | tests/unit/analytics.emit.test.ts > analytics emitter > reuses resolved identity across emits
+[analytics] filter_changed {}
+
+stdout | tests/unit/analytics.emit.test.ts > analytics emitter > reuses resolved identity across emits
+[analytics] flushing events manual [
+  {
+    name: [32m'booking_cancelled'[39m,
+    ts: [32m'2025-11-12T22:59:03.508Z'[39m,
+    user: { anonId: [32m'anon-123'[39m, emailHash: [32m'deadbeef'[39m },
+    context: { route: [32m'/my-bookings'[39m, version: [32m'web-dev'[39m },
+    props: { bookingId: [32m'booking-123'[39m }
+  },
+  {
+    name: [32m'filter_changed'[39m,
+    ts: [32m'2025-11-12T22:59:03.508Z'[39m,
+    user: { anonId: [32m'anon-123'[39m, emailHash: [32m'deadbeef'[39m },
+    context: { route: [32m'/my-bookings'[39m, version: [32m'web-dev'[39m },
+    props: {}
+  }
+]
+
+ ✓ tests/unit/analytics.emit.test.ts (3 tests) 39ms
+ ✓ features/reservations/wizard/model/__tests__/store.test.ts (5 tests) 94ms
+ ✓ features/reservations/wizard/api/__tests__/useCreateReservation.test.tsx (1 test) 26ms
+stdout | tests/unit/api-v1-alias.test.ts > API v1 alias routes > POST /api/v1/events forwards to existing handler
+[events] [
+  {
+    name: [32m'test'[39m,
+    ts: [32m'2025-11-12T22:59:04.513Z'[39m,
+    user: { anonId: [32m'x'[39m },
+    context: { route: [32m'/'[39m, version: [32m'v'[39m },
+    props: {}
+  }
+]
+
+ ✓ tests/unit/api-v1-alias.test.ts (2 tests) 31ms
+ ✓ tests/unit/fetchJson.test.ts (4 tests) 31ms
+ ✓ tests/hooks/useOnlineStatus.test.tsx (2 tests) 66ms
+ ✓ tests/unit/api-events.route.test.ts (2 tests) 32ms
+ ✓ tests/unit/reservation-share.test.ts (3 tests) 27ms
+ ✓ shared/schedule/__tests__/availability.test.ts (7 tests) 31ms
+ ✓ features/reservations/wizard/di/__tests__/context.test.tsx (2 tests) 47ms
+ ✓ shared/formatting/__tests__/booking.test.ts (4 tests) 22ms
+ ✓ tests/server/getReservation.test.ts (4 tests) 18ms
+ ✓ tests/profile/useUpdateProfile.test.tsx (1 test) 92ms
+ ✓ features/reservations/wizard/model/__tests__/schemas.test.ts (6 tests) 10ms
+ ✓ tests/profile/api.test.ts (4 tests) 93ms
+ ✓ shared/time/__tests__/reservations.test.ts (3 tests) 3ms
+ ✓ tests/server/bookings/history.test.ts (3 tests) 5ms
+ ✓ tests/unit/reservation.adapter.test.ts (1 test) 8ms
+ ✓ tests/server/ops/customers.test.ts (4 tests) 12ms
+ ✓ shared/time/__tests__/time.test.ts (4 tests) 18ms
+ ✓ features/reservations/wizard/services/__tests__/timeSlots.test.ts (3 tests) 20ms
+ ✓ features/reservations/wizard/model/__tests__/transformers.test.ts (4 tests) 14ms
+ ✓ tests/profile/ensureProfileRow.hydration.test.ts (2 tests) 13ms
+ ✓ shared/error/__tests__/error.test.ts (8 tests) 3ms
+ ✓ shared/api/__tests__/queryKeys.test.ts (3 tests) 4ms
+ ✓ tests/profile/schema.test.ts (5 tests) 9ms
+ ✓ shared/validation/__tests__/contact.test.ts (2 tests) 4ms
+ ✓ tests/unit/my-bookings-api.test.ts (2 tests) 16ms
+
+ Test Files  51 passed (51)
+      Tests  174 passed (174)
+   Start at  22:58:44
+   Duration  24.47s (transform 9.51s, setup 23.08s, collect 59.97s, tests 39.12s, environment 77.96s, prepare 14.23s)
+

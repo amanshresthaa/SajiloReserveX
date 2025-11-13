@@ -1,0 +1,16 @@
+event_type,count,avg_duration_ms
+inline_auto_assign.quote_result,21,241307
+auto_assign.attempt,21,
+auto_assign.started,20,
+inline_auto_assign.timeout,18,
+auto_assign.failed,14,
+inline_auto_assign.operation_aborted,12,330088
+inline_auto_assign.confirm_failed,11,7490
+auto_assign.attempt_error,8,
+inline_auto_assign.no_hold,8,162889
+inline_auto_assign.stage_slow,3,147233
+auto_assign.succeeded,3,19016
+auto_assign.stage_slow,3,115618
+inline_auto_assign.quote_error,1,111418
+inline_auto_assign.succeeded,1,
+inline_auto_assign.confirm_succeeded,1,3300
