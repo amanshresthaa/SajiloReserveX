@@ -1,0 +1,185 @@
+
+> ship-fast-code@0.1.0 prebuild /Users/amankumarshrestha/Downloads/SajiloReserveX
+> npm run validate:env
+
+
+> ship-fast-code@0.1.0 validate:env
+> tsx scripts/validate-env.ts
+
+[dotenv@17.2.2] injecting env (38) from .env.local -- tip: 📡 auto-backup env with Radar: https://dotenvx.com/radar
+🔍 Validating environment variables for development...
+✅ Environment validation passed (113 variables checked).
+
+> ship-fast-code@0.1.0 build /Users/amankumarshrestha/Downloads/SajiloReserveX
+> next build
+
+   ▲ Next.js 16.0.0 (Turbopack)
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 4.7s
+   Running TypeScript ...
+   Collecting page data ...
+   Generating static pages (0/76) ...
+   Generating static pages (19/76) 
+   Generating static pages (38/76) 
+   Generating static pages (57/76) 
+ ✓ Generating static pages (76/76) in 509.3ms
+   Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ƒ /api/auth/callback
+├ ƒ /api/availability
+├ ƒ /api/bookings
+├ ƒ /api/bookings/[id]
+├ ƒ /api/bookings/[id]/history
+├ ƒ /api/bookings/confirm
+├ ƒ /api/config/merge-rules
+├ ƒ /api/config/service-policy
+├ ƒ /api/events
+├ ƒ /api/lead
+├ ƒ /api/ops/allowed-capacities
+├ ƒ /api/ops/bookings
+├ ƒ /api/ops/bookings/[id]
+├ ƒ /api/ops/bookings/[id]/check-in
+├ ƒ /api/ops/bookings/[id]/check-out
+├ ƒ /api/ops/bookings/[id]/history
+├ ƒ /api/ops/bookings/[id]/no-show
+├ ƒ /api/ops/bookings/[id]/status
+├ ƒ /api/ops/bookings/[id]/tables
+├ ƒ /api/ops/bookings/[id]/tables/[tableId]
+├ ƒ /api/ops/bookings/[id]/undo-no-show
+├ ƒ /api/ops/bookings/export
+├ ƒ /api/ops/bookings/status-summary
+├ ƒ /api/ops/customers
+├ ƒ /api/ops/customers/export
+├ ƒ /api/ops/dashboard/changes
+├ ƒ /api/ops/dashboard/heatmap
+├ ƒ /api/ops/dashboard/rejections
+├ ƒ /api/ops/dashboard/summary
+├ ƒ /api/ops/dashboard/vips
+├ ƒ /api/ops/occasions
+├ ƒ /api/ops/restaurants
+├ ƒ /api/ops/restaurants/[id]
+├ ƒ /api/ops/restaurants/[id]/logo
+├ ƒ /api/ops/settings/strategic-config
+├ ƒ /api/ops/strategies/simulate
+├ ƒ /api/ops/tables
+├ ƒ /api/ops/tables/[id]
+├ ƒ /api/ops/tables/timeline
+├ ƒ /api/ops/zones
+├ ƒ /api/ops/zones/[id]
+├ ƒ /api/owner/restaurants/[id]/details
+├ ƒ /api/owner/restaurants/[id]/hours
+├ ƒ /api/owner/restaurants/[id]/service-periods
+├ ƒ /api/owner/team/invitations
+├ ƒ /api/owner/team/invitations/[inviteId]
+├ ƒ /api/owner/team/memberships
+├ ƒ /api/profile
+├ ƒ /api/profile/image
+├ ƒ /api/reservations/[reservationId]/confirmation
+├ ƒ /api/restaurants
+├ ƒ /api/restaurants/[slug]/calendar-mask
+├ ƒ /api/restaurants/[slug]/schedule
+├ ƒ /api/staff/auto/confirm
+├ ƒ /api/staff/auto/quote
+├ ƒ /api/staff/manual/confirm
+├ ƒ /api/staff/manual/context
+├ ƒ /api/staff/manual/hold
+├ ƒ /api/staff/manual/validate
+├ ƒ /api/team/invitations/[token]
+├ ƒ /api/team/invitations/[token]/accept
+├ ƒ /api/test-email
+├ ƒ /api/test/bookings
+├ ƒ /api/test/invitations
+├ ƒ /api/test/leads
+├ ƒ /api/test/playwright-session
+├ ƒ /api/test/reservations/[reservationId]/confirmation
+├ ƒ /api/v1/bookings
+├ ƒ /api/v1/events
+├ ƒ /api/v1/lead
+├ ƒ /api/v1/profile
+├ ƒ /api/v1/profile/image
+├ ƒ /api/v1/restaurants
+├ ƒ /api/v1/restaurants/[slug]/schedule
+├ ƒ /api/v1/test/bookings
+├ ƒ /api/v1/test/leads
+├ ƒ /api/v1/test/playwright-session
+├ ƒ /api/v1/test/reservations/[reservationId]/confirmation
+├ ○ /apple-icon.png
+├ ○ /blog
+├ ƒ /blog/[articleId]
+├ ○ /blog/author
+├ ƒ /blog/author/[authorId]
+├ ○ /blog/category
+├ ƒ /blog/category/[categoryId]
+├ ƒ /browse
+├ ƒ /checkout
+├ ○ /contact
+├ ƒ /create
+├ ○ /icon.png
+├ ƒ /invite/[token]
+├ ƒ /item/[slug]
+├ ƒ /my-bookings
+├ ○ /opengraph-image.png
+├ ƒ /ops
+├ ƒ /ops/bookings
+├ ƒ /ops/bookings/new
+├ ƒ /ops/capacity
+├ ƒ /ops/customer-details
+├ ƒ /ops/dashboard
+├ ƒ /ops/login
+├ ƒ /ops/rejections
+├ ƒ /ops/restaurant-settings
+├ ƒ /ops/tables
+├ ƒ /ops/team
+├ ƒ /partners
+├ ○ /pricing
+├ ○ /privacy-policy
+├ ○ /product
+├ ƒ /profile/manage
+├ ƒ /reserve
+├ ƒ /reserve/[reservationId]
+├ ƒ /reserve/r/[slug]
+├ ƒ /restaurant
+├ ○ /robots.txt
+├ ƒ /signin
+├ ○ /sitemap.xml
+├ ○ /terms
+├ ○ /thank-you
+└ ○ /twitter-image.png
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+
+> ship-fast-code@0.1.0 postbuild /Users/amankumarshrestha/Downloads/SajiloReserveX
+> next-sitemap
+
+✨ [next-sitemap] Loading next-sitemap config: file:///Users/amankumarshrestha/Downloads/SajiloReserveX/next-sitemap.config.js
+✅ [next-sitemap] Generation completed
+┌───────────────┬────────┐
+│ (index)       │ Values │
+├───────────────┼────────┤
+│ indexSitemaps │ 1      │
+│ sitemaps      │ 1      │
+└───────────────┴────────┘
+-----------------------------------------------------
+ SITEMAP INDICES 
+-----------------------------------------------------
+
+   ○ https://shipfa.st/sitemap.xml
+
+
+-----------------------------------------------------
+ SITEMAPS 
+-----------------------------------------------------
+
+   ○ https://shipfa.st/sitemap-0.xml
+
+
