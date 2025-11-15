@@ -1,0 +1,15 @@
+> pnpm booking:flow --restaurant-slug white-horse-pub-waterbeach --date 2026-04-04 --time 12:00 --party-size 1 --pretty --timeout-ms 180000 --base-url http://localhost:3000
+
+> ship-fast-code@0.1.0 booking:flow /Users/amankumarshrestha/Downloads/SajiloReserveX
+> tsx -r tsconfig-paths/register scripts/run-booking-flow.ts --restaurant-slug white-horse-pub-waterbeach --date 2026-04-04 --time 12\:00 --party-size 1 --pretty --timeout-ms 180000 --base-url http\://localhost\:3000
+
+[dotenv@17.2.2] injecting env (0) from .env.local -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+[dotenv@17.2.2] injecting env (0) from .env.development -- tip: 📡 observe env with Radar: https://dotenvx.com/radar
+[dotenv@17.2.2] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[2025-11-15T00:36:28.958Z] [INFO] [bootstrap] Starting booking flow {"correlationId":"16794f68-d8c8-4a40-bc6a-b37578765d8a","bookingId":null,"iteration":1,"totalRuns":1,"timeoutMs":180000,"inlineWindowMs":25000,"pollIntervalMs":2000}
+[2025-11-15T00:36:28.959Z] [INFO] [submit] Submitting booking request {"correlationId":"16794f68-d8c8-4a40-bc6a-b37578765d8a","bookingId":null,"url":"http://localhost:3000/api/bookings","restaurantSlug":"white-horse-pub-waterbeach","restaurantId":null,"date":"2026-04-04","time":"12:00","party":1,"bookingType":"dinner","seating":"any","marketingOptIn":false}
+[supabase] strict hold enforcement active
+[2025-11-15T00:36:49.792Z] [INFO] [submit] Booking created {"correlationId":"16794f68-d8c8-4a40-bc6a-b37578765d8a","bookingId":"af1cd716-a352-42d4-9fee-84846c3884a8","duplicate":false,"initialStatus":"confirmed","durationMs":20829,"maskedEmail":"bo***t@example.com","maskedPhone":"********0123"}
+[2025-11-15T00:36:50.404Z] [INFO] [final_summary] Booking confirmed inline (API response) {"correlationId":"16794f68-d8c8-4a40-bc6a-b37578765d8a","bookingId":"af1cd716-a352-42d4-9fee-84846c3884a8","reference":"5TGVBP9Z2C","bookingDate":"2026-04-04","startTime":"12:00:00","endTime":"13:30:00","autoAssignLastResult":{"source":"inline","lastAttemptAt":"2025-11-15T00:36:47.090Z","success":false,"reason":"INLINE_TIMEOUT","strategy":{"maxTables":null,"requireAdjacency":null},"trigger":"inline_creation","alternates":0,"durationMs":12005,"attemptId":"65d6d649-14d3-4739-9fa5-aa23115c79db","emailSent":false,"emailVariant":"standard"},"iteration":1,"submitDurationMs":20829,"inlineAttempts":0,"inlineDurationMs":0,"postJobAttempts":0,"postJobDurationMs":0,"backgroundInvoked":false,"backgroundDurationMs":null,"totalDurationMs":21446,"tablesAssigned":1,"totalCapacity":2,"seatWaste":1,"tableNumbers":["B1"],"partySize":1,"duplicateRequest":false,"status":"confirmed_inline_api","assignments":[{"id":"f8a96c96-cce5-4794-aece-3e84ae0e9c45","tableId":"0ef0c283-c9d5-4be0-8d54-86b3bdf4fcd2","tableNumber":"B1","zoneId":"59c7868c-5d1c-4f1d-84a5-06bf8bc4ea6c","capacity":2,"startAt":null,"endAt":null}]}
+✅ Successfully confirmed 1 booking.
+__EXIT_CODE=0

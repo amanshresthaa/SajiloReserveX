@@ -1,0 +1,67 @@
+> pnpm booking:flow --restaurant-slug white-horse-pub-waterbeach --date 2026-07-05 --time 12:30 --stress --stress-max 40 --pretty --timeout-ms 180000 --base-url http://localhost:3000
+
+> ship-fast-code@0.1.0 booking:flow /Users/amankumarshrestha/Downloads/SajiloReserveX
+> tsx -r tsconfig-paths/register scripts/run-booking-flow.ts --restaurant-slug white-horse-pub-waterbeach --date 2026-07-05 --time 12\:30 --stress --stress-max 40 --pretty --timeout-ms 180000 --base-url http\://localhost\:3000
+
+[dotenv@17.2.2] injecting env (0) from .env.local -- tip: 📡 version env with Radar: https://dotenvx.com/radar
+[dotenv@17.2.2] injecting env (0) from .env.development -- tip: ⚙️  override existing env vars with { override: true }
+[dotenv@17.2.2] injecting env (0) from .env -- tip: 📡 auto-backup env with Radar: https://dotenvx.com/radar
+[2025-11-14T21:53:01.818Z] [INFO] [bootstrap] Starting booking flow {"correlationId":"ffc88f0e-c731-4bc2-b6d6-9ca477e9244c","bookingId":null,"iteration":1,"totalRuns":"stress","timeoutMs":180000,"inlineWindowMs":25000,"pollIntervalMs":2000}
+[2025-11-14T21:53:01.818Z] [INFO] [submit] Submitting booking request {"correlationId":"ffc88f0e-c731-4bc2-b6d6-9ca477e9244c","bookingId":null,"url":"http://localhost:3000/api/bookings","restaurantSlug":"white-horse-pub-waterbeach","restaurantId":null,"date":"2026-07-05","time":"12:30","party":2,"bookingType":"dinner","seating":"any","marketingOptIn":false}
+[supabase] strict hold enforcement active
+[2025-11-14T21:53:12.811Z] [INFO] [submit] Booking created {"correlationId":"ffc88f0e-c731-4bc2-b6d6-9ca477e9244c","bookingId":"a02c00bb-2cc2-4c61-a38e-280f1822970f","duplicate":false,"initialStatus":"pending","durationMs":10991,"maskedEmail":"bo***e@example.com","maskedPhone":"********8504"}
+[2025-11-14T21:53:13.457Z] [INFO] [inline_poll] Status update {"correlationId":"ffc88f0e-c731-4bc2-b6d6-9ca477e9244c","bookingId":"a02c00bb-2cc2-4c61-a38e-280f1822970f","attempt":1,"status":"pending","assignments":0,"elapsedMs":646}
+[2025-11-14T21:53:39.092Z] [WARN] [inline_poll] Inline window expired without confirmation {"correlationId":"ffc88f0e-c731-4bc2-b6d6-9ca477e9244c","bookingId":"a02c00bb-2cc2-4c61-a38e-280f1822970f","state":"timeout","attempts":11}
+[2025-11-14T21:53:39.092Z] [INFO] [background_job] Triggering autoAssignAndConfirmIfPossible {"correlationId":"ffc88f0e-c731-4bc2-b6d6-9ca477e9244c","bookingId":"a02c00bb-2cc2-4c61-a38e-280f1822970f"}
+[auto-assign][job] scheduled {
+  bookingId: 'a02c00bb-2cc2-4c61-a38e-280f1822970f',
+  reason: 'creation',
+  emailVariant: 'standard',
+  bypass: true
+}
+[auto-assign][job] attempts.reduced.inline_no_capacity {
+  bookingId: 'a02c00bb-2cc2-4c61-a38e-280f1822970f',
+  inlineAttemptId: '04dacd8e-bd1e-4d9c-92e9-cbdf92d2905e',
+  inlineReason: 'No tables available for requested window'
+}
+[auto-assign][job] attempt.start {
+  bookingId: 'a02c00bb-2cc2-4c61-a38e-280f1822970f',
+  attempt: 0,
+  maxAttempts: 1
+}
+[auto-assign][job] attempt.no_hold {
+  bookingId: 'a02c00bb-2cc2-4c61-a38e-280f1822970f',
+  attempt: 0,
+  reason: 'No tables available for requested window',
+  alternates: 0
+}
+[auto-assign][job] exhausted {
+  bookingId: 'a02c00bb-2cc2-4c61-a38e-280f1822970f',
+  attempts: 1,
+  maxAttempts: 1
+}
+[2025-11-14T21:53:42.755Z] [INFO] [background_job] Background auto-assign invoked {"correlationId":"ffc88f0e-c731-4bc2-b6d6-9ca477e9244c","bookingId":"a02c00bb-2cc2-4c61-a38e-280f1822970f","durationMs":3663}
+[2025-11-14T21:53:43.084Z] [INFO] [post_job_poll] Status update {"correlationId":"ffc88f0e-c731-4bc2-b6d6-9ca477e9244c","bookingId":"a02c00bb-2cc2-4c61-a38e-280f1822970f","attempt":1,"status":"pending","assignments":0,"elapsedMs":329}
+[2025-11-14T21:56:07.091Z] [ERROR] [diagnostics] Assignment diagnostics {"correlationId":"ffc88f0e-c731-4bc2-b6d6-9ca477e9244c","bookingId":"a02c00bb-2cc2-4c61-a38e-280f1822970f","bookingStatus":"pending","assignments":[],"partySize":2,"totalCapacity":0,"seatWaste":0,"lastAutoAssignResult":{"source":"inline","lastAttemptAt":"2025-11-14T21:53:10.344Z","success":false,"reason":"No tables available for requested window","strategy":{"maxTables":null,"requireAdjacency":null},"trigger":"inline_creation","alternates":0,"durationMs":1683,"attemptId":"04dacd8e-bd1e-4d9c-92e9-cbdf92d2905e","emailSent":false,"emailVariant":"standard"},"assignmentStateHistory":[]}
+[2025-11-14T21:56:07.092Z] [ERROR] [final_summary] Booking failed to confirm {"correlationId":"ffc88f0e-c731-4bc2-b6d6-9ca477e9244c","bookingId":"a02c00bb-2cc2-4c61-a38e-280f1822970f","state":"timeout","durationMs":184946}
+[stress] Summary {
+  totalRuns: 1,
+  successes: 0,
+  failures: 1,
+  maxRuns: 40,
+  completedTarget: false,
+  durationMs: { count: 0, min: 0, max: 0, avg: 0, p95: 0 },
+  seatWaste: { count: 0, min: 0, max: 0, avg: 0, p95: 0 },
+  tablesPerBooking: { count: 0, min: 0, max: 0, avg: 0, p95: 0 },
+  uniqueTables: []
+}
+[stress] Failure details {
+  iteration: 1,
+  correlationId: 'ffc88f0e-c731-4bc2-b6d6-9ca477e9244c',
+  status: 'failed_background_timeout',
+  failureReason: 'timeout',
+  bookingId: 'a02c00bb-2cc2-4c61-a38e-280f1822970f'
+}
+❌ Stress run halted after 0 successes; see summary above.
+ ELIFECYCLE  Command failed with exit code 1.
+__EXIT_CODE=1

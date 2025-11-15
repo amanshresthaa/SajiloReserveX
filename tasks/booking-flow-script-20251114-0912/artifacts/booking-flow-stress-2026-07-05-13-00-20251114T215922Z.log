@@ -1,0 +1,13 @@
+> pnpm booking:flow --restaurant-slug white-horse-pub-waterbeach --date 2026-07-05 --time 13:00 --stress --stress-max 40 --pretty --timeout-ms 180000 --base-url http://localhost:3000
+
+> ship-fast-code@0.1.0 booking:flow /Users/amankumarshrestha/Downloads/SajiloReserveX
+> tsx -r tsconfig-paths/register scripts/run-booking-flow.ts --restaurant-slug white-horse-pub-waterbeach --date 2026-07-05 --time 13\:00 --stress --stress-max 40 --pretty --timeout-ms 180000 --base-url http\://localhost\:3000
+
+[dotenv@17.2.2] injecting env (0) from .env.local -- tip: ⚙️  write to custom object with { processEnv: myObject }
+[dotenv@17.2.2] injecting env (0) from .env.development -- tip: 📡 auto-backup env with Radar: https://dotenvx.com/radar
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[2025-11-14T21:59:23.250Z] [INFO] [bootstrap] Starting booking flow {"correlationId":"f4ad3c01-4420-4f7c-a908-232126c27efb","bookingId":null,"iteration":1,"totalRuns":"stress","timeoutMs":180000,"inlineWindowMs":25000,"pollIntervalMs":2000}
+[2025-11-14T21:59:23.251Z] [INFO] [submit] Submitting booking request {"correlationId":"f4ad3c01-4420-4f7c-a908-232126c27efb","bookingId":null,"url":"http://localhost:3000/api/bookings","restaurantSlug":"white-horse-pub-waterbeach","restaurantId":null,"date":"2026-07-05","time":"13:00","party":2,"bookingType":"dinner","seating":"any","marketingOptIn":false}
+[supabase] strict hold enforcement active
+[2025-11-14T21:59:34.259Z] [INFO] [submit] Booking created {"correlationId":"f4ad3c01-4420-4f7c-a908-232126c27efb","bookingId":"2c5b76f7-76e1-4469-86fb-74ffbb744f68","duplicate":false,"initialStatus":"pending","durationMs":11006,"maskedEmail":"bo***1@example.com","maskedPhone":"********3201"}
+[2025-11-14T21:59:34.942Z] [INFO] [inline_poll] Status update {"correlationId":"f4ad3c01-4420-4f7c-a908-232126c27efb","bookingId":"2c5b76f7-76e1-4469-86fb-74ffbb744f68","attempt":1,"status":"pending","assignments":0,"elapsedMs":683}

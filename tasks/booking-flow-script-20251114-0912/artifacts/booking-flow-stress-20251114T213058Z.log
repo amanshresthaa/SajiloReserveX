@@ -1,0 +1,13 @@
+> pnpm booking:flow --restaurant-slug white-horse-pub-waterbeach --date 2026-07-05 --time 12:00 --stress --pretty --timeout-ms 180000
+
+> ship-fast-code@0.1.0 booking:flow /Users/amankumarshrestha/Downloads/SajiloReserveX
+> tsx -r tsconfig-paths/register scripts/run-booking-flow.ts --restaurant-slug white-horse-pub-waterbeach --date 2026-07-05 --time 12\:00 --stress --pretty --timeout-ms 180000
+
+[dotenv@17.2.2] injecting env (0) from .env.local -- tip: ⚙️  override existing env vars with { override: true }
+[dotenv@17.2.2] injecting env (0) from .env.development -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+[2025-11-14T21:30:59.190Z] [INFO] [bootstrap] Starting booking flow {"correlationId":"a9d3e43b-34db-4ac2-b583-c67fbf895ebb","bookingId":null,"iteration":1,"totalRuns":"stress","timeoutMs":180000,"inlineWindowMs":25000,"pollIntervalMs":2000}
+[2025-11-14T21:30:59.191Z] [INFO] [submit] Submitting booking request {"correlationId":"a9d3e43b-34db-4ac2-b583-c67fbf895ebb","bookingId":null,"url":"https://api.sajiloreservex.com/api/bookings","restaurantSlug":"white-horse-pub-waterbeach","restaurantId":null,"date":"2026-07-05","time":"12:00","party":2,"bookingType":"dinner","seating":"any","marketingOptIn":false}
+❌ fetch failed
+[supabase] strict hold enforcement active
+ ELIFECYCLE  Command failed with exit code 1.
