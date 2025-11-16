@@ -1,0 +1,12 @@
+
+> ship-fast-code@0.1.0 booking:flow /Users/amankumarshrestha/Downloads/SajiloReserveX
+> tsx -r tsconfig-paths/register scripts/run-booking-flow.ts --restaurant-slug white-horse-pub-waterbeach --date 2026-01-19 --time 12\:00 --party-size 12 --stress --stress-max 10 --timeout-ms 180000 --base-url http\://localhost\:3000 --pretty
+
+[dotenv@17.2.2] injecting env (0) from .env.local -- tip: ⚙️  suppress all logs with { quiet: true }
+[dotenv@17.2.2] injecting env (0) from .env.development -- tip: ⚙️  override existing env vars with { override: true }
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+[2025-11-15T09:00:45.997Z] [INFO] [bootstrap] Starting booking flow {"correlationId":"f77d2020-9b3c-4cc7-b7d8-4377bb9d75d8","bookingId":null,"iteration":1,"totalRuns":"stress","timeoutMs":180000,"inlineWindowMs":25000,"pollIntervalMs":2000}
+[2025-11-15T09:00:45.997Z] [INFO] [submit] Submitting booking request {"correlationId":"f77d2020-9b3c-4cc7-b7d8-4377bb9d75d8","bookingId":null,"url":"http://localhost:3000/api/bookings","restaurantSlug":"white-horse-pub-waterbeach","restaurantId":null,"date":"2026-01-19","time":"12:00","party":12,"bookingType":"dinner","seating":"any","marketingOptIn":false}
+[supabase] strict hold enforcement active
+❌ Booking request timed out
+ ELIFECYCLE  Command failed with exit code 1.
