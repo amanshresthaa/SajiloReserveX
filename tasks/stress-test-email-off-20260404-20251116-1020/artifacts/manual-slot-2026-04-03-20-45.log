@@ -1,0 +1,227 @@
+\n=== Slot 20:45 ===
+[20251116T114220Z] attempt 1 party 10
+
+> ship-fast-code@0.1.0 booking:flow /Users/amankumarshrestha/Downloads/SajiloReserveX
+> tsx -r tsconfig-paths/register scripts/run-booking-flow.ts --restaurant-slug white-horse-pub-waterbeach --date 2026-04-03 --time 20\:45 --party-size 10 --timeout-ms 180000 --base-url http\://localhost\:3000 --randomize-contact --pretty
+
+/Users/amankumarshrestha/Downloads/SajiloReserveX/lib/env.ts:41
+    throw new Error(`Environment validation failed at runtime:\n${formatted}`);
+          ^
+
+
+Error: Environment validation failed at runtime:
+NEXT_PUBLIC_SUPABASE_URL: Invalid input: expected string, received undefined
+NEXT_PUBLIC_SUPABASE_ANON_KEY: Invalid input: expected string, received undefined
+SUPABASE_SERVICE_ROLE_KEY: Invalid input: expected string, received undefined
+    at parseEnv (/Users/amankumarshrestha/Downloads/SajiloReserveX/lib/env.ts:41:11)
+    at getEnv (/Users/amankumarshrestha/Downloads/SajiloReserveX/lib/env.ts:49:10)
+    at data (/Users/amankumarshrestha/Downloads/SajiloReserveX/server/supabase.ts:18:20)
+    at Object.<anonymous> (/Users/amankumarshrestha/Downloads/SajiloReserveX/server/supabase.ts:166:23)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Object.transformer (/Users/amankumarshrestha/Downloads/SajiloReserveX/node_modules/.pnpm/tsx@4.20.6/node_modules/tsx/dist/register-D46fvsV_.cjs:3:1104)
+    at Module.load (node:internal/modules/cjs/loader:1318:32)
+    at Function._load (node:internal/modules/cjs/loader:1128:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:219:24)
+
+Node.js v22.12.0
+ ELIFECYCLE  Command failed with exit code 1.
+  failure (code 1)
+[20251116T114220Z] attempt 2 party 12
+
+> ship-fast-code@0.1.0 booking:flow /Users/amankumarshrestha/Downloads/SajiloReserveX
+> tsx -r tsconfig-paths/register scripts/run-booking-flow.ts --restaurant-slug white-horse-pub-waterbeach --date 2026-04-03 --time 20\:45 --party-size 12 --timeout-ms 180000 --base-url http\://localhost\:3000 --randomize-contact --pretty
+
+/Users/amankumarshrestha/Downloads/SajiloReserveX/lib/env.ts:41
+    throw new Error(`Environment validation failed at runtime:\n${formatted}`);
+          ^
+
+
+Error: Environment validation failed at runtime:
+NEXT_PUBLIC_SUPABASE_URL: Invalid input: expected string, received undefined
+NEXT_PUBLIC_SUPABASE_ANON_KEY: Invalid input: expected string, received undefined
+SUPABASE_SERVICE_ROLE_KEY: Invalid input: expected string, received undefined
+    at parseEnv (/Users/amankumarshrestha/Downloads/SajiloReserveX/lib/env.ts:41:11)
+    at getEnv (/Users/amankumarshrestha/Downloads/SajiloReserveX/lib/env.ts:49:10)
+    at data (/Users/amankumarshrestha/Downloads/SajiloReserveX/server/supabase.ts:18:20)
+    at Object.<anonymous> (/Users/amankumarshrestha/Downloads/SajiloReserveX/server/supabase.ts:166:23)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Object.transformer (/Users/amankumarshrestha/Downloads/SajiloReserveX/node_modules/.pnpm/tsx@4.20.6/node_modules/tsx/dist/register-D46fvsV_.cjs:3:1104)
+    at Module.load (node:internal/modules/cjs/loader:1318:32)
+    at Function._load (node:internal/modules/cjs/loader:1128:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:219:24)
+
+Node.js v22.12.0
+ ELIFECYCLE  Command failed with exit code 1.
+  failure (code 1)
+[20251116T114221Z] attempt 3 party 1
+
+> ship-fast-code@0.1.0 booking:flow /Users/amankumarshrestha/Downloads/SajiloReserveX
+> tsx -r tsconfig-paths/register scripts/run-booking-flow.ts --restaurant-slug white-horse-pub-waterbeach --date 2026-04-03 --time 20\:45 --party-size 1 --timeout-ms 180000 --base-url http\://localhost\:3000 --randomize-contact --pretty
+
+/Users/amankumarshrestha/Downloads/SajiloReserveX/lib/env.ts:41
+    throw new Error(`Environment validation failed at runtime:\n${formatted}`);
+          ^
+
+
+Error: Environment validation failed at runtime:
+NEXT_PUBLIC_SUPABASE_URL: Invalid input: expected string, received undefined
+NEXT_PUBLIC_SUPABASE_ANON_KEY: Invalid input: expected string, received undefined
+SUPABASE_SERVICE_ROLE_KEY: Invalid input: expected string, received undefined
+    at parseEnv (/Users/amankumarshrestha/Downloads/SajiloReserveX/lib/env.ts:41:11)
+    at getEnv (/Users/amankumarshrestha/Downloads/SajiloReserveX/lib/env.ts:49:10)
+    at data (/Users/amankumarshrestha/Downloads/SajiloReserveX/server/supabase.ts:18:20)
+    at Object.<anonymous> (/Users/amankumarshrestha/Downloads/SajiloReserveX/server/supabase.ts:166:23)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Object.transformer (/Users/amankumarshrestha/Downloads/SajiloReserveX/node_modules/.pnpm/tsx@4.20.6/node_modules/tsx/dist/register-D46fvsV_.cjs:3:1104)
+    at Module.load (node:internal/modules/cjs/loader:1318:32)
+    at Function._load (node:internal/modules/cjs/loader:1128:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:219:24)
+
+Node.js v22.12.0
+ ELIFECYCLE  Command failed with exit code 1.
+  failure (code 1)
+[20251116T114222Z] attempt 4 party 6
+
+> ship-fast-code@0.1.0 booking:flow /Users/amankumarshrestha/Downloads/SajiloReserveX
+> tsx -r tsconfig-paths/register scripts/run-booking-flow.ts --restaurant-slug white-horse-pub-waterbeach --date 2026-04-03 --time 20\:45 --party-size 6 --timeout-ms 180000 --base-url http\://localhost\:3000 --randomize-contact --pretty
+
+/Users/amankumarshrestha/Downloads/SajiloReserveX/lib/env.ts:41
+    throw new Error(`Environment validation failed at runtime:\n${formatted}`);
+          ^
+
+
+Error: Environment validation failed at runtime:
+NEXT_PUBLIC_SUPABASE_URL: Invalid input: expected string, received undefined
+NEXT_PUBLIC_SUPABASE_ANON_KEY: Invalid input: expected string, received undefined
+SUPABASE_SERVICE_ROLE_KEY: Invalid input: expected string, received undefined
+    at parseEnv (/Users/amankumarshrestha/Downloads/SajiloReserveX/lib/env.ts:41:11)
+    at getEnv (/Users/amankumarshrestha/Downloads/SajiloReserveX/lib/env.ts:49:10)
+    at data (/Users/amankumarshrestha/Downloads/SajiloReserveX/server/supabase.ts:18:20)
+    at Object.<anonymous> (/Users/amankumarshrestha/Downloads/SajiloReserveX/server/supabase.ts:166:23)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Object.transformer (/Users/amankumarshrestha/Downloads/SajiloReserveX/node_modules/.pnpm/tsx@4.20.6/node_modules/tsx/dist/register-D46fvsV_.cjs:3:1104)
+    at Module.load (node:internal/modules/cjs/loader:1318:32)
+    at Function._load (node:internal/modules/cjs/loader:1128:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:219:24)
+
+Node.js v22.12.0
+ ELIFECYCLE  Command failed with exit code 1.
+  failure (code 1)
+[20251116T114222Z] attempt 5 party 7
+
+> ship-fast-code@0.1.0 booking:flow /Users/amankumarshrestha/Downloads/SajiloReserveX
+> tsx -r tsconfig-paths/register scripts/run-booking-flow.ts --restaurant-slug white-horse-pub-waterbeach --date 2026-04-03 --time 20\:45 --party-size 7 --timeout-ms 180000 --base-url http\://localhost\:3000 --randomize-contact --pretty
+
+/Users/amankumarshrestha/Downloads/SajiloReserveX/lib/env.ts:41
+    throw new Error(`Environment validation failed at runtime:\n${formatted}`);
+          ^
+
+
+Error: Environment validation failed at runtime:
+NEXT_PUBLIC_SUPABASE_URL: Invalid input: expected string, received undefined
+NEXT_PUBLIC_SUPABASE_ANON_KEY: Invalid input: expected string, received undefined
+SUPABASE_SERVICE_ROLE_KEY: Invalid input: expected string, received undefined
+    at parseEnv (/Users/amankumarshrestha/Downloads/SajiloReserveX/lib/env.ts:41:11)
+    at getEnv (/Users/amankumarshrestha/Downloads/SajiloReserveX/lib/env.ts:49:10)
+    at data (/Users/amankumarshrestha/Downloads/SajiloReserveX/server/supabase.ts:18:20)
+    at Object.<anonymous> (/Users/amankumarshrestha/Downloads/SajiloReserveX/server/supabase.ts:166:23)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Object.transformer (/Users/amankumarshrestha/Downloads/SajiloReserveX/node_modules/.pnpm/tsx@4.20.6/node_modules/tsx/dist/register-D46fvsV_.cjs:3:1104)
+    at Module.load (node:internal/modules/cjs/loader:1318:32)
+    at Function._load (node:internal/modules/cjs/loader:1128:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:219:24)
+
+Node.js v22.12.0
+ ELIFECYCLE  Command failed with exit code 1.
+  failure (code 1)
+[20251116T114223Z] attempt 6 party 2
+
+> ship-fast-code@0.1.0 booking:flow /Users/amankumarshrestha/Downloads/SajiloReserveX
+> tsx -r tsconfig-paths/register scripts/run-booking-flow.ts --restaurant-slug white-horse-pub-waterbeach --date 2026-04-03 --time 20\:45 --party-size 2 --timeout-ms 180000 --base-url http\://localhost\:3000 --randomize-contact --pretty
+
+/Users/amankumarshrestha/Downloads/SajiloReserveX/lib/env.ts:41
+    throw new Error(`Environment validation failed at runtime:\n${formatted}`);
+          ^
+
+
+Error: Environment validation failed at runtime:
+NEXT_PUBLIC_SUPABASE_URL: Invalid input: expected string, received undefined
+NEXT_PUBLIC_SUPABASE_ANON_KEY: Invalid input: expected string, received undefined
+SUPABASE_SERVICE_ROLE_KEY: Invalid input: expected string, received undefined
+    at parseEnv (/Users/amankumarshrestha/Downloads/SajiloReserveX/lib/env.ts:41:11)
+    at getEnv (/Users/amankumarshrestha/Downloads/SajiloReserveX/lib/env.ts:49:10)
+    at data (/Users/amankumarshrestha/Downloads/SajiloReserveX/server/supabase.ts:18:20)
+    at Object.<anonymous> (/Users/amankumarshrestha/Downloads/SajiloReserveX/server/supabase.ts:166:23)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Object.transformer (/Users/amankumarshrestha/Downloads/SajiloReserveX/node_modules/.pnpm/tsx@4.20.6/node_modules/tsx/dist/register-D46fvsV_.cjs:3:1104)
+    at Module.load (node:internal/modules/cjs/loader:1318:32)
+    at Function._load (node:internal/modules/cjs/loader:1128:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:219:24)
+
+Node.js v22.12.0
+ ELIFECYCLE  Command failed with exit code 1.
+  failure (code 1)
+[20251116T114224Z] attempt 7 party 4
+
+> ship-fast-code@0.1.0 booking:flow /Users/amankumarshrestha/Downloads/SajiloReserveX
+> tsx -r tsconfig-paths/register scripts/run-booking-flow.ts --restaurant-slug white-horse-pub-waterbeach --date 2026-04-03 --time 20\:45 --party-size 4 --timeout-ms 180000 --base-url http\://localhost\:3000 --randomize-contact --pretty
+
+/Users/amankumarshrestha/Downloads/SajiloReserveX/lib/env.ts:41
+    throw new Error(`Environment validation failed at runtime:\n${formatted}`);
+          ^
+
+
+Error: Environment validation failed at runtime:
+NEXT_PUBLIC_SUPABASE_URL: Invalid input: expected string, received undefined
+NEXT_PUBLIC_SUPABASE_ANON_KEY: Invalid input: expected string, received undefined
+SUPABASE_SERVICE_ROLE_KEY: Invalid input: expected string, received undefined
+    at parseEnv (/Users/amankumarshrestha/Downloads/SajiloReserveX/lib/env.ts:41:11)
+    at getEnv (/Users/amankumarshrestha/Downloads/SajiloReserveX/lib/env.ts:49:10)
+    at data (/Users/amankumarshrestha/Downloads/SajiloReserveX/server/supabase.ts:18:20)
+    at Object.<anonymous> (/Users/amankumarshrestha/Downloads/SajiloReserveX/server/supabase.ts:166:23)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Object.transformer (/Users/amankumarshrestha/Downloads/SajiloReserveX/node_modules/.pnpm/tsx@4.20.6/node_modules/tsx/dist/register-D46fvsV_.cjs:3:1104)
+    at Module.load (node:internal/modules/cjs/loader:1318:32)
+    at Function._load (node:internal/modules/cjs/loader:1128:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:219:24)
+
+Node.js v22.12.0
+ ELIFECYCLE  Command failed with exit code 1.
+  failure (code 1)
+[20251116T114224Z] attempt 8 party 11
+
+> ship-fast-code@0.1.0 booking:flow /Users/amankumarshrestha/Downloads/SajiloReserveX
+> tsx -r tsconfig-paths/register scripts/run-booking-flow.ts --restaurant-slug white-horse-pub-waterbeach --date 2026-04-03 --time 20\:45 --party-size 11 --timeout-ms 180000 --base-url http\://localhost\:3000 --randomize-contact --pretty
+
+/Users/amankumarshrestha/Downloads/SajiloReserveX/lib/env.ts:41
+    throw new Error(`Environment validation failed at runtime:\n${formatted}`);
+          ^
+
+
+Error: Environment validation failed at runtime:
+NEXT_PUBLIC_SUPABASE_URL: Invalid input: expected string, received undefined
+NEXT_PUBLIC_SUPABASE_ANON_KEY: Invalid input: expected string, received undefined
+SUPABASE_SERVICE_ROLE_KEY: Invalid input: expected string, received undefined
+    at parseEnv (/Users/amankumarshrestha/Downloads/SajiloReserveX/lib/env.ts:41:11)
+    at getEnv (/Users/amankumarshrestha/Downloads/SajiloReserveX/lib/env.ts:49:10)
+    at data (/Users/amankumarshrestha/Downloads/SajiloReserveX/server/supabase.ts:18:20)
+    at Object.<anonymous> (/Users/amankumarshrestha/Downloads/SajiloReserveX/server/supabase.ts:166:23)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Object.transformer (/Users/amankumarshrestha/Downloads/SajiloReserveX/node_modules/.pnpm/tsx@4.20.6/node_modules/tsx/dist/register-D46fvsV_.cjs:3:1104)
+    at Module.load (node:internal/modules/cjs/loader:1318:32)
+    at Function._load (node:internal/modules/cjs/loader:1128:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:219:24)
+
+Node.js v22.12.0
+ ELIFECYCLE  Command failed with exit code 1.
+  failure (code 1)
+Slot 20:45 summary: successes=0 attempts=8
+  NOTE: target not met

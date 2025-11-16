@@ -1,0 +1,761 @@
+Starting manual per-slot fills (20-30% target ~4 successes) on 2026-04-03
+\n=== Slot 12:15 ===
+[20251116T113853Z] attempt 1 party 7
+  failure (code 1)
+[20251116T113853Z] attempt 2 party 1
+  failure (code 1)
+[20251116T113854Z] attempt 3 party 8
+  failure (code 1)
+[20251116T113855Z] attempt 4 party 4
+  failure (code 1)
+[20251116T113855Z] attempt 5 party 9
+  failure (code 1)
+[20251116T113856Z] attempt 6 party 8
+  failure (code 1)
+[20251116T113856Z] attempt 7 party 8
+  failure (code 1)
+[20251116T113857Z] attempt 8 party 6
+  failure (code 1)
+Slot 12:15 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 12:30 ===
+[20251116T113859Z] attempt 1 party 12
+  failure (code 1)
+[20251116T113859Z] attempt 2 party 5
+  failure (code 1)
+[20251116T113900Z] attempt 3 party 11
+  failure (code 1)
+[20251116T113901Z] attempt 4 party 8
+  failure (code 1)
+[20251116T113901Z] attempt 5 party 5
+  failure (code 1)
+[20251116T113902Z] attempt 6 party 6
+  failure (code 1)
+[20251116T113902Z] attempt 7 party 1
+  failure (code 1)
+[20251116T113903Z] attempt 8 party 6
+  failure (code 1)
+Slot 12:30 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 12:45 ===
+[20251116T113905Z] attempt 1 party 4
+  failure (code 1)
+[20251116T113905Z] attempt 2 party 5
+  failure (code 1)
+[20251116T113906Z] attempt 3 party 11
+  failure (code 1)
+[20251116T113907Z] attempt 4 party 6
+  failure (code 1)
+[20251116T113907Z] attempt 5 party 11
+  failure (code 1)
+[20251116T113908Z] attempt 6 party 4
+  failure (code 1)
+[20251116T113909Z] attempt 7 party 6
+  failure (code 1)
+[20251116T113909Z] attempt 8 party 4
+  failure (code 1)
+Slot 12:45 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 13:00 ===
+[20251116T113911Z] attempt 1 party 7
+  failure (code 1)
+[20251116T113911Z] attempt 2 party 5
+  failure (code 1)
+[20251116T113912Z] attempt 3 party 12
+  failure (code 1)
+[20251116T113913Z] attempt 4 party 12
+  failure (code 1)
+[20251116T113913Z] attempt 5 party 8
+  failure (code 1)
+[20251116T113914Z] attempt 6 party 1
+  failure (code 1)
+[20251116T113915Z] attempt 7 party 2
+  failure (code 1)
+[20251116T113915Z] attempt 8 party 1
+  failure (code 1)
+Slot 13:00 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 13:15 ===
+[20251116T113917Z] attempt 1 party 4
+  failure (code 1)
+[20251116T113918Z] attempt 2 party 9
+  failure (code 1)
+[20251116T113918Z] attempt 3 party 7
+  failure (code 1)
+[20251116T113919Z] attempt 4 party 7
+  failure (code 1)
+[20251116T113919Z] attempt 5 party 9
+  failure (code 1)
+[20251116T113920Z] attempt 6 party 8
+  failure (code 1)
+[20251116T113921Z] attempt 7 party 6
+  failure (code 1)
+[20251116T113921Z] attempt 8 party 6
+  failure (code 1)
+Slot 13:15 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 13:30 ===
+[20251116T113923Z] attempt 1 party 4
+  failure (code 1)
+[20251116T113924Z] attempt 2 party 11
+  failure (code 1)
+[20251116T113924Z] attempt 3 party 5
+  failure (code 1)
+[20251116T113925Z] attempt 4 party 6
+  failure (code 1)
+[20251116T113926Z] attempt 5 party 8
+  failure (code 1)
+[20251116T113926Z] attempt 6 party 6
+  failure (code 1)
+[20251116T113927Z] attempt 7 party 7
+  failure (code 1)
+[20251116T113927Z] attempt 8 party 10
+  failure (code 1)
+Slot 13:30 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 13:45 ===
+[20251116T113929Z] attempt 1 party 5
+  failure (code 1)
+[20251116T113930Z] attempt 2 party 9
+  failure (code 1)
+[20251116T113930Z] attempt 3 party 8
+  failure (code 1)
+[20251116T113931Z] attempt 4 party 8
+  failure (code 1)
+[20251116T113932Z] attempt 5 party 6
+  failure (code 1)
+[20251116T113932Z] attempt 6 party 2
+  failure (code 1)
+[20251116T113933Z] attempt 7 party 3
+  failure (code 1)
+[20251116T113934Z] attempt 8 party 1
+  failure (code 1)
+Slot 13:45 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 14:00 ===
+[20251116T113935Z] attempt 1 party 2
+  failure (code 1)
+[20251116T113936Z] attempt 2 party 9
+  failure (code 1)
+[20251116T113937Z] attempt 3 party 4
+  failure (code 1)
+[20251116T113937Z] attempt 4 party 5
+  failure (code 1)
+[20251116T113938Z] attempt 5 party 10
+  failure (code 1)
+[20251116T113938Z] attempt 6 party 2
+  failure (code 1)
+[20251116T113939Z] attempt 7 party 12
+  failure (code 1)
+[20251116T113940Z] attempt 8 party 5
+  failure (code 1)
+Slot 14:00 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 14:15 ===
+[20251116T113941Z] attempt 1 party 7
+  failure (code 1)
+[20251116T113942Z] attempt 2 party 3
+  failure (code 1)
+[20251116T113943Z] attempt 3 party 9
+  failure (code 1)
+[20251116T113943Z] attempt 4 party 11
+  failure (code 1)
+[20251116T113944Z] attempt 5 party 9
+  failure (code 1)
+[20251116T113944Z] attempt 6 party 1
+  failure (code 1)
+[20251116T113945Z] attempt 7 party 11
+  failure (code 1)
+[20251116T113946Z] attempt 8 party 11
+  failure (code 1)
+Slot 14:15 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 14:30 ===
+[20251116T113947Z] attempt 1 party 4
+  failure (code 1)
+[20251116T113948Z] attempt 2 party 8
+  failure (code 1)
+[20251116T113949Z] attempt 3 party 6
+  failure (code 1)
+[20251116T113949Z] attempt 4 party 3
+  failure (code 1)
+[20251116T113950Z] attempt 5 party 3
+  failure (code 1)
+[20251116T113950Z] attempt 6 party 1
+  failure (code 1)
+[20251116T113951Z] attempt 7 party 9
+  failure (code 1)
+[20251116T113952Z] attempt 8 party 1
+  failure (code 1)
+Slot 14:30 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 14:45 ===
+[20251116T113953Z] attempt 1 party 5
+  failure (code 1)
+[20251116T113954Z] attempt 2 party 3
+  failure (code 1)
+[20251116T113955Z] attempt 3 party 10
+  failure (code 1)
+[20251116T113955Z] attempt 4 party 8
+  failure (code 1)
+[20251116T113956Z] attempt 5 party 6
+  failure (code 1)
+[20251116T113957Z] attempt 6 party 12
+  failure (code 1)
+[20251116T113957Z] attempt 7 party 6
+  failure (code 1)
+[20251116T113958Z] attempt 8 party 11
+  failure (code 1)
+Slot 14:45 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 15:00 ===
+[20251116T113959Z] attempt 1 party 1
+  failure (code 1)
+[20251116T114000Z] attempt 2 party 9
+  failure (code 1)
+[20251116T114001Z] attempt 3 party 2
+  failure (code 1)
+[20251116T114001Z] attempt 4 party 8
+  failure (code 1)
+[20251116T114002Z] attempt 5 party 12
+  failure (code 1)
+[20251116T114003Z] attempt 6 party 6
+  failure (code 1)
+[20251116T114003Z] attempt 7 party 12
+  failure (code 1)
+[20251116T114004Z] attempt 8 party 12
+  failure (code 1)
+Slot 15:00 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 15:15 ===
+[20251116T114005Z] attempt 1 party 9
+  failure (code 1)
+[20251116T114006Z] attempt 2 party 7
+  failure (code 1)
+[20251116T114007Z] attempt 3 party 4
+  failure (code 1)
+[20251116T114007Z] attempt 4 party 12
+  failure (code 1)
+[20251116T114008Z] attempt 5 party 3
+  failure (code 1)
+[20251116T114009Z] attempt 6 party 3
+  failure (code 1)
+[20251116T114009Z] attempt 7 party 3
+  failure (code 1)
+[20251116T114010Z] attempt 8 party 4
+  failure (code 1)
+Slot 15:15 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 15:30 ===
+[20251116T114012Z] attempt 1 party 4
+  failure (code 1)
+[20251116T114012Z] attempt 2 party 4
+  failure (code 1)
+[20251116T114013Z] attempt 3 party 4
+  failure (code 1)
+[20251116T114014Z] attempt 4 party 7
+  failure (code 1)
+[20251116T114014Z] attempt 5 party 9
+  failure (code 1)
+[20251116T114015Z] attempt 6 party 7
+  failure (code 1)
+[20251116T114016Z] attempt 7 party 9
+  failure (code 1)
+[20251116T114016Z] attempt 8 party 10
+  failure (code 1)
+Slot 15:30 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 15:45 ===
+[20251116T114018Z] attempt 1 party 3
+  failure (code 1)
+[20251116T114019Z] attempt 2 party 2
+  failure (code 1)
+[20251116T114019Z] attempt 3 party 11
+  failure (code 1)
+[20251116T114020Z] attempt 4 party 4
+  failure (code 1)
+[20251116T114020Z] attempt 5 party 12
+  failure (code 1)
+[20251116T114021Z] attempt 6 party 4
+  failure (code 1)
+[20251116T114022Z] attempt 7 party 4
+  failure (code 1)
+[20251116T114022Z] attempt 8 party 5
+  failure (code 1)
+Slot 15:45 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 16:00 ===
+[20251116T114024Z] attempt 1 party 4
+  failure (code 1)
+[20251116T114025Z] attempt 2 party 12
+  failure (code 1)
+[20251116T114025Z] attempt 3 party 10
+  failure (code 1)
+[20251116T114026Z] attempt 4 party 7
+  failure (code 1)
+[20251116T114027Z] attempt 5 party 9
+  failure (code 1)
+[20251116T114027Z] attempt 6 party 8
+  failure (code 1)
+[20251116T114028Z] attempt 7 party 5
+  failure (code 1)
+[20251116T114028Z] attempt 8 party 9
+  failure (code 1)
+Slot 16:00 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 16:15 ===
+[20251116T114030Z] attempt 1 party 5
+  failure (code 1)
+[20251116T114031Z] attempt 2 party 12
+  failure (code 1)
+[20251116T114031Z] attempt 3 party 6
+  failure (code 1)
+[20251116T114032Z] attempt 4 party 3
+  failure (code 1)
+[20251116T114033Z] attempt 5 party 3
+  failure (code 1)
+[20251116T114033Z] attempt 6 party 5
+  failure (code 1)
+[20251116T114034Z] attempt 7 party 2
+  failure (code 1)
+[20251116T114034Z] attempt 8 party 10
+  failure (code 1)
+Slot 16:15 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 16:30 ===
+[20251116T114036Z] attempt 1 party 1
+  failure (code 1)
+[20251116T114037Z] attempt 2 party 8
+  failure (code 1)
+[20251116T114037Z] attempt 3 party 8
+  failure (code 1)
+[20251116T114038Z] attempt 4 party 7
+  failure (code 1)
+[20251116T114039Z] attempt 5 party 11
+  failure (code 1)
+[20251116T114039Z] attempt 6 party 11
+  failure (code 1)
+[20251116T114040Z] attempt 7 party 5
+  failure (code 1)
+[20251116T114041Z] attempt 8 party 1
+  failure (code 1)
+Slot 16:30 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 16:45 ===
+[20251116T114042Z] attempt 1 party 11
+  failure (code 1)
+[20251116T114043Z] attempt 2 party 7
+  failure (code 1)
+[20251116T114043Z] attempt 3 party 4
+  failure (code 1)
+[20251116T114044Z] attempt 4 party 10
+  failure (code 1)
+[20251116T114045Z] attempt 5 party 11
+  failure (code 1)
+[20251116T114045Z] attempt 6 party 7
+  failure (code 1)
+[20251116T114046Z] attempt 7 party 6
+  failure (code 1)
+[20251116T114047Z] attempt 8 party 4
+  failure (code 1)
+Slot 16:45 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 17:00 ===
+[20251116T114048Z] attempt 1 party 8
+  failure (code 1)
+[20251116T114049Z] attempt 2 party 7
+  failure (code 1)
+[20251116T114050Z] attempt 3 party 12
+  failure (code 1)
+[20251116T114050Z] attempt 4 party 5
+  failure (code 1)
+[20251116T114051Z] attempt 5 party 9
+  failure (code 1)
+[20251116T114052Z] attempt 6 party 4
+  failure (code 1)
+[20251116T114052Z] attempt 7 party 11
+  failure (code 1)
+[20251116T114053Z] attempt 8 party 12
+  failure (code 1)
+Slot 17:00 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 17:15 ===
+[20251116T114054Z] attempt 1 party 12
+  failure (code 1)
+[20251116T114055Z] attempt 2 party 3
+  failure (code 1)
+[20251116T114056Z] attempt 3 party 8
+  failure (code 1)
+[20251116T114056Z] attempt 4 party 10
+  failure (code 1)
+[20251116T114057Z] attempt 5 party 12
+  failure (code 1)
+[20251116T114058Z] attempt 6 party 1
+  failure (code 1)
+[20251116T114058Z] attempt 7 party 11
+  failure (code 1)
+[20251116T114059Z] attempt 8 party 11
+  failure (code 1)
+Slot 17:15 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 17:30 ===
+[20251116T114101Z] attempt 1 party 2
+  failure (code 1)
+[20251116T114101Z] attempt 2 party 12
+  failure (code 1)
+[20251116T114102Z] attempt 3 party 2
+  failure (code 1)
+[20251116T114102Z] attempt 4 party 1
+  failure (code 1)
+[20251116T114103Z] attempt 5 party 12
+  failure (code 1)
+[20251116T114104Z] attempt 6 party 6
+  failure (code 1)
+[20251116T114104Z] attempt 7 party 10
+  failure (code 1)
+[20251116T114105Z] attempt 8 party 2
+  failure (code 1)
+Slot 17:30 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 17:45 ===
+[20251116T114107Z] attempt 1 party 2
+  failure (code 1)
+[20251116T114107Z] attempt 2 party 10
+  failure (code 1)
+[20251116T114108Z] attempt 3 party 5
+  failure (code 1)
+[20251116T114109Z] attempt 4 party 6
+  failure (code 1)
+[20251116T114109Z] attempt 5 party 4
+  failure (code 1)
+[20251116T114110Z] attempt 6 party 12
+  failure (code 1)
+[20251116T114110Z] attempt 7 party 6
+  failure (code 1)
+[20251116T114111Z] attempt 8 party 6
+  failure (code 1)
+Slot 17:45 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 18:00 ===
+[20251116T114113Z] attempt 1 party 12
+  failure (code 1)
+[20251116T114113Z] attempt 2 party 6
+  failure (code 1)
+[20251116T114114Z] attempt 3 party 4
+  failure (code 1)
+[20251116T114115Z] attempt 4 party 6
+  failure (code 1)
+[20251116T114115Z] attempt 5 party 1
+  failure (code 1)
+[20251116T114116Z] attempt 6 party 4
+  failure (code 1)
+[20251116T114117Z] attempt 7 party 9
+  failure (code 1)
+[20251116T114117Z] attempt 8 party 9
+  failure (code 1)
+Slot 18:00 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 18:15 ===
+[20251116T114119Z] attempt 1 party 5
+  failure (code 1)
+[20251116T114119Z] attempt 2 party 7
+  failure (code 1)
+[20251116T114120Z] attempt 3 party 7
+  failure (code 1)
+[20251116T114121Z] attempt 4 party 11
+  failure (code 1)
+[20251116T114121Z] attempt 5 party 10
+  failure (code 1)
+[20251116T114122Z] attempt 6 party 1
+  failure (code 1)
+[20251116T114123Z] attempt 7 party 12
+  failure (code 1)
+[20251116T114123Z] attempt 8 party 9
+  failure (code 1)
+Slot 18:15 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 18:30 ===
+[20251116T114125Z] attempt 1 party 3
+  failure (code 1)
+[20251116T114126Z] attempt 2 party 8
+  failure (code 1)
+[20251116T114126Z] attempt 3 party 2
+  failure (code 1)
+[20251116T114127Z] attempt 4 party 7
+  failure (code 1)
+[20251116T114128Z] attempt 5 party 12
+  failure (code 1)
+[20251116T114128Z] attempt 6 party 12
+  failure (code 1)
+[20251116T114129Z] attempt 7 party 12
+  failure (code 1)
+[20251116T114129Z] attempt 8 party 1
+  failure (code 1)
+Slot 18:30 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 18:45 ===
+[20251116T114131Z] attempt 1 party 12
+  failure (code 1)
+[20251116T114132Z] attempt 2 party 2
+  failure (code 1)
+[20251116T114132Z] attempt 3 party 7
+  failure (code 1)
+[20251116T114133Z] attempt 4 party 2
+  failure (code 1)
+[20251116T114134Z] attempt 5 party 6
+  failure (code 1)
+[20251116T114134Z] attempt 6 party 5
+  failure (code 1)
+[20251116T114135Z] attempt 7 party 5
+  failure (code 1)
+[20251116T114135Z] attempt 8 party 9
+  failure (code 1)
+Slot 18:45 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 19:00 ===
+[20251116T114137Z] attempt 1 party 1
+  failure (code 1)
+[20251116T114138Z] attempt 2 party 1
+  failure (code 1)
+[20251116T114138Z] attempt 3 party 10
+  failure (code 1)
+[20251116T114139Z] attempt 4 party 11
+  failure (code 1)
+[20251116T114140Z] attempt 5 party 12
+  failure (code 1)
+[20251116T114140Z] attempt 6 party 2
+  failure (code 1)
+[20251116T114141Z] attempt 7 party 9
+  failure (code 1)
+[20251116T114141Z] attempt 8 party 9
+  failure (code 1)
+Slot 19:00 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 19:15 ===
+[20251116T114143Z] attempt 1 party 9
+  failure (code 1)
+[20251116T114144Z] attempt 2 party 5
+  failure (code 1)
+[20251116T114144Z] attempt 3 party 5
+  failure (code 1)
+[20251116T114145Z] attempt 4 party 1
+  failure (code 1)
+[20251116T114146Z] attempt 5 party 2
+  failure (code 1)
+[20251116T114146Z] attempt 6 party 5
+  failure (code 1)
+[20251116T114147Z] attempt 7 party 11
+  failure (code 1)
+[20251116T114148Z] attempt 8 party 2
+  failure (code 1)
+Slot 19:15 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 19:30 ===
+[20251116T114149Z] attempt 1 party 1
+  failure (code 1)
+[20251116T114150Z] attempt 2 party 3
+  failure (code 1)
+[20251116T114150Z] attempt 3 party 8
+  failure (code 1)
+[20251116T114151Z] attempt 4 party 8
+  failure (code 1)
+[20251116T114152Z] attempt 5 party 4
+  failure (code 1)
+[20251116T114152Z] attempt 6 party 9
+  failure (code 1)
+[20251116T114153Z] attempt 7 party 11
+  failure (code 1)
+[20251116T114154Z] attempt 8 party 7
+  failure (code 1)
+Slot 19:30 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 19:45 ===
+[20251116T114155Z] attempt 1 party 8
+  failure (code 1)
+[20251116T114156Z] attempt 2 party 12
+  failure (code 1)
+[20251116T114157Z] attempt 3 party 8
+  failure (code 1)
+[20251116T114157Z] attempt 4 party 8
+  failure (code 1)
+[20251116T114158Z] attempt 5 party 6
+  failure (code 1)
+[20251116T114158Z] attempt 6 party 7
+  failure (code 1)
+[20251116T114159Z] attempt 7 party 7
+  failure (code 1)
+[20251116T114200Z] attempt 8 party 12
+  failure (code 1)
+Slot 19:45 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 20:00 ===
+[20251116T114201Z] attempt 1 party 6
+  failure (code 1)
+[20251116T114202Z] attempt 2 party 11
+  failure (code 1)
+[20251116T114203Z] attempt 3 party 2
+  failure (code 1)
+[20251116T114203Z] attempt 4 party 6
+  failure (code 1)
+[20251116T114204Z] attempt 5 party 3
+  failure (code 1)
+[20251116T114204Z] attempt 6 party 7
+  failure (code 1)
+[20251116T114205Z] attempt 7 party 10
+  failure (code 1)
+[20251116T114206Z] attempt 8 party 7
+  failure (code 1)
+Slot 20:00 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 20:15 ===
+[20251116T114207Z] attempt 1 party 11
+  failure (code 1)
+[20251116T114208Z] attempt 2 party 9
+  failure (code 1)
+[20251116T114209Z] attempt 3 party 7
+  failure (code 1)
+[20251116T114209Z] attempt 4 party 8
+  failure (code 1)
+[20251116T114210Z] attempt 5 party 4
+  failure (code 1)
+[20251116T114211Z] attempt 6 party 6
+  failure (code 1)
+[20251116T114211Z] attempt 7 party 2
+  failure (code 1)
+[20251116T114212Z] attempt 8 party 12
+  failure (code 1)
+Slot 20:15 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 20:30 ===
+[20251116T114213Z] attempt 1 party 8
+  failure (code 1)
+[20251116T114214Z] attempt 2 party 2
+  failure (code 1)
+[20251116T114215Z] attempt 3 party 7
+  failure (code 1)
+[20251116T114215Z] attempt 4 party 8
+  failure (code 1)
+[20251116T114216Z] attempt 5 party 4
+  failure (code 1)
+[20251116T114217Z] attempt 6 party 12
+  failure (code 1)
+[20251116T114217Z] attempt 7 party 7
+  failure (code 1)
+[20251116T114218Z] attempt 8 party 11
+  failure (code 1)
+Slot 20:30 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 20:45 ===
+[20251116T114220Z] attempt 1 party 10
+  failure (code 1)
+[20251116T114220Z] attempt 2 party 12
+  failure (code 1)
+[20251116T114221Z] attempt 3 party 1
+  failure (code 1)
+[20251116T114222Z] attempt 4 party 6
+  failure (code 1)
+[20251116T114222Z] attempt 5 party 7
+  failure (code 1)
+[20251116T114223Z] attempt 6 party 2
+  failure (code 1)
+[20251116T114224Z] attempt 7 party 4
+  failure (code 1)
+[20251116T114224Z] attempt 8 party 11
+  failure (code 1)
+Slot 20:45 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 21:00 ===
+[20251116T114226Z] attempt 1 party 12
+  failure (code 1)
+[20251116T114227Z] attempt 2 party 9
+  failure (code 1)
+[20251116T114228Z] attempt 3 party 4
+  failure (code 1)
+[20251116T114228Z] attempt 4 party 9
+  failure (code 1)
+[20251116T114229Z] attempt 5 party 9
+  failure (code 1)
+[20251116T114229Z] attempt 6 party 6
+  failure (code 1)
+[20251116T114230Z] attempt 7 party 3
+  failure (code 1)
+[20251116T114231Z] attempt 8 party 10
+  failure (code 1)
+Slot 21:00 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 21:15 ===
+[20251116T114232Z] attempt 1 party 12
+  failure (code 1)
+[20251116T114233Z] attempt 2 party 11
+  failure (code 1)
+[20251116T114234Z] attempt 3 party 9
+  failure (code 1)
+[20251116T114234Z] attempt 4 party 9
+  failure (code 1)
+[20251116T114235Z] attempt 5 party 10
+  failure (code 1)
+[20251116T114236Z] attempt 6 party 4
+  failure (code 1)
+[20251116T114237Z] attempt 7 party 7
+  failure (code 1)
+[20251116T114237Z] attempt 8 party 2
+  failure (code 1)
+Slot 21:15 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 21:30 ===
+[20251116T114239Z] attempt 1 party 2
+  failure (code 1)
+[20251116T114240Z] attempt 2 party 1
+  failure (code 1)
+[20251116T114240Z] attempt 3 party 5
+  failure (code 1)
+[20251116T114241Z] attempt 4 party 12
+  failure (code 1)
+[20251116T114242Z] attempt 5 party 10
+  failure (code 1)
+[20251116T114242Z] attempt 6 party 6
+  failure (code 1)
+[20251116T114243Z] attempt 7 party 8
+  failure (code 1)
+[20251116T114244Z] attempt 8 party 5
+  failure (code 1)
+Slot 21:30 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 21:45 ===
+[20251116T114245Z] attempt 1 party 11
+  failure (code 1)
+[20251116T114246Z] attempt 2 party 9
+  failure (code 1)
+[20251116T114247Z] attempt 3 party 10
+  failure (code 1)
+[20251116T114247Z] attempt 4 party 2
+  failure (code 1)
+[20251116T114248Z] attempt 5 party 5
+  failure (code 1)
+[20251116T114248Z] attempt 6 party 9
+  failure (code 1)
+[20251116T114249Z] attempt 7 party 12
+  failure (code 1)
+[20251116T114250Z] attempt 8 party 6
+  failure (code 1)
+Slot 21:45 summary: successes=0 attempts=8
+  NOTE: target not met
+\n=== Slot 22:00 ===
+[20251116T114251Z] attempt 1 party 2
+  failure (code 1)
+[20251116T114252Z] attempt 2 party 2
+  failure (code 1)
+[20251116T114253Z] attempt 3 party 7
+  failure (code 1)
+[20251116T114253Z] attempt 4 party 11
+  failure (code 1)
+[20251116T114254Z] attempt 5 party 7
+  failure (code 1)
+[20251116T114254Z] attempt 6 party 9
+  failure (code 1)
+[20251116T114255Z] attempt 7 party 9
+  failure (code 1)
+[20251116T114256Z] attempt 8 party 12
+  failure (code 1)
+Slot 22:00 summary: successes=0 attempts=8
+  NOTE: target not met
