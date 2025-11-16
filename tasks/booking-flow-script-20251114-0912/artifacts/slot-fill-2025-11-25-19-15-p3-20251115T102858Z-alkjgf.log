@@ -1,0 +1,10 @@
+
+> ship-fast-code@0.1.0 booking:flow /Users/amankumarshrestha/Downloads/SajiloReserveX
+> tsx -r tsconfig-paths/register scripts/run-booking-flow.ts --restaurant-slug white-horse-pub-waterbeach --date 2025-11-25 --time 19\:15 --party-size 3 --stress --stress-max 4 --timeout-ms 180000 --base-url http\://localhost\:3020 --pretty
+
+[dotenv@17.2.2] injecting env (0) from .env.local -- tip: ⚙️  suppress all logs with { quiet: true }
+[dotenv@17.2.2] injecting env (0) from .env.development -- tip: 📡 auto-backup env with Radar: https://dotenvx.com/radar
+[dotenv@17.2.2] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+[2025-11-15T10:28:59.161Z] [INFO] [bootstrap] Starting booking flow {"correlationId":"5bd57458-e044-4479-a6bf-dcce50831fac","bookingId":null,"iteration":1,"totalRuns":"stress","timeoutMs":180000,"inlineWindowMs":25000,"pollIntervalMs":2000}
+[2025-11-15T10:28:59.162Z] [INFO] [submit] Submitting booking request {"correlationId":"5bd57458-e044-4479-a6bf-dcce50831fac","bookingId":null,"url":"http://localhost:3020/api/bookings","restaurantSlug":"white-horse-pub-waterbeach","restaurantId":null,"date":"2025-11-25","time":"19:15","party":3,"bookingType":"dinner","seating":"any","marketingOptIn":false}
+[supabase] strict hold enforcement active

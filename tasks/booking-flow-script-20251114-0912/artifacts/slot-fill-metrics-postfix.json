@@ -1,0 +1,51 @@
+{
+  "generatedAt": "2025-11-15T12:25:08.968Z",
+  "selectorVersion": "descending-capacity-seeds",
+  "date": "2025-11-25",
+  "window": "17:30-18:30",
+  "stressMax": 4,
+  "metrics": [
+    {
+      "label": "concurrency-1-postfix",
+      "concurrency": 1,
+      "count": 20,
+      "avgSubmitMs": 19782.2,
+      "avgInlineMs": 0,
+      "avgTotalMs": 20479,
+      "avgSeatWaste": 0.6,
+      "inlinePollShare": 0,
+      "backgroundRate": 0,
+      "maxSubmitMs": 22115,
+      "maxInlineMs": 0,
+      "maxTotalMs": 22812
+    },
+    {
+      "label": "concurrency-4-postfix",
+      "concurrency": 4,
+      "count": 20,
+      "avgSubmitMs": 19759.8,
+      "avgInlineMs": 997,
+      "avgTotalMs": 21354.2,
+      "avgSeatWaste": 0.6,
+      "inlinePollShare": 0.1,
+      "backgroundRate": 0,
+      "maxSubmitMs": 21161,
+      "maxInlineMs": 9990,
+      "maxTotalMs": 30801
+    },
+    {
+      "label": "concurrency-8-postfix",
+      "concurrency": 8,
+      "count": 20,
+      "avgSubmitMs": 19783.2,
+      "avgInlineMs": 1731.3,
+      "avgTotalMs": 22085.3,
+      "avgSeatWaste": 0.6,
+      "inlinePollShare": 0.15,
+      "backgroundRate": 0,
+      "maxSubmitMs": 20911,
+      "maxInlineMs": 14840,
+      "maxTotalMs": 35538
+    }
+  ]
+}

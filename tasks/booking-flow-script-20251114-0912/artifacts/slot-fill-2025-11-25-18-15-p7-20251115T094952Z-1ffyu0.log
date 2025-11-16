@@ -1,0 +1,68 @@
+
+> ship-fast-code@0.1.0 booking:flow /Users/amankumarshrestha/Downloads/SajiloReserveX
+> tsx -r tsconfig-paths/register scripts/run-booking-flow.ts --restaurant-slug white-horse-pub-waterbeach --date 2025-11-25 --time 18\:15 --party-size 7 --stress --stress-max 10 --timeout-ms 180000 --base-url http\://localhost\:3020 --pretty
+
+[dotenv@17.2.2] injecting env (0) from .env.local -- tip: ⚙️  enable debug logging with { debug: true }
+[dotenv@17.2.2] injecting env (0) from .env.development -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+[dotenv@17.2.2] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+[2025-11-15T09:49:53.067Z] [INFO] [bootstrap] Starting booking flow {"correlationId":"112db95f-a04a-435b-91c5-651df0139be7","bookingId":null,"iteration":1,"totalRuns":"stress","timeoutMs":180000,"inlineWindowMs":25000,"pollIntervalMs":2000}
+[2025-11-15T09:49:53.067Z] [INFO] [submit] Submitting booking request {"correlationId":"112db95f-a04a-435b-91c5-651df0139be7","bookingId":null,"url":"http://localhost:3020/api/bookings","restaurantSlug":"white-horse-pub-waterbeach","restaurantId":null,"date":"2025-11-25","time":"18:15","party":7,"bookingType":"dinner","seating":"any","marketingOptIn":false}
+[supabase] strict hold enforcement active
+[2025-11-15T09:50:13.151Z] [INFO] [submit] Booking created {"correlationId":"112db95f-a04a-435b-91c5-651df0139be7","bookingId":"eb5ec7b8-b467-4dd3-ae93-8a10a8ecf3f4","duplicate":false,"initialStatus":"confirmed","durationMs":20083,"maskedEmail":"bo***f@example.com","maskedPhone":"********1955"}
+[2025-11-15T09:50:13.798Z] [INFO] [final_summary] Booking confirmed inline (API response) {"correlationId":"112db95f-a04a-435b-91c5-651df0139be7","bookingId":"eb5ec7b8-b467-4dd3-ae93-8a10a8ecf3f4","reference":"RAPVMB53KP","bookingDate":"2025-11-25","startTime":"18:15:00","endTime":"20:15:00","autoAssignLastResult":{"source":"inline","lastAttemptAt":"2025-11-15T09:50:10.744Z","success":false,"reason":"INLINE_TIMEOUT","strategy":{"maxTables":null,"requireAdjacency":null},"trigger":"inline_creation","alternates":0,"durationMs":12004,"attemptId":"9bf1c4b9-3f6f-4771-bacb-e8fc07213c16","emailSent":false,"emailVariant":"standard"},"iteration":1,"submitDurationMs":20083,"inlineAttempts":0,"inlineDurationMs":0,"postJobAttempts":0,"postJobDurationMs":0,"backgroundInvoked":false,"backgroundDurationMs":null,"totalDurationMs":20731,"tablesAssigned":1,"totalCapacity":10,"seatWaste":3,"tableNumbers":["PR-05"],"partySize":7,"duplicateRequest":false,"status":"confirmed_inline_api","assignments":[{"id":"501a4e81-15eb-4913-aca3-c3aa771561b8","tableId":"24867f2d-483b-4282-95f9-72c358f82b81","tableNumber":"PR-05","zoneId":"ac5b26a4-f293-4c46-9d9b-df6162a23605","capacity":10,"startAt":null,"endAt":null}]}
+[2025-11-15T09:50:13.798Z] [INFO] [bootstrap] Starting booking flow {"correlationId":"8ba31284-2446-4148-8cdc-30af9e59d3ec","bookingId":null,"iteration":2,"totalRuns":"stress","timeoutMs":180000,"inlineWindowMs":25000,"pollIntervalMs":2000}
+[2025-11-15T09:50:13.798Z] [INFO] [submit] Submitting booking request {"correlationId":"8ba31284-2446-4148-8cdc-30af9e59d3ec","bookingId":null,"url":"http://localhost:3020/api/bookings","restaurantSlug":"white-horse-pub-waterbeach","restaurantId":null,"date":"2025-11-25","time":"18:15","party":7,"bookingType":"dinner","seating":"any","marketingOptIn":false}
+[2025-11-15T09:50:32.683Z] [INFO] [submit] Booking created {"correlationId":"8ba31284-2446-4148-8cdc-30af9e59d3ec","bookingId":"ed547cb2-6469-434d-9234-f28f44ff9461","duplicate":false,"initialStatus":"confirmed","durationMs":18884,"maskedEmail":"bo***4@example.com","maskedPhone":"********1284"}
+[2025-11-15T09:50:33.363Z] [INFO] [final_summary] Booking confirmed inline (API response) {"correlationId":"8ba31284-2446-4148-8cdc-30af9e59d3ec","bookingId":"ed547cb2-6469-434d-9234-f28f44ff9461","reference":"5L57GJGWFG","bookingDate":"2025-11-25","startTime":"18:15:00","endTime":"20:15:00","autoAssignLastResult":{"source":"inline","lastAttemptAt":"2025-11-15T09:50:31.886Z","success":true,"reason":null,"strategy":{"maxTables":null,"requireAdjacency":null},"trigger":"inline_creation","alternates":0,"durationMs":5493,"attemptId":"1306d6a5-2fd5-4236-9e04-1a6ee2e63a9e","emailSent":true,"emailVariant":"standard"},"iteration":2,"submitDurationMs":18884,"inlineAttempts":0,"inlineDurationMs":0,"postJobAttempts":0,"postJobDurationMs":0,"backgroundInvoked":false,"backgroundDurationMs":null,"totalDurationMs":19565,"tablesAssigned":1,"totalCapacity":10,"seatWaste":3,"tableNumbers":["PR-06"],"partySize":7,"duplicateRequest":false,"status":"confirmed_inline_api","assignments":[{"id":"d964297b-7545-4322-8faa-092091d44ed1","tableId":"64f8dd24-2f65-4428-9280-81a44a6ef40e","tableNumber":"PR-06","zoneId":"ac5b26a4-f293-4c46-9d9b-df6162a23605","capacity":10,"startAt":null,"endAt":null}]}
+[2025-11-15T09:50:33.363Z] [INFO] [bootstrap] Starting booking flow {"correlationId":"0c0ad9cf-b0e0-48b0-a39c-6df61a4091e1","bookingId":null,"iteration":3,"totalRuns":"stress","timeoutMs":180000,"inlineWindowMs":25000,"pollIntervalMs":2000}
+[2025-11-15T09:50:33.363Z] [INFO] [submit] Submitting booking request {"correlationId":"0c0ad9cf-b0e0-48b0-a39c-6df61a4091e1","bookingId":null,"url":"http://localhost:3020/api/bookings","restaurantSlug":"white-horse-pub-waterbeach","restaurantId":null,"date":"2025-11-25","time":"18:15","party":7,"bookingType":"dinner","seating":"any","marketingOptIn":false}
+[2025-11-15T09:50:42.817Z] [INFO] [submit] Booking created {"correlationId":"0c0ad9cf-b0e0-48b0-a39c-6df61a4091e1","bookingId":"738b495b-1380-486c-8c65-4873a113cb9f","duplicate":false,"initialStatus":"pending","durationMs":9454,"maskedEmail":"bo***f@example.com","maskedPhone":"********3925"}
+[2025-11-15T09:50:43.818Z] [INFO] [inline_poll] Status update {"correlationId":"0c0ad9cf-b0e0-48b0-a39c-6df61a4091e1","bookingId":"738b495b-1380-486c-8c65-4873a113cb9f","attempt":1,"status":"pending","assignments":0,"elapsedMs":1001}
+[2025-11-15T09:51:09.597Z] [WARN] [inline_poll] Inline window expired without confirmation {"correlationId":"0c0ad9cf-b0e0-48b0-a39c-6df61a4091e1","bookingId":"738b495b-1380-486c-8c65-4873a113cb9f","state":"timeout","attempts":11}
+[2025-11-15T09:51:09.597Z] [INFO] [background_job] Triggering autoAssignAndConfirmIfPossible {"correlationId":"0c0ad9cf-b0e0-48b0-a39c-6df61a4091e1","bookingId":"738b495b-1380-486c-8c65-4873a113cb9f"}
+[auto-assign][job] scheduled {
+  bookingId: '738b495b-1380-486c-8c65-4873a113cb9f',
+  reason: 'creation',
+  emailVariant: 'standard',
+  bypass: true
+}
+[auto-assign][job] attempt.start {
+  bookingId: '738b495b-1380-486c-8c65-4873a113cb9f',
+  attempt: 0,
+  maxAttempts: 1
+}
+[auto-assign][job] attempt.no_hold {
+  bookingId: '738b495b-1380-486c-8c65-4873a113cb9f',
+  attempt: 0,
+  reason: 'Insufficient filtered capacity',
+  alternates: 0
+}
+[auto-assign][job] exhausted {
+  bookingId: '738b495b-1380-486c-8c65-4873a113cb9f',
+  attempts: 1,
+  maxAttempts: 1
+}
+[2025-11-15T09:51:15.051Z] [INFO] [background_job] Background auto-assign invoked {"correlationId":"0c0ad9cf-b0e0-48b0-a39c-6df61a4091e1","bookingId":"738b495b-1380-486c-8c65-4873a113cb9f","durationMs":5454}
+[2025-11-15T09:51:15.412Z] [INFO] [post_job_poll] Status update {"correlationId":"0c0ad9cf-b0e0-48b0-a39c-6df61a4091e1","bookingId":"738b495b-1380-486c-8c65-4873a113cb9f","attempt":1,"status":"pending","assignments":0,"elapsedMs":361}
+[2025-11-15T09:53:39.964Z] [ERROR] [diagnostics] Assignment diagnostics {"correlationId":"0c0ad9cf-b0e0-48b0-a39c-6df61a4091e1","bookingId":"738b495b-1380-486c-8c65-4873a113cb9f","bookingStatus":"pending","assignments":[],"partySize":7,"totalCapacity":0,"seatWaste":0,"lastAutoAssignResult":{"source":"inline","lastAttemptAt":"2025-11-15T09:50:40.384Z","success":false,"reason":"Insufficient filtered capacity","strategy":{"maxTables":null,"requireAdjacency":null},"trigger":"inline_creation","alternates":0,"durationMs":1737,"attemptId":"767da1df-72d4-4bbf-be59-acd9999923a6","emailSent":false,"emailVariant":"standard"},"assignmentStateHistory":[]}
+[2025-11-15T09:53:39.964Z] [ERROR] [final_summary] Booking failed to confirm {"correlationId":"0c0ad9cf-b0e0-48b0-a39c-6df61a4091e1","bookingId":"738b495b-1380-486c-8c65-4873a113cb9f","state":"timeout","durationMs":186241}
+[stress] Summary {
+  totalRuns: 3,
+  successes: 2,
+  failures: 1,
+  maxRuns: 10,
+  completedTarget: false,
+  durationMs: { count: 2, min: 19565, max: 20731, avg: 20148, p95: 19565 },
+  seatWaste: { count: 2, min: 3, max: 3, avg: 3, p95: 3 },
+  tablesPerBooking: { count: 2, min: 1, max: 1, avg: 1, p95: 1 },
+  uniqueTables: [ 'PR-05', 'PR-06' ]
+}
+[stress] Failure details {
+  iteration: 3,
+  correlationId: '0c0ad9cf-b0e0-48b0-a39c-6df61a4091e1',
+  status: 'failed_background_timeout',
+  failureReason: 'timeout',
+  bookingId: '738b495b-1380-486c-8c65-4873a113cb9f'
+}
+❌ Stress run halted after 2 successes; see summary above.
+ ELIFECYCLE  Command failed with exit code 1.
