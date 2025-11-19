@@ -1,0 +1,141 @@
+================================================================================
+DATABASE MIGRATION VERIFICATION SUMMARY
+================================================================================
+
+Date: 2025-11-17
+Environment: Production (Remote Supabase)
+Project: mqtchcaavsucsdjskptc
+Status: ✅ ALL MIGRATIONS APPLIED SUCCESSFULLY
+
+================================================================================
+VERIFIED MIGRATIONS
+================================================================================
+
+1. 20251114140643_allocator_backtracking_and_merge_graph.sql
+   ✅ table_merge_graph table created
+   ✅ 3 indexes: pk, restaurant_idx, reverse_idx
+   ✅ 3 foreign keys: restaurant, table_a, table_b
+   ✅ allocations.restaurant_id column present
+   ✅ 9 indexes on allocations table
+
+2. 20251116_fix_unassign_tables_atomic.sql
+   ✅ unassign_tables_atomic function deployed
+   ✅ Signature: (p_booking_id uuid, p_table_ids uuid[])
+   ✅ Returns: TABLE(table_id uuid)
+
+================================================================================
+KEY SCHEMA ELEMENTS VERIFIED
+================================================================================
+
+TABLE: public.table_merge_graph
+Columns:
+  - restaurant_id (uuid, NOT NULL)
+  - table_a (uuid, NOT NULL)
+  - table_b (uuid, NOT NULL)
+  - merge_score (integer, default 0)
+  - notes (text)
+  - created_at (timestamptz, NOT NULL, default now())
+  - updated_at (timestamptz, NOT NULL, default now())
+
+Indexes:
+  - table_merge_graph_pk (PRIMARY KEY on restaurant_id, table_a, table_b)
+  - table_merge_graph_restaurant_idx (btree on restaurant_id, table_a)
+  - table_merge_graph_reverse_idx (btree on restaurant_id, table_b)
+
+--------------------------------------------------------------------------------
+
+TABLE: public.allocations
+Key Column Verified:
+  - restaurant_id (uuid, NOT NULL)
+
+Indexes (9 total):
+  - allocations_booking_id_idx
+  - allocations_booking_resource_key (UNIQUE)
+  - allocations_no_overlap (GIST with WHERE NOT shadow)
+  - allocations_pkey (PRIMARY KEY)
+  - allocations_resource_idx
+  - allocations_restaurant_id_idx
+  - allocations_window_gist_idx (GIST)
+  - idx_allocations_restaurant
+  - idx_allocations_window_gist (GIST)
+
+--------------------------------------------------------------------------------
+
+FUNCTION: public.unassign_tables_atomic
+Signature: (p_booking_id uuid, p_table_ids uuid[] DEFAULT NULL)
+Returns: TABLE(table_id uuid)
+Type: plpgsql, SECURITY DEFINER
+
+================================================================================
+VERIFICATION COMMANDS
+================================================================================
+
+# Check all migrations applied
+supabase migration list --linked
+
+# Verify table structure
+PGPASSWORD='***' psql -h aws-1-eu-north-1.pooler.supabase.com -p 6543 \
+  -U postgres.mqtchcaavsucsdjskptc -d postgres \
+  -c "\d public.table_merge_graph"
+
+# Verify function
+PGPASSWORD='***' psql -h aws-1-eu-north-1.pooler.supabase.com -p 6543 \
+  -U postgres.mqtchcaavsucsdjskptc -d postgres \
+  -c "\df public.unassign_tables_atomic"
+
+# Verify allocations indexes
+PGPASSWORD='***' psql -h aws-1-eu-north-1.pooler.supabase.com -p 6543 \
+  -U postgres.mqtchcaavsucsdjskptc -d postgres \
+  -c "SELECT indexname FROM pg_indexes WHERE tablename = 'allocations';"
+
+================================================================================
+MIGRATION STATUS
+================================================================================
+
+Total Migrations: 83
+Local: 83
+Remote: 83
+Pending: 0
+
+Latest Applied:
+  - 20251114140643 (2025-11-14 14:06:43 UTC)
+  - 20251116 (2025-11-16 00:00:00 UTC)
+
+================================================================================
+RISK ASSESSMENT
+================================================================================
+
+Overall Risk: LOW ✅
+
+✅ Schema-only changes (no data migration)
+✅ New table creation (non-breaking)
+✅ Function replacement (atomic)
+✅ No downtime
+✅ Rollback plan available
+
+================================================================================
+NEXT STEPS
+================================================================================
+
+Immediate:
+  [✅] Verify migrations applied
+  [✅] Document verification results
+  [ ] Update verification.md
+
+Short-term:
+  [ ] Populate table_merge_graph with initial data
+  [ ] Monitor function performance
+  [ ] Add merge graph usage metrics
+
+Long-term:
+  [ ] Review index redundancy on allocations table
+  [ ] Consider partitioning strategy for growth
+  [ ] Add automated tests for merge graph logic
+
+================================================================================
+DETAILED REPORT
+================================================================================
+
+See: artifacts/migration-verification-report.md
+
+================================================================================
