@@ -19,11 +19,13 @@ Ensure the “Log walk-in” button navigates ops users to the working walk-in f
 - [ ] Clicking “Log walk-in” from bookings table opens the walk-in wizard.
 - [ ] Auth guard behavior unchanged (redirects to login if unauthenticated).
 - [ ] No regression to other bookings controls.
+- [ ] Ops sidebar includes a Walk-ins entry that routes correctly.
 
 ## Architecture & Components
 
 - `OpsBookingsClient` button `Link` target — update to correct route.
 - Walk-in page already implemented at `src/app/app/(app)/walk-in/page.tsx`.
+- `ops-shell` navigation — add Walk-ins nav item with correct matching logic.
 
 ## Data Flow & API Contracts
 

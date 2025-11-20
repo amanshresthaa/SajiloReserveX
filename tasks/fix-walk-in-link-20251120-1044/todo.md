@@ -18,6 +18,7 @@ related_tickets: []
 
 - [x] Update “Log walk-in” button link to correct path.
 - [x] Add proxy guard to avoid double-prefix (/app/app) rewrites on app subdomain.
+- [ ] Add Walk-ins nav item in ops sidebar to navigate to walk-in flow.
 - [ ] Ensure back-navigation still returns to bookings context.
 
 ## UI/UX
