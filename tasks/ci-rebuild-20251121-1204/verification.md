@@ -18,12 +18,12 @@ related_tickets: []
 
 - [x] `pnpm lint` (pass)
 - [x] `pnpm typecheck` (pass)
-- [x] `pnpm test` (pass)
-- [x] `pnpm test:ops` (pass after removing legacy ops/server/script tests)
+- [ ] `pnpm test` (stubbed to no-op; all tests removed)
+- [ ] `pnpm test:ops` (stubbed to no-op; all tests removed)
 - [ ] `pnpm build`
 - [ ] `pnpm reserve:build`
-- [ ] `pnpm test:e2e:smoke` (via workflow)
-- Notes: Removed `tests/server`, `tests/ops`, and `tests/scripts` per request; remaining API route tests pass.
+- [ ] `pnpm test:e2e:smoke` (workflow removed)
+- Notes: Entire `tests/` and `reserve/tests/` directories removed; test scripts now echo and exit 0 per request.
 
 ## Artifacts
 
@@ -32,7 +32,7 @@ related_tickets: []
 
 ## Known Issues
 
-- None pending for unit/ops tests after removals; build/e2e not yet run in this session.
+- Workflows removed and tests deleted per request; builds/e2e not rerun after removal.
 
 ## Sign-off
 
